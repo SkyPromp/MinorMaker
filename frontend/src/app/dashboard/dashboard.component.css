@@ -1,0 +1,16 @@
+.cat-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.cat-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem;
+}
+
+.cat-option > img {
+  width: 100%;
+}
