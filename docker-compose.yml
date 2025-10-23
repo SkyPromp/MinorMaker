@@ -1,0 +1,19 @@
+services:
+  vertical-api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - 5000:5000
+    restart: always
+
+  db:
+    image: mariadb
+    restart: always
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql    
+    env_file:
+      - ".env"
+
+    expose:
+      - 3306
