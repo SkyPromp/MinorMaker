@@ -2,7 +2,7 @@ FROM python:3.13
 
 WORKDIR .
 
-RUN pip3 install flask pymysql flask_cors
+RUN pip3 install flask flask_cors
 
 COPY . .
 
