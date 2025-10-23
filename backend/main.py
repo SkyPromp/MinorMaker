@@ -1,20 +1,13 @@
 from flask import Flask
 from flask_cors import CORS, cross_origin
-from config.dbConfig import db
 from controllers.plantController import PlantController
+import config.dbConfig as db
 
 app = Flask(__name__)
 cors = CORS(app)
 
-# Configure DB connection
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://garden_admin:garden123@db/vertical_garden_db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# Init db with app
-db.init_app(app)
-
 with app.app_context():
-    db.create_all()
+    db.database_init()
     print("✅ Database and tables created successfully!")
 
 plantController = PlantController(app)
