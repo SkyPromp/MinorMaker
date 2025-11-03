@@ -5,6 +5,7 @@
 - Brian Rozario
 - Lowie Klaasen
 - Furkan Bas
+- François Manywa
 ## Project
 ### Probleem
 Ontwikkelen van een tevredenheidsmeting voor cliëtnen met een mentale beperking waarmee ieder op maant van de eigen mogelijkheden bevraagd kan worden.
