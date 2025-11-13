@@ -7,7 +7,7 @@ app = Flask(__name__)
 cors = CORS(app)
 
 # Configure DB connection
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://garden_admin:garden123@db/ergos_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://ergos_admin:ergos123@db/ergos'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Init db with app
