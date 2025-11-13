@@ -48,11 +48,6 @@ nav a.active {
   color: #fff;
 }
 
-/* Main content area */
-.content {
-  padding: 2rem;
-  overflow-y: auto;
-}
 
 /* Responsive for tablets/mobiles */
 @media (max-width: 768px) {
