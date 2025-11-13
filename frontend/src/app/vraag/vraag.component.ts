@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoriesService, ICategory } from '../services/categories.service';
-import { QuestionService } from "../services/question.service";
+import {IQuestion, QuestionService } from "../services/question.service";
 
 @Component({
   selector: 'app-vraag',
@@ -11,8 +11,16 @@ import { QuestionService } from "../services/question.service";
 })
 export class VraagComponent {
 
+  question : IQuestion | undefined = undefined;
+
   constructor(private questionService : QuestionService) {
 
+  }
+
+  ngOnInit() {
+    this.questionService.getQuestion(-1).subscribe(question => {
+      this.question = question;
+    })
   }
 
 }
