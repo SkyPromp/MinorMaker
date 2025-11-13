@@ -8,20 +8,8 @@ import { CategoriesService, ICategory } from '../services/categories.service';
   templateUrl: './vraag.component.html',
   styleUrl: './vraag.component.css'
 })
-export class VraagComponent implements OnInit {
-  categories: ICategory[] = []
+export class VraagComponent {
 
-  constructor(private categoryService : CategoriesService) {
 
-  }
 
-  ngOnInit() {
-    this.getAllCategories();
-  }
-
-  getAllCategories() {
-    this.categoryService.getCategories().subscribe(categories => {
-      this.categories = categories;
-    })
-  }
 }
