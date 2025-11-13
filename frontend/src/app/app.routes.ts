@@ -1,8 +1,9 @@
-import { Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { VragenlijstComponent } from './vragenlijst/vragenlijst.component';
 import { KlantenLijstComponent } from './klanten-lijst/klanten-lijst.component';
 import { VraagComponent } from './vraag/vraag.component';
+import { NgModule } from '@angular/core';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -11,3 +12,9 @@ export const routes: Routes = [
   { path: 'vragenlijst', component: VragenlijstComponent },
   { path: 'klantenlijst', component: KlantenLijstComponent }
 ];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule {}
