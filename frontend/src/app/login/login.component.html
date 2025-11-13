@@ -1,1 +1,36 @@
-<p>login works!</p>
+<div class="login-page">
+  <div class="login-card">
+    <h2 class="title">Welkom terug 👋</h2>
+    <p class="subtitle">Log in om verder te gaan</p>
+
+    <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+      <div class="form-group">
+        <label for="username">Gebruikersnaam</label>
+        <input
+          id="username"
+          type="text"
+          [(ngModel)]="username"
+          name="username"
+          required
+          placeholder="Voer je gebruikersnaam in"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Wachtwoord</label>
+        <input
+          id="password"
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          required
+          placeholder="Voer je wachtwoord in"
+        />
+      </div>
+
+      <button type="submit" class="login-btn">Inloggen</button>
+    </form>
+
+    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+  </div>
+</div>
