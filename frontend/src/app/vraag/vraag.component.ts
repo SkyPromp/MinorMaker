@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoriesService, ICategory } from '../services/categories.service';
+import { QuestionService } from "../services/question.service";
 
 @Component({
   selector: 'app-vraag',
@@ -10,6 +11,8 @@ import { CategoriesService, ICategory } from '../services/categories.service';
 })
 export class VraagComponent {
 
+  constructor(private questionService : QuestionService) {
 
+  }
 
 }
