@@ -1,6 +1,6 @@
 # Tevredensheidsmeting voor cliënten met mentale beperking
 ## Team
-- Isabelle VDDurpel
+- Isabelle Van Den Durpel
 - Max Poppe
 - Brian Rozario
 - Lowie Klaasen
@@ -8,7 +8,7 @@
 - François Manywa
 ## Project
 ### Probleem
-Ontwikkelen van een tevredenheidsmeting voor cliëtnen met een mentale beperking waarmee ieder op maant van de eigen mogelijkheden bevraagd kan worden.
+Ontwikkelen van een tevredenheidsmeting voor cliënten met een mentale beperking (voor Mekanders vzw dagcentrum) waarmee ieder op maat van de eigen mogelijkheden bevraagd kan worden (picto's, tekst)
 ### Oplossing
 Een vragenlijst om op een laptop of tablet te gebruiken.
 ## Technologiën
