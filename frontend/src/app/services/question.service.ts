@@ -19,23 +19,30 @@ export class QuestionService {
     return of(question).pipe(delay(1000));
   }
 
+  saveAnswer(answer :IAnswerPost): Observable<IAnswer> {
+    console.log("saving answer");
+    return of().pipe(delay(1000));
+  }
+
+  updateAnswer(answer :IAnswer):Observable<IAnswer> {
+    console.log("updating answer");
+    return of().pipe(delay(1000));
+  }
+
 }
 
 export interface IQuestion {
   id: number;
   question: string;
-  // answers: IAnswer[]
 }
-
-// export interface IAnswerOption {
-//   id: number;
-//   questionId: number;
-//   answer: string;
-// }
 
 export interface IAnswer {
   id: number;
   questionId: number;
   answer: number;
   note :string;
+}
+export interface IAnswerPost {
+  questionId: number;
+  answer: number;
 }
