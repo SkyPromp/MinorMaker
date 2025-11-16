@@ -50,7 +50,6 @@ nav a.active {
 
 /* Main content area */
 .content {
-  padding: 2rem;
   overflow-y: auto;
 }
 

@@ -50,6 +50,7 @@ input {
   border: 1px solid #d1d5db;
   outline: none;
   transition: border 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
 }
 
 input:focus {
