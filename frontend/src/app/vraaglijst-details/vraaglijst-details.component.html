@@ -31,15 +31,7 @@
 
     <!-- Question Card -->
     <div class="detail-card">
-      <div class="question-header">
-        <div class="category-display">
-          
-          <span class="category-badge" [attr.data-category]="question.category">
-            {{ getCategoryDisplayName(question.category) }}
-          </span>
-        </div>
-        <div class="question-id">Vraag ID: {{ question.id }}</div>
-      </div>
+      
 
       <div class="question-content">
         <div class="question-main">
@@ -57,10 +49,7 @@
           <div class="meta-item">
             <span class="meta-label">Categorie:</span>
             <div class="meta-value-with-icon">
-              <img *ngIf="category?.pictogram" 
-                   [src]="category?.pictogram" 
-                   [alt]="question.category"
-                   class="meta-icon">
+              
               <span>{{ getCategoryDisplayName(question.category) }}</span>
             </div>
           </div>
