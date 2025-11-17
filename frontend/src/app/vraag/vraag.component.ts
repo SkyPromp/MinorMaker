@@ -1,27 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoriesService, ICategory } from '../services/categories.service';
+import {IQuestion, QuestionService } from "../services/question.service";
+import { AnswerComponent } from "../components/answer/answer.component";
 
 @Component({
   selector: 'app-vraag',
   standalone: true,
-  imports: [],
+  imports: [ AnswerComponent ],
   templateUrl: './vraag.component.html',
   styleUrl: './vraag.component.css'
 })
 export class VraagComponent implements OnInit {
-  categories: ICategory[] = []
 
-  constructor(private categoryService : CategoriesService) {
+  question : IQuestion | undefined = undefined;
+
+  constructor(private questionService : QuestionService) {
 
   }
 
   ngOnInit() {
-    this.getAllCategories();
-  }
-
-  getAllCategories() {
-    this.categoryService.getCategories().subscribe(categories => {
-      this.categories = categories;
+    this.questionService.getQuestion(-1).subscribe(question => {
+      this.question = question;
     })
   }
+
 }

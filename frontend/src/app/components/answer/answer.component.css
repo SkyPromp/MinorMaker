@@ -1,0 +1,13 @@
+.body {
+  border: 1px solid red;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 20rem;
+  padding: 2rem 0;
+}
+
+.body > img {
+  user-select: none;
+  height: inherit;
+}
