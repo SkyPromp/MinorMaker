@@ -2,8 +2,20 @@ services:
   ergos-api:
     build:
       context: .
-      dockerfile: backend/Dockerfile
+      dockerfile: VerticalWebAPI/Dockerfile
     ports:
       - 5000:5000
     restart: always
-
+        
+  db:
+    image: mariadb
+    restart: always
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=ergos
+      - MYSQL_USER=ergos_admin
+      - MYSQL_PASSWORD=ergos123
+    expose:
+      - 3306

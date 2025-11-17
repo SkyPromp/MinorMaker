@@ -1,8 +1,8 @@
 -- Create the database
-CREATE DATABASE IF NOT EXISTS vertical_garden_db;
+CREATE DATABASE IF NOT EXISTS ergos;
 
 -- Use the database
-USE vertical_garden_db;
+USE ergos;
 
 -- Table 'plants'
 CREATE TABLE IF NOT EXISTS plants (
@@ -11,5 +11,5 @@ CREATE TABLE IF NOT EXISTS plants (
     digital FLOAT NOT NULL
 );
 
-CREATE USER 'garden_admin'@'%' IDENTIFIED BY 'garden123';
-GRANT ALL ON vertical_garden_db.* TO 'garden_admin'@'%';
+CREATE USER 'ergos_admin'@'%' IDENTIFIED BY 'ergos123';
+GRANT ALL ON ergos.* TO 'ergos_admin'@'%';
