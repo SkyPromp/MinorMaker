@@ -13,9 +13,9 @@ export class QuestionService {
 
   getQuestion(id :number) :Observable<IQuestion> {
     let question :IQuestion = {
-        id: -1,
-        question: "What is your question?",
-      }
+      id: -1,
+      question: "What is your question?",
+    }
 
     return of(question).pipe(delay(1000));
   }
