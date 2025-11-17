@@ -1,5 +1,7 @@
 @if (isActiveRoute('questionaire')) {
   <app-vraag></app-vraag>
+} @else if (isActiveRoute('note')) {
+  <app-note></app-note>
 } @else if (isActiveRoute('login')) {
   <app-login></app-login>
 } @else {

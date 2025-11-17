@@ -1,0 +1,16 @@
+<div class="body">
+  <p>What's your question?</p>
+
+<!--  <form>-->
+<!--    <textarea></textarea>-->
+
+<!--    <input type="submit">-->
+<!--  </form>-->
+
+  <textarea [value]="note"></textarea>
+  <div class="button-container">
+    <div class="submit" (click)="saveNote()">Save</div>
+    <div class="skip" (click)="skip()">Skip</div>
+  </div>
+
+</div>
