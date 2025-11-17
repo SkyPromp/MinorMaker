@@ -16,10 +16,16 @@ export class VragenlijstComponent implements OnInit {
   questions: IQuestion[] = [];
   categories: ICategory[] = [];
   filteredQuestions: IQuestion[] = [];
+  paginatedQuestions: IQuestion[] = [];
   isLoading = true;
   areCategoriesLoading = true;
   selectedCategory: string = 'all';
   searchTerm: string = '';
+  
+  // Paginatie variabelen
+  currentPage: number = 1;
+  pageSize: number = 10;
+  totalPages: number = 0;
   
   // Voor het toevoegen/bewerken van vragen
   showAddForm = false;
@@ -88,14 +94,95 @@ export class VragenlijstComponent implements OnInit {
     }
 
     this.filteredQuestions = filtered;
+    this.updatePagination();
+  }
+
+  updatePagination(): void {
+    // Bereken totaal aantal pagina's
+    this.totalPages = Math.ceil(this.filteredQuestions.length / this.pageSize);
+    
+    // Zorg dat currentPage binnen de grenzen blijft
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = Math.max(1, this.totalPages);
+    }
+    
+    // Bereken start en end index voor huidige pagina
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    
+    // Haal vragen op voor huidige pagina
+    this.paginatedQuestions = this.filteredQuestions.slice(startIndex, endIndex);
   }
 
   onCategoryChange(): void {
+    this.currentPage = 1; // Reset naar eerste pagina bij filter wijziging
     this.applyFilters();
   }
 
   onSearchChange(): void {
+    this.currentPage = 1; // Reset naar eerste pagina bij zoeken
     this.applyFilters();
+  }
+
+  onPageSizeChange(): void {
+    this.currentPage = 1; // Reset naar eerste pagina bij page size wijziging
+    this.applyFilters();
+  }
+
+  // Paginatie methods
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePagination();
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePagination();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePagination();
+    }
+  }
+
+  // Helper methods voor paginatie weergave
+  getVisiblePages(): number[] {
+    const visiblePages = [];
+    const maxVisiblePages = 5;
+    
+    let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
+    
+    // Aanpassen als we niet genoeg pagina's aan het einde hebben
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      visiblePages.push(i);
+    }
+    
+    return visiblePages;
+  }
+
+  get showEllipsisStart(): boolean {
+    return this.getVisiblePages()[0] > 1;
+  }
+
+  get showEllipsisEnd(): boolean {
+    return this.getVisiblePages()[this.getVisiblePages().length - 1] < this.totalPages;
+  }
+
+  getDisplayedRange(): string {
+    const start = (this.currentPage - 1) * this.pageSize + 1;
+    const end = Math.min(this.currentPage * this.pageSize, this.filteredQuestions.length);
+    return `${start}-${end}`;
   }
 
   getCategoryName(categoryKey: string): string {
