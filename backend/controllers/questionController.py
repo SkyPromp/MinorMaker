@@ -1,7 +1,9 @@
 from flask import jsonify, Blueprint
+from services.questionService import QuestionService
 
 class QuestionController:
     def __init__(self, app):
+        self.questionSvc = QuestionService()
         self.blueprint = Blueprint("questionController", __name__)
 
         ## register routes  ##
@@ -15,7 +17,7 @@ class QuestionController:
     ##  endpoints  ##
 
     def get_questions(self):
-        data = [{"message": "hey lowie"}]
+        data = self.questionSvc.get_questions()
 
         return jsonify({"data": data, "status": "ok"}), 200
 
