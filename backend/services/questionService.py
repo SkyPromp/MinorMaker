@@ -11,3 +11,6 @@ class QuestionService:
 
         return questionJson
 
+    def add_question(self, question):
+        return self.questionRepo.add_question(question).to_json()
+

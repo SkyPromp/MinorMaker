@@ -11,8 +11,8 @@ class Question(db.Model):
         if _id is not None:
             self.id = _id
 
-        self.moisture = question
-        self.digital = category
+        self.question = question
+        self.category = category
 
     def to_json(self):
         """Convert Question object to dictionary for JSON serialization"""
