@@ -1,0 +1,146 @@
+<div class="vragenlijst-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>Vragenbeheer</h1>
+    <p>Beheer alle vragen in het tevredenheidsonderzoek</p>
+  </div>
+
+  <!-- Statistieken -->
+  <div class="stats-section">
+    <div class="stat-card">
+      <div class="stat-number">{{ totalQuestions }}</div>
+      <div class="stat-label">Totaal vragen</div>
+    </div>
+    <!-- <div class="stat-card">
+      <div class="stat-number">{{ getQuestionCountByCategory('eten') }}</div>
+      <div class="stat-label">Eten vragen</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{{ getQuestionCountByCategory('zorg') }}</div>
+      <div class="stat-label">Zorg vragen</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{{ getQuestionCountByCategory('activiteiten') }}</div>
+      <div class="stat-label">Activiteiten vragen</div>
+    </div> -->
+  </div>
+
+  <!-- Actiebalk -->
+  <div class="action-bar">
+    <button class="btn-primary" (click)="showAddQuestionForm()">
+      <span class="btn-icon">+</span>
+      Nieuwe vraag toevoegen
+    </button>
+
+    <div class="filters">
+      <div class="search-box">
+        <input type="text" 
+               [(ngModel)]="searchTerm" 
+               (input)="onSearchChange()"
+               placeholder="Zoek vragen..." 
+               class="search-input">
+        <span class="search-icon">🔍</span>
+      </div>
+
+      <select [(ngModel)]="selectedCategory" (change)="onCategoryChange()" class="category-filter">
+        <option value="all">Alle categorieën</option>
+        <option *ngFor="let category of categories" [value]="category.name">
+          {{ getCategoryName(category.name) }} ({{ getQuestionCountByCategory(category.name) }})
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Toevoeg/Bewerk Formulier -->
+  <div *ngIf="showAddForm" class="form-section">
+    <div class="form-card">
+      <h3>{{ editingQuestion ? 'Vraag bewerken' : 'Nieuwe vraag toevoegen' }}</h3>
+      
+      <div class="form-group">
+        <label for="questionText">Vraag:</label>
+        <textarea 
+          id="questionText"
+          [(ngModel)]="newQuestion.question"
+          placeholder="Voer de vraag in..."
+          class="form-textarea"
+          rows="3">
+        </textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="questionCategory">Categorie:</label>
+        <select id="questionCategory" [(ngModel)]="newQuestion.category" class="form-select">
+          <option *ngFor="let category of categories" [value]="category.name">
+            {{ getCategoryName(category.name) }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn-secondary" (click)="cancelEdit()">Annuleren</button>
+        <button class="btn-primary" (click)="saveQuestion()">
+          {{ editingQuestion ? 'Opslaan' : 'Toevoegen' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading || areCategoriesLoading" class="loading">
+    <div class="spinner"></div>
+    <p>Vragen worden geladen...</p>
+  </div>
+
+  <!-- Vragen Lijst -->
+  <div *ngIf="!isLoading && !areCategoriesLoading" class="questions-grid">
+    <div *ngFor="let question of filteredQuestions" class="question-card">
+      <div class="question-header">
+        <div class="category-display">
+          <img *ngIf="getCategoryPictogram(question.category)" 
+               [src]="getCategoryPictogram(question.category)" 
+               [alt]="question.category"
+               class="category-icon">
+          <span class="category-badge" [attr.data-category]="question.category">
+            {{ getCategoryName(question.category) }}
+          </span>
+        </div>
+        <div class="question-actions">
+          <button class="btn-icon" (click)="editQuestion(question)" title="Bewerken">
+            ✏️
+          </button>
+          <button class="btn-icon btn-danger" (click)="deleteQuestion(question)" title="Verwijderen">
+            🗑️
+          </button>
+        </div>
+      </div>
+
+      <div class="question-content" (click)="viewQuestion(question)">
+        <h3 class="question-text">{{ question.question }}</h3>
+      </div>
+
+        <div class="question-footer">
+        <button class="btn-outline" (click)="viewQuestion(question)">
+            Bekijk details
+        </button>
+        </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && !areCategoriesLoading && filteredQuestions.length === 0" class="empty-state">
+    <div *ngIf="searchTerm || selectedCategory !== 'all'">
+      <h3>Geen vragen gevonden</h3>
+      <p>Geen vragen gevonden met de huidige filters. Probeer een andere zoekterm of categorie.</p>
+      <button class="btn-primary" (click)="searchTerm = ''; selectedCategory = 'all'; applyFilters()">
+        Toon alle vragen
+      </button>
+    </div>
+    <div *ngIf="!searchTerm && selectedCategory === 'all' && questions.length === 0">
+      <h3>Nog geen vragen</h3>
+      <p>Er zijn nog geen vragen aangemaakt. Voeg uw eerste vraag toe!</p>
+      <button class="btn-primary" (click)="showAddQuestionForm()">
+        Eerste vraag toevoegen
+      </button>
+    </div>
+  </div>
+</div>

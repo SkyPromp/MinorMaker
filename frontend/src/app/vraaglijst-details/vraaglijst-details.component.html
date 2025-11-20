@@ -1,0 +1,168 @@
+<div class="details-container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner"></div>
+    <p>Vraagdetails worden geladen...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !isLoading" class="error-state">
+    <div class="error-icon">⚠️</div>
+    <h3>Fout bij het laden</h3>
+    <p>{{ error }}</p>
+    <button class="btn-primary" (click)="goBack()">Terug naar overzicht</button>
+  </div>
+
+  <!-- Question Details -->
+  <div *ngIf="question && !isLoading" class="question-details">
+    <!-- Header met navigatie -->
+    <div class="header-nav">
+      <button class="btn-back" (click)="goBack()">
+        <span class="back-icon">←</span>
+        Terug naar overzicht
+      </button>
+      <div class="header-actions">
+        <button class="btn-secondary" (click)="editQuestion()">
+          <span class="btn-icon">✏️</span>
+          Bewerken
+        </button>
+      </div>
+    </div>
+
+    <!-- Question Card -->
+    <div class="detail-card">
+      <div class="question-header">
+        <div class="category-display">
+          
+          <span class="category-badge" [attr.data-category]="question.category">
+            {{ getCategoryDisplayName(question.category) }}
+          </span>
+        </div>
+        <div class="question-id">Vraag ID: {{ question.id }}</div>
+      </div>
+
+      <div class="question-content">
+        <div class="question-main">
+          <div class="question-pictogram-large" *ngIf="category?.pictogram">
+            <img [src]="category?.pictogram" 
+                 [alt]="question.category"
+                 class="large-pictogram">
+          </div>
+          <div class="question-text-container">
+            <h1 class="question-text">{{ question.question }}</h1>
+          </div>
+        </div>
+        
+        <div class="question-meta">
+          <div class="meta-item">
+            <span class="meta-label">Categorie:</span>
+            <div class="meta-value-with-icon">
+              <img *ngIf="category?.pictogram" 
+                   [src]="category?.pictogram" 
+                   [alt]="question.category"
+                   class="meta-icon">
+              <span>{{ getCategoryDisplayName(question.category) }}</span>
+            </div>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Aantal antwoorden:</span>
+            <div class="meta-value">
+              <span class="meta-icon">💬</span>
+              <span>{{ answerStats.totalAnswers }}</span>
+            </div>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Gemiddelde score:</span>
+            <div class="meta-value rating-average">
+              <span class="stars">{{ getStars(getRoundedAverage()) }}</span>
+              <span class="rating-number">{{ answerStats.averageRating.toFixed(1) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistics Section -->
+    <div class="stats-section">
+      <h2>Antwoordstatistieken</h2>
+      
+      <div class="stats-grid">
+        <!-- Rating Distribution -->
+        <div class="stat-card wide">
+          <h3>Scoreverdeling</h3>
+          <div class="distribution-list">
+            <div *ngFor="let rating of [3,2,1]" class="distribution-item">
+              <div class="distribution-header">
+                <span class="rating-stars">{{ getStars(rating) }}</span>
+                <span class="rating-count">
+                  {{ getRatingCount(rating) }} antwoorden
+                </span>
+                <span class="rating-percentage">
+                  {{ getRatingPercentage(rating).toFixed(1) }}%
+                </span>
+              </div>
+              <div class="distribution-bar">
+                <div class="distribution-fill" [style.width.%]="getRatingPercentage(rating)"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="stat-card">
+          <h3>Samenvatting</h3>
+          <div class="quick-stats">
+            <div class="quick-stat">
+              <div class="stat-number">{{ answerStats.totalAnswers }}</div>
+              <div class="stat-label">Totaal antwoorden</div>
+            </div>
+            <div class="quick-stat">
+              <div class="stat-number">{{ answerStats.averageRating.toFixed(1) }}</div>
+              <div class="stat-label">Gemiddelde score</div>
+            </div>
+            <div class="quick-stat">
+              <div class="stat-number">
+                {{ getPositiveAnswersCount() }}
+              </div>
+              <div class="stat-label">Tevreden</div>
+            </div>
+            <div class="quick-stat">
+              <div class="stat-number">
+                {{ getNegativeAnswersCount() }}
+              </div>
+              <div class="stat-label">Ontevreden</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Answers -->
+    <div class="answers-section" *ngIf="answerStats.recentAnswers.length > 0">
+      <h2>Recente antwoorden</h2>
+      
+      <div class="answers-list">
+        <div *ngFor="let answer of answerStats.recentAnswers" class="answer-card">
+          <div class="answer-header">
+            <div class="answer-rating">
+              <span class="rating-stars">{{ getStars(answer.answer) }}</span>
+              <span class="rating-text">{{ getRatingText(answer.answer) }}</span>
+            </div>
+            <div class="answer-date">{{ formatDate(answer.timestamp!) }}</div>
+          </div>
+          
+          <div *ngIf="answer.note" class="answer-note">
+            <strong>Opmerking:</strong> {{ answer.note }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Answers -->
+    <div *ngIf="answerStats.totalAnswers === 0" class="no-answers">
+      <div class="no-answers-icon">💬</div>
+      <h3>Nog geen antwoorden</h3>
+      <p>Deze vraag heeft nog geen antwoorden ontvangen.</p>
+    </div>
+  </div>
+</div>

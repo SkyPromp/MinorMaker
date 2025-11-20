@@ -2,6 +2,15 @@
 
 .body {
   height: 100vh;
+}
+.cat-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.cat-option {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
