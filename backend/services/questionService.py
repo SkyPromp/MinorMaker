@@ -6,6 +6,7 @@ class QuestionService:
 
     def get_questions(self):
         questionJson = []
+
         for question in self.questionRepo.get_questions():
             questionJson.append(question.to_json())
 

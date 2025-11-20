@@ -10,7 +10,7 @@ class QuestionController:
         ## register routes  ##
         self.blueprint.add_url_rule('/api/questions', 'get_questions', self.get_questions, methods=['GET'])
 
-        self.blueprint.add_url_rule('/api/questions', 'add_question', self.add_plant, methods=['POST'])
+        self.blueprint.add_url_rule('/api/questions', 'add_question', self.add_question, methods=['POST'])
         
         self.register(app)
 
@@ -29,7 +29,7 @@ class QuestionController:
 
         return jsonify({"data": data, "status": "ok"}), 200
 
-    def add_plant(self):
+    def add_question(self):
         data = request.get_json()
 
         if not data:

@@ -1,3 +1,4 @@
+from controllers.answerController import AnswerController
 from controllers.plantController import PlantController
 from controllers.questionController import QuestionController
 from flask import Flask
@@ -18,6 +19,7 @@ with app.app_context():
     print("Database and tables created successfully!")
 
 questionController = QuestionController(app)
+answerController = AnswerController(app)
 plantController = PlantController(app)
 
 if __name__ == '__main__':
