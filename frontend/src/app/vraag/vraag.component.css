@@ -2,6 +2,8 @@
 
 .body {
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 .cat-container {
   display: grid;
