@@ -11,7 +11,7 @@
       <div class="stat-number">{{ totalQuestions }}</div>
       <div class="stat-label">Totaal vragen</div>
     </div>
-    <!-- <div class="stat-card">
+    <div class="stat-card">
       <div class="stat-number">{{ getQuestionCountByCategory('eten') }}</div>
       <div class="stat-label">Eten vragen</div>
     </div>
@@ -22,7 +22,7 @@
     <div class="stat-card">
       <div class="stat-number">{{ getQuestionCountByCategory('activiteiten') }}</div>
       <div class="stat-label">Activiteiten vragen</div>
-    </div> -->
+    </div>
   </div>
 
   <!-- Actiebalk -->
@@ -92,37 +92,103 @@
   </div>
 
   <!-- Vragen Lijst -->
-  <div *ngIf="!isLoading && !areCategoriesLoading" class="questions-grid">
-    <div *ngFor="let question of filteredQuestions" class="question-card">
-      <div class="question-header">
-        <div class="category-display">
-          <img *ngIf="getCategoryPictogram(question.category)" 
-               [src]="getCategoryPictogram(question.category)" 
-               [alt]="question.category"
-               class="category-icon">
-          <span class="category-badge" [attr.data-category]="question.category">
-            {{ getCategoryName(question.category) }}
-          </span>
-        </div>
-        <div class="question-actions">
-          <button class="btn-icon" (click)="editQuestion(question)" title="Bewerken">
-            ✏️
-          </button>
-          <button class="btn-icon btn-danger" (click)="deleteQuestion(question)" title="Verwijderen">
-            🗑️
-          </button>
-        </div>
+  <div *ngIf="!isLoading && !areCategoriesLoading" class="questions-container">
+    <!-- Resultaat informatie -->
+    <div class="results-info">
+      <span class="results-count">
+        Toon {{ getDisplayedRange() }} van {{ filteredQuestions.length }} vragen
+      </span>
+      <div class="page-size-selector">
+        <label for="pageSize">Items per pagina:</label>
+        <select id="pageSize" [(ngModel)]="pageSize" (change)="onPageSizeChange()" class="page-size-select">
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
       </div>
+    </div>
 
-      <div class="question-content" (click)="viewQuestion(question)">
-        <h3 class="question-text">{{ question.question }}</h3>
-      </div>
+    <!-- Vragen Grid -->
+    <div class="questions-grid">
+      <div *ngFor="let question of paginatedQuestions" class="question-card">
+        <div class="question-header">
+          <div class="category-display">
+            <span class="category-badge" [attr.data-category]="question.category">
+              {{ getCategoryName(question.category) }}
+            </span>
+          </div>
+          <div class="question-actions">
+            <button class="btn-icon" (click)="editQuestion(question)" title="Bewerken">
+              ✏️
+            </button>
+            <button class="btn-icon btn-danger" (click)="deleteQuestion(question)" title="Verwijderen">
+              🗑️
+            </button>
+          </div>
+        </div>
+
+        <div class="question-content" (click)="viewQuestion(question)">
+          <h3 class="question-text">{{ question.question }}</h3>
+        </div>
 
         <div class="question-footer">
-        <button class="btn-outline" (click)="viewQuestion(question)">
+          <button class="btn-outline" (click)="viewQuestion(question)">
             Bekijk details
-        </button>
+          </button>
         </div>
+      </div>
+    </div>
+
+    <!-- Paginatie Controls -->
+    <div class="pagination-container" *ngIf="totalPages > 1">
+      <div class="pagination">
+        <button class="pagination-btn" 
+                [class.disabled]="currentPage === 1"
+                (click)="goToPage(1)"
+                title="Eerste pagina">
+          ❮❮
+        </button>
+        
+        <button class="pagination-btn" 
+                [class.disabled]="currentPage === 1"
+                (click)="previousPage()"
+                title="Vorige pagina">
+          ❮
+        </button>
+
+        <!-- Page Numbers -->
+        <div class="page-numbers">
+          <button *ngFor="let page of getVisiblePages()" 
+                  class="pagination-btn page-number"
+                  [class.active]="page === currentPage"
+                  (click)="goToPage(page)">
+            {{ page }}
+          </button>
+          
+          <span *ngIf="showEllipsisStart" class="pagination-ellipsis">...</span>
+          
+          <span *ngIf="showEllipsisEnd" class="pagination-ellipsis">...</span>
+        </div>
+
+        <button class="pagination-btn" 
+                [class.disabled]="currentPage === totalPages"
+                (click)="nextPage()"
+                title="Volgende pagina">
+          ❯
+        </button>
+        
+        <button class="pagination-btn" 
+                [class.disabled]="currentPage === totalPages"
+                (click)="goToPage(totalPages)"
+                title="Laatste pagina">
+          ❯❯
+        </button>
+      </div>
+
+      <!-- Page Info -->
+      <div class="page-info">
+        Pagina {{ currentPage }} van {{ totalPages }}
+      </div>
     </div>
   </div>
 

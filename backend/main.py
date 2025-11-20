@@ -1,12 +1,14 @@
+from controllers.plantController import PlantController
+from controllers.questionController import QuestionController
 from flask import Flask
 from flask_cors import CORS
 from config.dbConfig import db
-from controllers import PlantController, QuestionController
+# from controllers import PlantController, QuestionController
 
 app = Flask(__name__)
 cors = CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://garden_admin:garden123@db/ergos_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://ergos_admin:ergos123@db/ergos'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
