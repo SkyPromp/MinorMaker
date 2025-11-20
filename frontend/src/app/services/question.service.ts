@@ -46,5 +46,5 @@ export interface IAnswer {
 export interface IAnswerPost {
   questionId: number;
   answer: number;
-  note: string | null;
+  note?: string;
 }

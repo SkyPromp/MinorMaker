@@ -40,7 +40,7 @@ export class AnswerComponent {
     let answer :IAnswerPost = {
       questionId: this.questionId,
       answer: userAnswer,
-      note: null
+      note: undefined
     }
 
     this.questionService.saveAnswer(answer);
