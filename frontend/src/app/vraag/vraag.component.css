@@ -28,25 +28,25 @@
   font-size: 3rem;
 }
 
-.footer {
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem;
-  background-color: #1f2937;
-}
-.footer > .button {
-  padding: .5rem 1rem;
-  font-family: "Roboto Mono", monospace;
-  text-transform: uppercase;
-  color: white;
-  background-color: transparent;
-  border: 1px solid white;
-  user-select: none;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: 0.15s;
-}
-.footer > .button:hover {
-  background-color: white;
-  color: #1f2937;
-}
+/*.footer {*/
+/*  display: flex;*/
+/*  justify-content: space-between;*/
+/*  padding: 1rem;*/
+/*  background-color: #1f2937;*/
+/*}*/
+/*.footer > .button {*/
+/*  padding: .5rem 1rem;*/
+/*  font-family: "Roboto Mono", monospace;*/
+/*  text-transform: uppercase;*/
+/*  color: white;*/
+/*  background-color: transparent;*/
+/*  border: 1px solid white;*/
+/*  user-select: none;*/
+/*  cursor: pointer;*/
+/*  border-radius: 4px;*/
+/*  transition: 0.15s;*/
+/*}*/
+/*.footer > .button:hover {*/
+/*  background-color: white;*/
+/*  color: #1f2937;*/
+/*}*/
