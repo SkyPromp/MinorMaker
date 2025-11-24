@@ -15,3 +15,11 @@ class QuestionService:
     def add_question(self, question):
         return self.questionRepo.add_question(question).to_json()
 
+    def update_question(self, question):
+        result = self.questionRepo.update_question(question)
+
+        if result:
+            return result.to_json()
+        else:
+            return None
+        

@@ -7,9 +7,9 @@ class Question(db.Model):
     question = db.Column(db.String(255), nullable=False)
     category = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, question, category, _id=None):
-        if _id is not None:
-            self.id = _id
+    def __init__(self, question, category, id=None):
+        if id is not None:
+            self.id = id
 
         self.question = question
         self.category = category
