@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import {delay, of } from "rxjs";
 import { Observable } from "rxjs/internal/Observable";
+import {AnswerType} from "../components/answer/answer.component";
 
 @Injectable({
   providedIn: 'root'

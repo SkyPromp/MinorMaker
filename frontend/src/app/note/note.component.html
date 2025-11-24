@@ -1,0 +1,18 @@
+<div class="body">
+  <div class="note-container">
+    <p>What's your question?</p>
+
+  <!--  <form>-->
+  <!--    <textarea></textarea>-->
+
+  <!--    <input type="submit">-->
+  <!--  </form>-->
+
+    <textarea [value]="note"></textarea>
+    <div class="button-container">
+      <div class="submit" (click)="saveNote()">Save</div>
+      <div class="skip" (click)="skip()">Skip</div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>
