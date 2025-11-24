@@ -21,3 +21,7 @@ services:
       - 3306
     ports:
       - 3366:3306
+  frontend:
+    build: "./frontend"
+    ports:
+      - 80:80

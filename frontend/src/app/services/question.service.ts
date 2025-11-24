@@ -148,7 +148,7 @@ export interface IQuestion {
 }
 
 export interface IAnswer {
-  id: number;
+  id: number | null;
   questionId: number;
   answer: number;
   note: string;
