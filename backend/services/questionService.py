@@ -28,6 +28,6 @@ class QuestionService:
         question = self.questionRepo.get_question_by_id(question_id)
 
         if not question:
-            return {"error": "Question not found"}, 404
+            return {"error": f"Question {question_id} not found"}, 404
 
         self.questionRepo.delete_question(question)
