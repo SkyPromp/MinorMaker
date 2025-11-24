@@ -13,6 +13,8 @@ class QuestionController:
         self.blueprint.add_url_rule('/api/questions', 'add_question', self.add_question, methods=['POST'])
 
         self.blueprint.add_url_rule('/api/questions', 'update_question', self.update_question, methods=['PUT'])
+
+        self.blueprint.add_url_rule('/api/questions/<int:id>', 'delete_question', self.delete_question, methods=['DELETE'])
         
         self.register(app)
 
@@ -26,24 +28,18 @@ class QuestionController:
 
         return jsonify({"data": data, "status": "ok"}), 200
 
-    def get_questions(self):
-        data = self.questionSvc.get_questions()
-
-        return jsonify({"data": data, "status": "ok"}), 200
-
     def add_question(self):
         data = request.get_json()
 
         if not data:
             return jsonify({"error": "No JSON data"}), 400
 
-        id = data.get("id", None)
         question = data.get("question")
         category = data.get("category")
 
         created = self.questionSvc.add_question(Question(question, category))
 
-        return jsonify({"data": created, "status": "ok", "action": "created"}), 201
+        return jsonify({"data": created, "status": "ok", "action": "Created"}), 201
 
     def update_question(self):
         data = request.get_json()
@@ -61,4 +57,9 @@ class QuestionController:
 
         updated = self.questionSvc.update_question(Question(question=question, category=category, id=id))
 
-        return jsonify({"data": updated, "status": "ok", "action": "ok"}), 200
+        return jsonify({"data": updated, "status": "ok", "action": "Update"}), 200
+
+    def delete_question(self, id):
+        self.questionSvc.delete_question(id)
+
+        return jsonify({"status": "No content", "action": "Delete"}), 204

@@ -1,3 +1,4 @@
+from entities.question import Question
 from repositories import questionRepository
 
 class QuestionService:
@@ -12,10 +13,10 @@ class QuestionService:
 
         return questionJson
 
-    def add_question(self, question):
+    def add_question(self, question: Question):
         return self.questionRepo.add_question(question).to_json()
 
-    def update_question(self, question):
+    def update_question(self, question: Question):
         result = self.questionRepo.update_question(question)
 
         if result:
@@ -23,3 +24,10 @@ class QuestionService:
         else:
             return None
         
+    def delete_question(self, question_id):
+        question = self.questionRepo.get_question_by_id(question_id)
+
+        if not question:
+            return {"error": "Question not found"}, 404
+
+        self.questionRepo.delete_question(question)
