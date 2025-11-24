@@ -19,3 +19,5 @@ services:
       - MYSQL_PASSWORD=ergos123
     expose:
       - 3306
+    ports:
+      - 3366:3306

@@ -23,6 +23,9 @@ export class QuestionV2Service {
   }
 
   GetPreviousQuestion() {
+    if (this.currentQuestion.orderNr == 1)
+      return;
+
     this.currentQuestion = this.questions[this.currentQuestion.orderNr - 1];
   }
 }
