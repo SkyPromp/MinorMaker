@@ -152,7 +152,7 @@ export interface IAnswer {
   questionId: number;
   answer: number;
   note: string;
-  timestamp?: Date;
+  timestamp?: Date; // Todo make datetime
 }
 export interface IAnswerPost {
   questionId: number;
