@@ -8,7 +8,7 @@ class Answer(db.Model):
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True, autoincrement=True)
     questionId: Mapped[int] = mapped_column(db.Integer, nullable=False)
     answer: Mapped[int] = mapped_column(db.Integer, nullable=False)
-    note: Mapped[str] = mapped_column(db.String(int(1e4)), nullable=False)
+    note: Mapped[str | None] = mapped_column(db.String(int(1e4)), nullable=True)
     timestamp: Mapped[datetime | None] = mapped_column(db.DateTime, nullable=True)
     userId: Mapped[int] = mapped_column(db.Integer, nullable=False)
 
