@@ -11,7 +11,7 @@ class UserController:
         self.blueprint.add_url_rule('/api/users', 'get_users', self.get_users, methods=['GET'])
 
         self.blueprint.add_url_rule('/api/users', 'add_user', self.add_user, methods=['POST'])
-        
+
         self.register(app)
 
     def register(self, app):
@@ -33,6 +33,4 @@ class UserController:
         created = self.userSvc.add_user(User())
 
         return jsonify({"data": created, "status": "ok", "action": "created"}), 201
-
-
 

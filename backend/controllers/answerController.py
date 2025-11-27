@@ -33,7 +33,7 @@ class AnswerController:
             return jsonify({"error": "No JSON data"}), 400
 
         id = data.get("id", None)
-        questionId = data.get("question-id")
+        questionId = data.get("questionId")
         answer = data.get("answer")
         note = data.get("note")
         timestamp = data.get("timestamp")
