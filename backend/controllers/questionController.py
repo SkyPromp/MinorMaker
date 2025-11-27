@@ -9,12 +9,11 @@ class QuestionController:
 
         ## register routes  ##
         self.blueprint.add_url_rule('/api/questions', 'get_questions', self.get_questions, methods=['GET'])
-
+        self.blueprint.add_url_rule('/api/questions/<int:id>', 'get_question_by_id', self.get_question_by_id, methods=['GET'])
         self.blueprint.add_url_rule('/api/questions', 'add_question', self.add_question, methods=['POST'])
-
         self.blueprint.add_url_rule('/api/questions', 'update_question', self.update_question, methods=['PUT'])
-
         self.blueprint.add_url_rule('/api/questions/<int:id>', 'delete_question', self.delete_question, methods=['DELETE'])
+
         
         self.register(app)
 
@@ -63,3 +62,9 @@ class QuestionController:
         self.questionSvc.delete_question(id)
 
         return jsonify({"status": "No content", "action": "Delete"}), 204
+
+    def get_question_by_id(self, id):
+        data = self.questionSvc.get_question_by_id(id)
+
+        return jsonify({"data": data, "status": "ok"}), 200
+
