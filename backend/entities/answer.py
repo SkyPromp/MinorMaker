@@ -26,7 +26,7 @@ class Answer(db.Model):
         """Convert Answer object to dictionary for JSON serialization"""
         return {
             "id": self.id,
-            "question-id": self.questionId,
+            "questionId": self.questionId,
             "answer": self.answer,
             "note": self.note,
             "timestamp": self.timestamp,
