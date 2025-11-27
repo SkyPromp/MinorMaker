@@ -31,3 +31,7 @@ class QuestionService:
             return {"error": f"Question {question_id} not found"}, 404
 
         self.questionRepo.delete_question(question)
+
+
+    def get_question_by_id(self, id):
+        return self.questionRepo.get_question_by_id(id).to_json():

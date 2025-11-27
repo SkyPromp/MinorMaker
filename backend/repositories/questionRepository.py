@@ -37,3 +37,4 @@ class QuestionRepository:
     def hard_delete_question(self, question: Question):
         db.session.delete(question)
         db.session.commit()
+
