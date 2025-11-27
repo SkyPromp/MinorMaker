@@ -8,11 +8,13 @@ import {AnswerType} from "../components/answer/answer.component";
   providedIn: 'root'
 })
 export class QuestionService {
+  BASE_URL :string = "http://localhost:5000/api";
 
   constructor(private http : HttpClient) { }
 
-  getQuestions(): Observable<IQuestion[]> {
-    return of(this.questions).pipe(delay(500));
+  getQuestions(): Observable<IResponse<IQuestion[]>> {
+    // return of(this.questions).pipe(delay(500));
+    return this.http.get<IResponse<IQuestion[]>>(`${this.BASE_URL}/questions`);
   }
 
   getQuestion(id: number): Observable<IQuestion> {
@@ -158,4 +160,8 @@ export interface IAnswerPost {
   questionId: number;
   answer: number;
   note?: string;
+}
+export interface IResponse<T> {
+  data: T;
+  status: string;
 }

@@ -21,12 +21,12 @@ export class VragenlijstComponent implements OnInit {
   areCategoriesLoading = true;
   selectedCategory: string = 'all';
   searchTerm: string = '';
-  
+
   // Paginatie variabelen
   currentPage: number = 1;
   pageSize: number = 10;
   totalPages: number = 0;
-  
+
   // Voor het toevoegen/bewerken van vragen
   showAddForm = false;
   editingQuestion: IQuestion | null = null;
@@ -65,9 +65,10 @@ export class VragenlijstComponent implements OnInit {
     this.isLoading = true;
     this.questionService.getQuestions().subscribe({
       next: (questions) => {
-        this.questions = questions;
+        this.questions = questions.data;
         this.applyFilters();
         this.isLoading = false;
+        console.log(questions);
       },
       error: (error) => {
         console.error('Error loading questions:', error);
@@ -87,32 +88,32 @@ export class VragenlijstComponent implements OnInit {
     // Filter op zoekterm
     if (this.searchTerm) {
       const term = this.searchTerm.toLowerCase();
-      filtered = filtered.filter(q => 
+      filtered = filtered.filter(q =>
         q.question.toLowerCase().includes(term) ||
         this.getCategoryName(q.category).toLowerCase().includes(term)
       );
     }
 
     this.filteredQuestions = filtered;
-    this.updatePagination();
+    // this.updatePagination();
   }
 
-  updatePagination(): void {
-    // Bereken totaal aantal pagina's
-    this.totalPages = Math.ceil(this.filteredQuestions.length / this.pageSize);
-    
-    // Zorg dat currentPage binnen de grenzen blijft
-    if (this.currentPage > this.totalPages) {
-      this.currentPage = Math.max(1, this.totalPages);
-    }
-    
-    // Bereken start en end index voor huidige pagina
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    
-    // Haal vragen op voor huidige pagina
-    this.paginatedQuestions = this.filteredQuestions.slice(startIndex, endIndex);
-  }
+  // updatePagination(): void {
+  //   // Bereken totaal aantal pagina's
+  //   this.totalPages = Math.ceil(this.filteredQuestions.length / this.pageSize);
+  //
+  //   // Zorg dat currentPage binnen de grenzen blijft
+  //   if (this.currentPage > this.totalPages) {
+  //     this.currentPage = Math.max(1, this.totalPages);
+  //   }
+  //
+  //   // Bereken start en end index voor huidige pagina
+  //   const startIndex = (this.currentPage - 1) * this.pageSize;
+  //   const endIndex = startIndex + this.pageSize;
+  //
+  //   // Haal vragen op voor huidige pagina
+  //   this.paginatedQuestions = this.filteredQuestions.slice(startIndex, endIndex);
+  // }
 
   onCategoryChange(): void {
     this.currentPage = 1; // Reset naar eerste pagina bij filter wijziging
@@ -133,21 +134,21 @@ export class VragenlijstComponent implements OnInit {
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
-      this.updatePagination();
+      // this.updatePagination();
     }
   }
 
   previousPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.updatePagination();
+      // this.updatePagination();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.updatePagination();
+      // this.updatePagination();
     }
   }
 
@@ -155,19 +156,19 @@ export class VragenlijstComponent implements OnInit {
   getVisiblePages(): number[] {
     const visiblePages = [];
     const maxVisiblePages = 5;
-    
+
     let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
     let endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
-    
+
     // Aanpassen als we niet genoeg pagina's aan het einde hebben
     if (endPage - startPage + 1 < maxVisiblePages) {
       startPage = Math.max(1, endPage - maxVisiblePages + 1);
     }
-    
+
     for (let i = startPage; i <= endPage; i++) {
       visiblePages.push(i);
     }
-    
+
     return visiblePages;
   }
 
@@ -279,10 +280,10 @@ export class VragenlijstComponent implements OnInit {
     return maxId + 1;
   }
 
-  // Tel vragen per categorie
-  getQuestionCountByCategory(category: string): number {
-    return this.questions.filter(q => q.category === category).length;
-  }
+  // // Tel vragen per categorie
+  // getQuestionCountByCategory(category: string): number {
+  //   return this.questions.filter(q => q.category === category).length;
+  // }
 
   get totalQuestions(): number {
     return this.questions.length;
