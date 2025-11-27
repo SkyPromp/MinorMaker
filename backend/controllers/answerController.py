@@ -12,7 +12,7 @@ class AnswerController:
 
         self.blueprint.add_url_rule('/api/answers', 'add_answer', self.add_answer, methods=['POST'])
 
-        self.blueprint.add_url_rule('/api/users/<int:user_id>answers', 'get_answers_by_user_id', self.get_answers_by_user_id, methods=['GET'])
+        self.blueprint.add_url_rule('/api/users/<int:user_id>/answers', 'get_answers_by_user_id', self.get_answers_by_user_id, methods=['GET'])
         
         self.register(app)
 
