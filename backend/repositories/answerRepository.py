@@ -12,3 +12,6 @@ class AnswerRepository:
 
         return answer
 
+    def get_answers_by_user_id(self, user_id):
+        return db.session.query(Answer).filter(Answer.userId == user_id).all()
+

@@ -11,6 +11,8 @@ class AnswerController:
         self.blueprint.add_url_rule('/api/answers', 'get_answers', self.get_answers, methods=['GET'])
 
         self.blueprint.add_url_rule('/api/answers', 'add_answer', self.add_answer, methods=['POST'])
+
+        self.blueprint.add_url_rule('/api/users/answers', 'get_answers_by_user_id', self.get_answers_by_user_id, methods=['GET'])
         
         self.register(app)
 
@@ -35,9 +37,13 @@ class AnswerController:
         answer = data.get("answer")
         note = data.get("note")
         timestamp = data.get("timestamp")
+        user_id = data.get("userId")
 
-        created = self.answerSvc.add_answer(Answer(questionId, answer, note, timestamp))
+        created = self.answerSvc.add_answer(Answer(questionId, answer, note, timestamp, user_id))
 
         return jsonify({"data": created, "status": "ok", "action": "created"}), 201
 
+    def get_answers_by_user_id(self, user_id):
+        data = self.answerSvc.get_answers_by_user_id(user_id)
 
+        return jsonify({"data": data, "status": "ok"}), 200
