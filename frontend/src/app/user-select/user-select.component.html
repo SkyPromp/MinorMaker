@@ -1,15 +1,44 @@
 <h2>Selecteer een gebruiker</h2>
 
+<div class="search-container">
+  <input
+    type="text"
+    placeholder="Zoek"
+    [(ngModel)]="searchTerm"
+    class="search-input"
+  />
+</div>
+
 <div class="container">
 
   <table>
     <thead>
     <th></th>
-    <th>Voornaam</th>
-    <th>Achternaam</th>
+    <th (click)="sortBy('firstname')">
+      <div class="sort-header">
+        Voornaam
+        @if (sortColumn == "firstname") {
+          <span class="material-symbols-rounded sort-arrow"
+                [class.desc]="sortDirection === 'desc'">
+            arrow_upward
+          </span>
+        }
+      </div>
+    </th>
+    <th (click)="sortBy('lastname')">
+      <div class="sort-header">
+        Achternaam
+        @if (sortColumn == "lastname") {
+          <span class="material-symbols-rounded sort-arrow"
+                [class.desc]="sortDirection === 'desc'">
+            arrow_upward
+          </span>
+        }
+      </div>
+    </th>
     </thead>
     <tbody>
-      @for (user of userDemo; track user.id) {
+      @for (user of filteredUsers; track user.id) {
         <tr (click)="selectUser(user)" [class.active]="isActive(user)">
           <td>
             <img src="assets/placeholder/profile.jpg" alt="profile picture" />
