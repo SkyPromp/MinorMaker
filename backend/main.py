@@ -5,6 +5,7 @@ from controllers.userController import UserController
 from flask import Flask
 from flask_cors import CORS
 from config.dbConfig import db
+from seed_questions import seed_questions
 # from controllers import PlantController, QuestionController
 
 app = Flask(__name__)
@@ -17,6 +18,7 @@ db.init_app(app)
 
 with app.app_context():
     db.create_all()
+    seed_questions()
     print("Database and tables created successfully!")
 
 questionController = QuestionController(app)
