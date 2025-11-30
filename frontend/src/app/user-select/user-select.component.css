@@ -1,0 +1,86 @@
+:host {
+  display: block;
+  padding: 1rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+thead > th {
+  padding: .5rem;
+  border: 1px solid darkgray;
+  background-color: lightgray;
+  width: 10rem;
+  text-align: start;
+  user-select: none;
+}
+thead > th:first-child {
+  width: auto;
+}
+
+tbody > tr {
+}
+tbody > tr:hover {
+  background-color: var(--color-hover);
+  cursor: pointer;
+}
+.active {
+  background-color: var(--color-active);
+}
+
+tbody > tr > td {
+  align-content: center;
+  padding: .5rem;
+  border: 1px solid darkgray;
+}
+
+img {
+  width: 2rem;
+  border: 1px solid darkgray;
+  border-radius: 100%;
+  user-select: none;
+}
+
+
+.user-detail-card {
+  border: 1px solid darkgray;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  min-width: 25rem;
+  min-height: 30rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.user-detail-card > div > img {
+  width: 5rem;
+  margin-bottom: 1rem;
+}
+
+.user-detail-card > div > h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.line {
+  display: block;
+  border-bottom: 1px solid lightgray;
+}
+
+.button {
+  justify-self: flex-end;
+  margin: 1rem;
+  background-color: var(--color-active);
+  padding: .8rem;
+  border-radius: .5rem;
+  user-select: none;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: #f37a6a;
+}

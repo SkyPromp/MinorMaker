@@ -1,0 +1,40 @@
+<h2>Selecteer een gebruiker</h2>
+
+<div class="container">
+
+  <table>
+    <thead>
+    <th></th>
+    <th>Voornaam</th>
+    <th>Achternaam</th>
+    </thead>
+    <tbody>
+      @for (user of userDemo; track user.id) {
+        <tr (click)="selectUser(user)" [class.active]="isActive(user)">
+          <td>
+            <img src="assets/placeholder/profile.jpg" alt="profile picture" />
+          </td>
+          <td>{{user.firstname}}</td>
+          <td>{{user.lastname}}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+
+  @if (currentSurveyService.getCurrentUser() != null) {
+    <div  class="user-detail-card">
+      <div>
+        <img src="assets/placeholder/profile.jpg" alt="profile picture"/>
+        <h2>{{currentSurveyService.getCurrentUser()?.firstname}} {{currentSurveyService.getCurrentUser()?.lastname}}</h2>
+      </div>
+      <div>
+        <div class="line"></div>
+        <div class="button" (click)="startSurvey()">
+          Start Enquête
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

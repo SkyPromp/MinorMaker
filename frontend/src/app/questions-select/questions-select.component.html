@@ -1,0 +1,34 @@
+<div class="header">
+  <h2>Selecteer de vragen die gesteld moeten worden</h2>
+
+  <div class="user-detail-card">
+    <img src="assets/placeholder/profile.jpg" alt="profile picture" />
+    <div>
+      <p>{{currentSurveyService.getCurrentUser()?.firstname}}</p>
+      <p>{{currentSurveyService.getCurrentUser()?.lastname}}</p>
+    </div>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <th></th>
+    <th>Vraag</th>
+  </thead>
+  <tbody>
+    @for (question of questions; track question.id) {
+      <tr>
+        <td>
+          <div class="checkbox" (click)="toggleAnswer(question.id)">
+            @if (isQuestionSelected(question.id)) {
+              <span class="material-symbols-rounded">check_box_outline_blank</span>
+            } @else {
+              <span class="material-symbols-rounded">check_box</span>
+            }
+          </div>
+        </td>
+        <td>{{question.question}}</td>
+      </tr>
+    }
+  </tbody>
+</table>

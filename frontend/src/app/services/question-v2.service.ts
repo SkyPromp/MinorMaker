@@ -1,31 +1,19 @@
 import {Injectable, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {IQuestion} from "../model/IQuestion.interface";
+import {Observable} from "rxjs";
+import {IResponse} from "../model/response.interface";
+import {IQuestion} from "../model/question.interface";
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuestionV2Service {
+  BASE_URL :string = "http://localhost:5000/api/questions";
 
-  questions: IQuestion[];
-  currentQuestion : IQuestion;
+  constructor(private http: HttpClient) { }
 
-
-  constructor(private http: HttpClient) {
-    // ToDo: Get data from backend
-    this.questions = [];
-    this.currentQuestion = this.questions[0];
+  getAll() :Observable<IResponse<IQuestion[]>> {
+    return this.http.get<IResponse<IQuestion[]>>(this.BASE_URL);
   }
 
-
-  GetNextQuestion() {
-    this.currentQuestion = this.questions[this.currentQuestion.orderNr + 1];
-  }
-
-  GetPreviousQuestion() {
-    if (this.currentQuestion.orderNr == 1)
-      return;
-
-    this.currentQuestion = this.questions[this.currentQuestion.orderNr - 1];
-  }
 }

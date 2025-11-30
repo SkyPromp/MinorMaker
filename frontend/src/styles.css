@@ -59,4 +59,8 @@ body {
   margin: 0;
 }
 
-
+/* Colour Scheme */
+:root {
+  --color-hover: rgba(241, 192, 80, 0.2);
+  --color-active: rgba(241, 192, 80);
+}
