@@ -15,5 +15,7 @@ class UserService:
     def add_user(self, user):
         return self.userRepo.add_user(user).to_json()
 
+    def get_users_by_role(self, role)
+        return []
 
 

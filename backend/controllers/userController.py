@@ -9,6 +9,7 @@ class UserController:
 
         ## register routes  ##
         self.blueprint.add_url_rule('/api/users', 'get_users', self.get_users, methods=['GET'])
+        self.blueprint.add_url_rule('/api/users/roles/<int:role>', 'get_users_by_role', self.get_users_by_role, methods=['GET'])
 
         self.blueprint.add_url_rule('/api/users', 'add_user', self.add_user, methods=['POST'])
 
@@ -39,3 +40,7 @@ class UserController:
 
         return jsonify({"data": created, "status": "ok", "action": "created"}), 201
 
+    def get_users_by_role(self, role):
+        data = self.userSvc.get_users_by_role(role)
+
+        return jsonify({"data": data, "status": "ok"}), 200
