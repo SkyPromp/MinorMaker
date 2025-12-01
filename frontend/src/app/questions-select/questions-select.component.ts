@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, signal} from '@angular/core';
 import {QuestionV2Service} from "../services/question-v2.service";
 import {IQuestion} from "../model/question.interface";
 import {IAnswer} from "../model/answer.interface";
@@ -72,7 +72,27 @@ export class QuestionsSelectComponent implements OnInit {
     else {
       answer.answer = 4;
     }
-    console.log(questionId);
+  }
+
+
+  isEverythingSelected() {
+    let unselected = this.answers.find((answer) => answer.answer != null);
+
+    return unselected == undefined;
+
+  }
+
+  toggleAll() {
+    if (this.isEverythingSelected()) {
+      for (const answer of this.answers) {
+        answer.answer = 4;
+      }
+    }
+    else {
+      for (const answer of this.answers) {
+        answer.answer = null;
+      }
+    }
   }
 
   navigateBack() {

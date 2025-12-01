@@ -64,6 +64,7 @@ thead > th {
   border: 1px solid darkgray;
   background-color: lightgray;
   text-align: start;
+  align-content: center;
   user-select: none;
 }
 thead > th:first-child {
@@ -75,7 +76,6 @@ tbody > tr {
 }
 tbody > tr:hover {
   background-color: var(--color-hover);
-  cursor: pointer;
 }
 .active {
   background-color: var(--color-active);

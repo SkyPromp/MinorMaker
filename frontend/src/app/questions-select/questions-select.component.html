@@ -16,7 +16,17 @@
 
 <table>
   <thead>
-    <th></th>
+    <th>
+
+      <div class="checkbox" (click)="toggleAll()">
+        @if (!isEverythingSelected()) {
+          <span class="material-symbols-rounded">check_box_outline_blank</span>
+        } @else {
+          <span class="material-symbols-rounded">check_box</span>
+        }
+      </div>
+
+    </th>
     <th>Vraag</th>
   </thead>
   <tbody>
