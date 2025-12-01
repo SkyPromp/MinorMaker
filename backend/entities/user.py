@@ -6,7 +6,7 @@ class User(db.Model):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    fistName: Mapped[str] = mapped_column(db.String(255), nullable=False)
+    firstName: Mapped[str] = mapped_column(db.String(255), nullable=False)
     lastName: Mapped[str] = mapped_column(db.String(255), nullable=False)
     role: Mapped[int] = mapped_column(db.Integer, nullable=False)
     is_deleted: Mapped[bool] = mapped_column(db.Boolean, nullable=False, default=False)
@@ -25,7 +25,7 @@ class User(db.Model):
         return {
             "id": self.id,
             "role": self.role,
-            "firstName": self.fistName,
+            "firstName": self.firstName,
             "lastName": self.lastName,
         }
 
