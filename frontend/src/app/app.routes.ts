@@ -9,6 +9,7 @@ import {NoteComponent} from "./note/note.component";
 import { VraaglijstDetailsComponent } from './vraaglijst-details/vraaglijst-details.component';
 import {UserSelectComponent} from "./user-select/user-select.component";
 import {QuestionsSelectComponent} from "./questions-select/questions-select.component";
+import {QuestionContainerComponent} from "./question-container/question-container.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -19,8 +20,10 @@ export const routes: Routes = [
   { path: 'note', component: NoteComponent },
   { path: 'klantenlijst', component: KlantenLijstComponent },
   { path: 'vraag/:id', component: VraaglijstDetailsComponent },
-  { path: 'users', component: UserSelectComponent },
+
+  { path: 'user-select', component: UserSelectComponent },
   { path: 'questions-select', component: QuestionsSelectComponent },
+  { path: 'survey', component: QuestionContainerComponent },
 ];
 
 @NgModule({

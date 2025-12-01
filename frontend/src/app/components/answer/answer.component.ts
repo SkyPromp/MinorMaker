@@ -1,4 +1,4 @@
-import {Component, HostListener, Input} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, Output} from '@angular/core';
 import {IAnswer, IAnswerPost, QuestionService} from "../../services/question.service";
 
 @Component({
@@ -8,42 +8,44 @@ import {IAnswer, IAnswerPost, QuestionService} from "../../services/question.ser
   templateUrl: './answer.component.html',
   styleUrl: './answer.component.css'
 })
-export class AnswerComponent {
-  @Input() questionId : number | undefined;
+  export class AnswerComponent {
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
     switch (event.key) {
       case 'k':
       case 'K':
-        this.registerAnswer(AnswerType.HAPPY)
+        this.selectAnswer(AnswerType.HAPPY)
         break;
       case 'l':
       case 'L':
-        this.registerAnswer(AnswerType.NEUTRAL)
+        this.selectAnswer(AnswerType.NEUTRAL)
         break;
       case 'm':
       case 'M':
-        this.registerAnswer(AnswerType.ANGRY)
+        this.selectAnswer(AnswerType.ANGRY)
         break;
     }
   }
 
-  constructor(private questionService: QuestionService) {}
+  @Output() answerSaved = new EventEmitter<AnswerType>();
 
-  registerAnswer(userAnswer :AnswerType) {
-    if (this.questionId == undefined) {
-      console.log("Wait until a question is shown");
-      return;
+  selectedAnswer :AnswerType | null = null;
+
+  constructor() {}
+
+  selectAnswer(answer: AnswerType) {
+    this.selectedAnswer = answer;
+  }
+
+  deselectAnswer() {
+    this.selectedAnswer = null;
+  }
+
+  saveAnswer() {
+    if (this.selectedAnswer != null) {
+      this.answerSaved.emit(this.selectedAnswer);
     }
-
-    let answer :IAnswerPost = {
-      questionId: this.questionId,
-      answer: userAnswer,
-      note: undefined
-    }
-
-    this.questionService.saveAnswer(answer);
   }
 
   protected readonly AnswerType = AnswerType;

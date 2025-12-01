@@ -10,6 +10,25 @@
   justify-content: space-between;
   align-items: center;
 }
+.header > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+.header > div > span {
+  font-size: 2.2rem;
+  color: #f37a6a;
+  border-radius: 50%;
+  padding: 0.5rem;
+  transition: background-color 0.2s;
+}
+.header > div > span:hover {
+  background-color: rgba(243, 122, 106, 0.2);
+}
+.header > div > span:active {
+  transform: scale(0.95);
+}
 
 h2 {
   font-size: 1.2rem;
@@ -79,6 +98,15 @@ tbody > tr > td {
   cursor: pointer;
 }
 
-.checkbox {
-
+.button {
+  justify-self: flex-end;
+  margin-top: 1rem;
+  background-color: var(--color-active);
+  padding: .8rem;
+  border-radius: .5rem;
+  user-select: none;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: #f37a6a;
 }

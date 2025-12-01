@@ -16,4 +16,8 @@ export class QuestionV2Service {
     return this.http.get<IResponse<IQuestion[]>>(this.BASE_URL);
   }
 
+  getById(id :number) :Observable<IResponse<IQuestion>> {
+    return this.http.get<IResponse<IQuestion>>(this.BASE_URL + `/${id}`);
+  }
+
 }

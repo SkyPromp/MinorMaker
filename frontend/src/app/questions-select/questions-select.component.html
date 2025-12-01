@@ -1,5 +1,9 @@
 <div class="header">
-  <h2>Selecteer de vragen die gesteld moeten worden</h2>
+  <div>
+    <span class="material-symbols-rounded" (click)="navigateBack()">arrow_back</span>
+
+    <h2>Selecteer de vragen die gesteld moeten worden</h2>
+  </div>
 
   <div class="user-detail-card">
     <img src="assets/placeholder/profile.jpg" alt="profile picture" />
@@ -32,3 +36,7 @@
     }
   </tbody>
 </table>
+
+<div class="button" (click)="startSurvey()">
+  Start Enquête
+</div>

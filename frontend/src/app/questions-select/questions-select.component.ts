@@ -4,6 +4,8 @@ import {IQuestion} from "../model/question.interface";
 import {IAnswer} from "../model/answer.interface";
 import {IResponse} from "../model/response.interface";
 import {CurrentSurveyService} from "../services/current-survey.service";
+import {Router} from "@angular/router";
+import {AnswerService} from "../services/answer.service";
 
 @Component({
   selector: 'app-questions-select',
@@ -20,6 +22,8 @@ export class QuestionsSelectComponent implements OnInit {
   constructor(
     private questionService :QuestionV2Service,
     protected currentSurveyService :CurrentSurveyService,
+    private router:Router,
+    private answerService :AnswerService,
   ) { }
 
   ngOnInit() {
@@ -31,7 +35,9 @@ export class QuestionsSelectComponent implements OnInit {
           id: null,
           questionId: data.id,
           userId: this.currentSurveyService.getCurrentUser()!.id,
-          answer: null,
+          // ToDo: Change back to null when API allows it
+          // answer: null,
+          answer: 1,
           questionMoment: null,
           timestamp: null,
           note: null
@@ -67,6 +73,16 @@ export class QuestionsSelectComponent implements OnInit {
       answer.answer = 4;
     }
     console.log(questionId);
+  }
+
+  navigateBack() {
+    this.router.navigate(['user-select']);
+  }
+
+  startSurvey() {
+    this.answerService.saveAnswers(this.answers);
+
+    this.router.navigate(['/survey']);
   }
 
 }

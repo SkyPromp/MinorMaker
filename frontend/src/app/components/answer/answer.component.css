@@ -11,4 +11,55 @@
   user-select: none;
   height: inherit;
   cursor: pointer;
+  border-radius: 4%;
+  padding: 1rem;
+}
+
+/*.selected {*/
+/*  background-color: var(--color-hover);*/
+/*}*/
+
+.selected-happy {
+  background-color: rgba(0, 176, 80, 0.2);
+}
+.selected-neutral {
+  background-color: rgba(255, 192, 0, 0.2);
+}
+.selected-angry {
+  background-color: rgba(192, 0, 0, 0.2);
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 1rem 1rem 0;
+}
+
+.button {
+  background-color: var(--color-active);
+  padding: .8rem;
+  /*border-radius: .5rem;*/
+  border-radius: 6px;
+  user-select: none;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: #f37a6a;
+}
+.button:active {
+  transform: scale(0.95);
+}
+
+.disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+.disabled:hover {
+  background-color: gray;
+}
+.disabled:active {
+  transform: none;
 }
