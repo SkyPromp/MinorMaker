@@ -9,11 +9,13 @@ class User(db.Model):
     fistName: Mapped[str] = mapped_column(db.String(255), nullable=False)
     lastName: Mapped[str] = mapped_column(db.String(255), nullable=False)
     role: Mapped[int] = mapped_column(db.Integer, nullable=False)
+    is_deleted: Mapped[bool] = mapped_column(db.Boolean, nullable=False, default=False)
 
     def __init__(self, firstName: str, lastName: str, role: int, id=None):
         if id is not None:
             self.id = id
 
+        self.is_deleted = False
         self.role = role
         self.firstName = firstName
         self.lastName = lastName
