@@ -21,7 +21,7 @@ export class UserSelectComponent implements OnInit {
 
   users: IUser[] = [];
   searchTerm: string = "";
-  sortColumn: keyof IUser = "firstname";
+  sortColumn: keyof IUser = "firstName";
   sortDirection: 'asc' | 'desc' = 'asc';
 
   constructor(
@@ -31,37 +31,36 @@ export class UserSelectComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // ToDo: Switch back to use of API
-    // this.userService.getAllClients().subscribe(res => {
-    //   this.users = res.data;
-    // })
+    this.userService.getAllClients().subscribe(res => {
+      this.users = res.data;
+    })
 
-    this.users = [
-      {
-        id: -1,
-        firstname: "John",
-        lastname: "Doe",
-        role: RoleEnum.CLIENT
-      },
-      {
-        id: -2,
-        firstname: "Jane",
-        lastname: "Doe",
-        role: RoleEnum.CLIENT
-      },
-      {
-        id: -3,
-        firstname: "Maximilian",
-        lastname: "Fitzpatrick",
-        role: RoleEnum.CLIENT
-      },
-      {
-        id: -4,
-        firstname: "Albert",
-        lastname: "Zorro",
-        role: RoleEnum.CLIENT
-      },
-    ];
+    // this.users = [
+    //   {
+    //     id: -1,
+    //     firstname: "John",
+    //     lastname: "Doe",
+    //     role: RoleEnum.CLIENT
+    //   },
+    //   {
+    //     id: -2,
+    //     firstname: "Jane",
+    //     lastname: "Doe",
+    //     role: RoleEnum.CLIENT
+    //   },
+    //   {
+    //     id: -3,
+    //     firstname: "Maximilian",
+    //     lastname: "Fitzpatrick",
+    //     role: RoleEnum.CLIENT
+    //   },
+    //   {
+    //     id: -4,
+    //     firstname: "Albert",
+    //     lastname: "Zorro",
+    //     role: RoleEnum.CLIENT
+    //   },
+    // ];
   }
 
   selectUser(user :IUser) {
@@ -78,22 +77,44 @@ export class UserSelectComponent implements OnInit {
     return selectedUser.id == user.id;
   }
 
+  // get filteredUsers() {
+  //   const term = this.searchTerm.toLowerCase();
+  //   let users = this.users.filter(user =>
+  //     user.firstname.toLowerCase().includes(term) || user.lastname.toLowerCase().includes(term)
+  //   );
+  //
+  //   if (this.sortColumn) {
+  //     users = users.sort((a, b) => {
+  //       const aValue = (a[this.sortColumn]);
+  //       const bValue = (b[this.sortColumn]);
+  //
+  //       if (aValue < bValue) return this.sortDirection === 'asc' ? -1 : 1;
+  //       if (aValue > bValue) return this.sortDirection === 'asc' ? 1 : -1;
+  //       return 0;
+  //     });
+  //   }
+  //   return users;
+  // }
+
   get filteredUsers() {
     const term = this.searchTerm.toLowerCase();
+
     let users = this.users.filter(user =>
-      user.firstname.toLowerCase().includes(term) || user.lastname.toLowerCase().includes(term)
+      (user.firstName?.toLowerCase() || "").includes(term) ||
+      (user.lastName?.toLowerCase() || "").includes(term)
     );
 
     if (this.sortColumn) {
       users = users.sort((a, b) => {
-        const aValue = (a[this.sortColumn]);
-        const bValue = (b[this.sortColumn]);
+        const aValue = ((a[this.sortColumn] as any)?.toString().toLowerCase() ?? "");
+        const bValue = ((b[this.sortColumn] as any)?.toString().toLowerCase() ?? "");
 
         if (aValue < bValue) return this.sortDirection === 'asc' ? -1 : 1;
         if (aValue > bValue) return this.sortDirection === 'asc' ? 1 : -1;
         return 0;
       });
     }
+
     return users;
   }
 

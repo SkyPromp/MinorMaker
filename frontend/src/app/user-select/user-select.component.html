@@ -14,10 +14,10 @@
   <table>
     <thead>
     <th></th>
-    <th (click)="sortBy('firstname')">
+    <th (click)="sortBy('firstName')">
       <div class="sort-header">
         Voornaam
-        @if (sortColumn == "firstname") {
+        @if (sortColumn == "firstName") {
           <span class="material-symbols-rounded sort-arrow"
                 [class.desc]="sortDirection === 'desc'">
             arrow_upward
@@ -25,10 +25,10 @@
         }
       </div>
     </th>
-    <th (click)="sortBy('lastname')">
+    <th (click)="sortBy('lastName')">
       <div class="sort-header">
         Achternaam
-        @if (sortColumn == "lastname") {
+        @if (sortColumn == "lastName") {
           <span class="material-symbols-rounded sort-arrow"
                 [class.desc]="sortDirection === 'desc'">
             arrow_upward
@@ -43,8 +43,8 @@
           <td>
             <img src="assets/placeholder/profile.jpg" alt="profile picture" />
           </td>
-          <td>{{user.firstname}}</td>
-          <td>{{user.lastname}}</td>
+          <td>{{user.firstName}}</td>
+          <td>{{user.lastName}}</td>
         </tr>
       }
     </tbody>
@@ -55,7 +55,7 @@
     <div  class="user-detail-card">
       <div>
         <img src="assets/placeholder/profile.jpg" alt="profile picture"/>
-        <h2>{{currentSurveyService.getCurrentUser()?.firstname}} {{currentSurveyService.getCurrentUser()?.lastname}}</h2>
+        <h2>{{currentSurveyService.getCurrentUser()?.firstName}} {{currentSurveyService.getCurrentUser()?.lastName}}</h2>
       </div>
       <div>
         <div class="line"></div>

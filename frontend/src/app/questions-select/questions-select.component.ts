@@ -36,8 +36,8 @@ export class QuestionsSelectComponent implements OnInit {
           questionId: data.id,
           userId: this.currentSurveyService.getCurrentUser()!.id,
           // ToDo: Change back to null when API allows it
-          // answer: null,
-          answer: 1,
+          answer: null,
+          // answer: 1,
           questionMoment: null,
           timestamp: null,
           note: null
@@ -81,6 +81,7 @@ export class QuestionsSelectComponent implements OnInit {
 
   startSurvey() {
     this.answerService.saveAnswers(this.answers);
+    this.currentSurveyService.updateCurrentAnswer();
 
     this.router.navigate(['/survey']);
   }

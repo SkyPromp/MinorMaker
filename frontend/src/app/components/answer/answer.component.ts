@@ -48,6 +48,10 @@ import {IAnswer, IAnswerPost, QuestionService} from "../../services/question.ser
     }
   }
 
+  saveNotApplicable() {
+    this.answerSaved.emit(AnswerType.NOT_APPLICABLE);
+  }
+
   protected readonly AnswerType = AnswerType;
 }
 

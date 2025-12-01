@@ -6,6 +6,7 @@ import {AnswerComponent, AnswerType} from "../components/answer/answer.component
 import {Router} from "@angular/router";
 import {AnswerService} from "../services/answer.service";
 import {NoteComponent} from "../note/note.component";
+import {QuestionV2Service} from "../services/question-v2.service";
 
 @Component({
   selector: 'app-question-container',
@@ -26,6 +27,7 @@ export class QuestionContainerComponent implements OnInit {
     protected currentSurveyService: CurrentSurveyService,
     private router: Router,
     private answerService: AnswerService,
+    private questionV2Service: QuestionV2Service,
   ) {
   }
 
@@ -39,13 +41,29 @@ export class QuestionContainerComponent implements OnInit {
     //   }
     // });
 
+
+    this.updateCurrentQuestion();
+
+
     // this.currentQuestion = null;
 
-    this.currentQuestion = {
-      id: -1,
-      question: "Vind je badminton leuk?",
-      category: "Sport",
-      image: "https://www.sclera.be/resources/pictos/badminton.png"
+    // this.currentQuestion = {
+    //   id: -1,
+    //   question: "Vind je badminton leuk?",
+    //   category: "Sport",
+    //   image: "https://www.sclera.be/resources/pictos/badminton.png"
+    // }
+  }
+
+  updateCurrentQuestion() {
+    if (this.currentSurveyService.currentAnswer) {
+      this.questionV2Service.getById(this.currentSurveyService.currentAnswer.questionId).subscribe(res => {
+          this.currentQuestion = res.data;
+        }
+      )
+    }
+    else {
+      console.error("There is not answer active at the moment")
     }
   }
 
@@ -68,6 +86,7 @@ export class QuestionContainerComponent implements OnInit {
       this.answerService.updateAnswer(this.currentSurveyService.currentAnswer);
 
       this.currentSurveyService.updateCurrentAnswer();
+      this.updateCurrentQuestion();
     }
     else {
       console.error("Cannot update current answer because it is null (update note)")
