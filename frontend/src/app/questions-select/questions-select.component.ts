@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, signal} from '@angular/core';
 import {QuestionV2Service} from "../services/question-v2.service";
 import {IQuestion} from "../model/question.interface";
 import {IAnswer} from "../model/answer.interface";
