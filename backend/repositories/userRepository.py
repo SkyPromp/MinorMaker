@@ -12,4 +12,5 @@ class UserRepository:
 
         return user
 
-
+    def get_users_by_role(self, role):
+        return db.session.query(User).filter_by(role=role).filter(User.is_deleted.is_(False)).first()
