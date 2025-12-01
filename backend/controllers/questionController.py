@@ -35,8 +35,9 @@ class QuestionController:
 
         question = data.get("question")
         category = data.get("category")
+        image = data.get("image")
 
-        created = self.questionSvc.add_question(Question(question, category))
+        created = self.questionSvc.add_question(Question(question, category, image=image))
 
         return jsonify({"data": created, "status": "ok", "action": "Created"}), 201
 
@@ -53,8 +54,9 @@ class QuestionController:
 
         question = data.get("question")
         category = data.get("category")
+        image = data.get("image")
 
-        updated = self.questionSvc.update_question(Question(question=question, category=category, id=id))
+        updated = self.questionSvc.update_question(Question(question=question, category=category, image=image, id=id))
 
         return jsonify({"data": updated, "status": "ok", "action": "Update"}), 200
 

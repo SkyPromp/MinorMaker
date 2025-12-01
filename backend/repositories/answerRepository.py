@@ -12,6 +12,36 @@ class AnswerRepository:
 
         return answer
 
+
+    def get_answer_by_id(self, id):
+        return db.session.query(Answer).filter_by(id=id).filter(Answer.is_deleted.is_(False)).first()
+
     def get_answers_by_user_id(self, user_id):
         return db.session.query(Answer).filter(Answer.userId == user_id).all()
 
+    def delete_answer(self, answer: Answer):
+        existing_answer = self.get_answer_by_id(answer.id)
+
+        if existing_answer:
+            existing_answer.is_deleted = True
+            db.session.commit()
+
+    def hard_delete_answer(self, answer: Answer):
+        db.session.delete(answer)
+        db.session.commit()
+
+    def update_answer(self, answer: Answer):
+        existing_answer = self.get_answer_by_id(answer.id)
+
+        if existing_answer:
+            existing_answer.note = answer.note
+            existing_answer.answer = answer.answer
+            existing_answer.timestamp = answer.timestamp
+            existing_answer.userId = answer.userId
+            existing_answer.questionId = answer.questionId
+
+            db.session.commit()
+
+            return existing_answer
+        else:
+            return None

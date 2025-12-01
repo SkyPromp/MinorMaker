@@ -32,6 +32,5 @@ class QuestionService:
 
         self.questionRepo.delete_question(question)
 
-
     def get_question_by_id(self, id):
         return self.questionRepo.get_question_by_id(id).to_json()

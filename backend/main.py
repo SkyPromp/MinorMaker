@@ -19,7 +19,6 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
     seed_questions()
-    print("Database and tables created successfully!")
 
 questionController = QuestionController(app)
 answerController = AnswerController(app)

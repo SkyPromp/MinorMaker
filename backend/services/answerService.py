@@ -1,4 +1,5 @@
 from repositories import answerRepository
+from entities.answer import Answer
 
 class AnswerService:
     def __init__(self):
@@ -12,6 +13,9 @@ class AnswerService:
 
         return answerJson
 
+    def get_answer_by_id(self, id):
+        return self.answerRepo.get_answer_by_id(id).to_json()
+
     def add_answer(self, answer):
         return self.answerRepo.add_answer(answer).to_json()
     
@@ -23,3 +27,18 @@ class AnswerService:
 
         return answerJson
 
+    def update_answer(self, answer: Answer):
+        result = self.answerRepo.update_answer(answer)
+
+        if result:
+            return result.to_json()
+        else:
+            return None
+        
+    def delete_answer(self, answer_id):
+        answer = self.answerRepo.get_answer_by_id(answer_id)
+
+        if not answer:
+            return {"error": f"Answer {answer_id} not found"}, 404
+
+        self.answerRepo.delete_answer(answer)

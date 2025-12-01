@@ -7,14 +7,17 @@ class Answer(db.Model):
 
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True, autoincrement=True)
     questionId: Mapped[int] = mapped_column(db.Integer, nullable=False)
-    answer: Mapped[int] = mapped_column(db.Integer, nullable=False)
+    answer: Mapped[int | None] = mapped_column(db.Integer, nullable=None)
     note: Mapped[str | None] = mapped_column(db.String(int(1e4)), nullable=True)
     timestamp: Mapped[datetime | None] = mapped_column(db.DateTime, nullable=True)
     userId: Mapped[int] = mapped_column(db.Integer, nullable=False)
+    is_deleted: Mapped[bool] = mapped_column(db.Boolean, nullable=False, default=False)
 
-    def __init__(self, questionId, answer, note, timestamp, userId, _id=None):
-        if _id is not None:
-            self.id = _id
+    def __init__(self, questionId, answer, note, timestamp, userId, id=None):
+        if id is not None:
+            self.id = id
+
+        self.is_deleted = False
 
         self.questionId = questionId;
         self.answer = answer;
