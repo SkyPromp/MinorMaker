@@ -9,61 +9,90 @@
   />
 </div>
 
-<div class="container">
+<!-- Loading State -->
+@if (isLoading) {
+  <div class="loading-container">
+    <div class="spinner"></div>
+    <p>Gebruikers laden...</p>
+  </div>
+}
 
-  <table>
-    <thead>
-    <th></th>
-    <th (click)="sortBy('firstname')">
-      <div class="sort-header">
-        Voornaam
-        @if (sortColumn == "firstname") {
-          <span class="material-symbols-rounded sort-arrow"
-                [class.desc]="sortDirection === 'desc'">
-            arrow_upward
-          </span>
+<!-- Error State -->
+@if (error && !isLoading) {
+  <div class="error-container">
+    <p class="error-message">{{error}}</p>
+    <button class="retry-button" (click)="retryLoadUsers()">Opnieuw proberen</button>
+  </div>
+}
+
+<!-- Demo Mode Warning -->
+@if (showFallbackData && !isLoading) {
+  <div class="demo-warning">
+    <span class="warning-icon">⚠️</span>
+    <p>Demo modus: Toon voorbeeldgegevens. Controleer de backend verbinding.</p>
+  </div>
+}
+
+<!-- Main Content -->
+@if (!isLoading) {
+  <div class="container">
+    <table>
+      <thead>
+      <th></th>
+      <th (click)="sortBy('firstname')">
+        <div class="sort-header">
+          Voornaam
+          @if (sortColumn == "firstname") {
+            <span class="material-symbols-rounded sort-arrow"
+                  [class.desc]="sortDirection === 'desc'">
+              arrow_upward
+            </span>
+          }
+        </div>
+      </th>
+      <th (click)="sortBy('lastname')">
+        <div class="sort-header">
+          Achternaam
+          @if (sortColumn == "lastname") {
+            <span class="material-symbols-rounded sort-arrow"
+                  [class.desc]="sortDirection === 'desc'">
+              arrow_upward
+            </span>
+          }
+        </div>
+      </th>
+      </thead>
+      <tbody>
+        @for (user of filteredUsers; track user.id) {
+          <tr (click)="selectUser(user)" [class.active]="isActive(user)">
+            <td>
+              <img src="assets/placeholder/profile.jpg" alt="profile picture" />
+            </td>
+            <td>{{user.firstname}}</td>
+            <td>{{user.lastname}}</td>
+          </tr>
         }
-      </div>
-    </th>
-    <th (click)="sortBy('lastname')">
-      <div class="sort-header">
-        Achternaam
-        @if (sortColumn == "lastname") {
-          <span class="material-symbols-rounded sort-arrow"
-                [class.desc]="sortDirection === 'desc'">
-            arrow_upward
-          </span>
+        @if (filteredUsers.length === 0 && searchTerm) {
+          <tr class="no-results">
+            <td colspan="3">Geen gebruikers gevonden voor "{{searchTerm}}"</td>
+          </tr>
         }
-      </div>
-    </th>
-    </thead>
-    <tbody>
-      @for (user of filteredUsers; track user.id) {
-        <tr (click)="selectUser(user)" [class.active]="isActive(user)">
-          <td>
-            <img src="assets/placeholder/profile.jpg" alt="profile picture" />
-          </td>
-          <td>{{user.firstname}}</td>
-          <td>{{user.lastname}}</td>
-        </tr>
-      }
-    </tbody>
-  </table>
+      </tbody>
+    </table>
 
-
-  @if (currentSurveyService.getCurrentUser() != null) {
-    <div  class="user-detail-card">
-      <div>
-        <img src="assets/placeholder/profile.jpg" alt="profile picture"/>
-        <h2>{{currentSurveyService.getCurrentUser()?.firstname}} {{currentSurveyService.getCurrentUser()?.lastname}}</h2>
-      </div>
-      <div>
-        <div class="line"></div>
-        <div class="button" (click)="startSurvey()">
-          Start Enquête
+    @if (currentSurveyService.getCurrentUser() != null) {
+      <div class="user-detail-card">
+        <div>
+          <img src="assets/placeholder/profile.jpg" alt="profile picture"/>
+          <h2>{{currentSurveyService.getCurrentUser()?.firstname}} {{currentSurveyService.getCurrentUser()?.lastname}}</h2>
+        </div>
+        <div>
+          <div class="line"></div>
+          <div class="button" (click)="startSurvey()">
+            Start Enquête
+          </div>
         </div>
       </div>
-    </div>
-  }
-
-</div>
+    }
+  </div>
+}

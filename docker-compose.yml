@@ -20,7 +20,7 @@ services:
     expose:
       - 3306
     ports:
-      - 3366:3306
+      - 3566:3306
   frontend:
     build: "./frontend"
     ports:

@@ -56,7 +56,9 @@ thead > th:first-child {
 }
 
 tbody > tr {
+  transition: background-color 0.3s ease;
 }
+
 tbody > tr:hover {
   background-color: var(--color-hover);
   cursor: pointer;
@@ -117,3 +119,5 @@ img {
 .button:hover {
   background-color: #f37a6a;
 }
+
+

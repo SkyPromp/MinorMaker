@@ -1,17 +1,13 @@
 import { Injectable } from '@angular/core';
-
-export interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-}
+import { RoleEnum } from '../model/role.enum';
+import { IUser } from '../model/user.interface';
 
 export interface Admin {
   firstName: string;
   lastName: string;
   username: string;
   password: string;
-  users: User[];
+  users: IUser[];
 }
 
 @Injectable({
@@ -25,9 +21,9 @@ export class ApiService {
     username: 'admin',
     password: 'admin123',
     users: [
-      { id: 1, firstName: 'Alice', lastName: 'Smith'},
-      { id: 2, firstName: 'Bob', lastName: 'Johnson' },
-      { id: 3, firstName: 'Charlie', lastName: 'Brown'}
+      { id: 1, firstname: 'Alice', lastname: 'Smith', role: RoleEnum.CLIENT },
+      { id: 2, firstname: 'Bob', lastname: 'Johnson', role: RoleEnum.CLIENT },
+      { id: 3, firstname: 'Charlie', lastname: 'Brown', role: RoleEnum.CLIENT }
     ]
   };
 
@@ -41,7 +37,7 @@ export class ApiService {
   }
 
   /** Returns all users under this admin */
-  getUsers(): User[] {
+  getUsers(): IUser[] {
     return this.admin.users;
   }
 

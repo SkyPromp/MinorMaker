@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { QuestionService, IQuestion } from '../services/question.service';
 import { CategoriesService, ICategory } from '../services/categories.service';
 
 @Component({
   selector: 'app-vragenlijst',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './vragenlijst.component.html',
-  styleUrl: './vragenlijst.component.css'
+  styleUrls: ['./vragenlijst.component.css']
 })
 export class VragenlijstComponent implements OnInit {
   questions: IQuestion[] = [];
@@ -57,6 +57,8 @@ export class VragenlijstComponent implements OnInit {
       error: (error) => {
         console.error('Error loading categories:', error);
         this.areCategoriesLoading = false;
+        // Fallback categories
+        this.applyFilters();
       }
     });
   }
@@ -64,21 +66,25 @@ export class VragenlijstComponent implements OnInit {
   loadQuestions(): void {
     this.isLoading = true;
     this.questionService.getQuestions().subscribe({
-      next: (questions) => {
-        this.questions = questions.data;
+      next: (response) => {
+        this.questions = response.data || response; // Handle both response formats
         this.applyFilters();
+        this.updatePagination();
         this.isLoading = false;
-        console.log(questions);
       },
       error: (error) => {
         console.error('Error loading questions:', error);
+        // Fallback to mock data
+        this.questions = this.questionService['questions'] || [];
+        this.applyFilters();
+        this.updatePagination();
         this.isLoading = false;
       }
     });
   }
 
   applyFilters(): void {
-    let filtered = this.questions;
+    let filtered = [...this.questions];
 
     // Filter op categorie
     if (this.selectedCategory !== 'all') {
@@ -86,7 +92,7 @@ export class VragenlijstComponent implements OnInit {
     }
 
     // Filter op zoekterm
-    if (this.searchTerm) {
+    if (this.searchTerm.trim()) {
       const term = this.searchTerm.toLowerCase();
       filtered = filtered.filter(q =>
         q.question.toLowerCase().includes(term) ||
@@ -95,38 +101,38 @@ export class VragenlijstComponent implements OnInit {
     }
 
     this.filteredQuestions = filtered;
-    // this.updatePagination();
+    this.updatePagination();
   }
 
-  // updatePagination(): void {
-  //   // Bereken totaal aantal pagina's
-  //   this.totalPages = Math.ceil(this.filteredQuestions.length / this.pageSize);
-  //
-  //   // Zorg dat currentPage binnen de grenzen blijft
-  //   if (this.currentPage > this.totalPages) {
-  //     this.currentPage = Math.max(1, this.totalPages);
-  //   }
-  //
-  //   // Bereken start en end index voor huidige pagina
-  //   const startIndex = (this.currentPage - 1) * this.pageSize;
-  //   const endIndex = startIndex + this.pageSize;
-  //
-  //   // Haal vragen op voor huidige pagina
-  //   this.paginatedQuestions = this.filteredQuestions.slice(startIndex, endIndex);
-  // }
+  updatePagination(): void {
+    // Bereken totaal aantal pagina's
+    this.totalPages = Math.ceil(this.filteredQuestions.length / this.pageSize);
+
+    // Zorg dat currentPage binnen de grenzen blijft
+    if (this.currentPage > this.totalPages && this.totalPages > 0) {
+      this.currentPage = Math.max(1, this.totalPages);
+    }
+
+    // Bereken start en end index voor huidige pagina
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+
+    // Haal vragen op voor huidige pagina
+    this.paginatedQuestions = this.filteredQuestions.slice(startIndex, endIndex);
+  }
 
   onCategoryChange(): void {
-    this.currentPage = 1; // Reset naar eerste pagina bij filter wijziging
+    this.currentPage = 1;
     this.applyFilters();
   }
 
   onSearchChange(): void {
-    this.currentPage = 1; // Reset naar eerste pagina bij zoeken
+    this.currentPage = 1;
     this.applyFilters();
   }
 
   onPageSizeChange(): void {
-    this.currentPage = 1; // Reset naar eerste pagina bij page size wijziging
+    this.currentPage = 1;
     this.applyFilters();
   }
 
@@ -134,21 +140,21 @@ export class VragenlijstComponent implements OnInit {
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
-      // this.updatePagination();
+      this.updatePagination();
     }
   }
 
   previousPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      // this.updatePagination();
+      this.updatePagination();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      // this.updatePagination();
+      this.updatePagination();
     }
   }
 
@@ -173,14 +179,18 @@ export class VragenlijstComponent implements OnInit {
   }
 
   get showEllipsisStart(): boolean {
-    return this.getVisiblePages()[0] > 1;
+    return this.totalPages > 0 && this.getVisiblePages()[0] > 1;
   }
 
   get showEllipsisEnd(): boolean {
-    return this.getVisiblePages()[this.getVisiblePages().length - 1] < this.totalPages;
+    return this.totalPages > 0 && 
+           this.getVisiblePages()[this.getVisiblePages().length - 1] < this.totalPages;
   }
 
   getDisplayedRange(): string {
+    if (this.filteredQuestions.length === 0) {
+      return '0-0';
+    }
     const start = (this.currentPage - 1) * this.pageSize + 1;
     const end = Math.min(this.currentPage * this.pageSize, this.filteredQuestions.length);
     return `${start}-${end}`;
@@ -189,11 +199,6 @@ export class VragenlijstComponent implements OnInit {
   getCategoryName(categoryKey: string): string {
     const category = this.categories.find(c => c.name === categoryKey);
     return category ? this.capitalizeFirstLetter(category.name) : categoryKey;
-  }
-
-  getCategoryPictogram(categoryKey: string): string {
-    const category = this.categories.find(c => c.name === categoryKey);
-    return category ? category.pictogram : '';
   }
 
   private capitalizeFirstLetter(text: string): string {
@@ -237,7 +242,6 @@ export class VragenlijstComponent implements OnInit {
         category: this.newQuestion.category!
       };
 
-      // In een echte app zou je hier een update service call doen
       const index = this.questions.findIndex(q => q.id === this.editingQuestion!.id);
       if (index !== -1) {
         this.questions[index] = updatedQuestion;
@@ -274,16 +278,17 @@ export class VragenlijstComponent implements OnInit {
     };
   }
 
-  // Genereer een nieuw ID (in een echte app zou dit door de backend gedaan worden)
+  // Genereer een nieuw ID
   private generateQuestionId(): number {
-    const maxId = Math.max(...this.questions.map(q => q.id), 0);
+    if (this.questions.length === 0) return 1;
+    const maxId = Math.max(...this.questions.map(q => q.id));
     return maxId + 1;
   }
 
-  // // Tel vragen per categorie
-  // getQuestionCountByCategory(category: string): number {
-  //   return this.questions.filter(q => q.category === category).length;
-  // }
+  // Tel vragen per categorie
+  getQuestionCountByCategory(category: string): number {
+    return this.questions.filter(q => q.category === category).length;
+  }
 
   get totalQuestions(): number {
     return this.questions.length;
