@@ -11,8 +11,7 @@
       @if (currentSurveyService.currentAnswer?.answer == null) {
         <app-answer (answerSaved)="onAnswerSaved($event)"></app-answer>
       } @else {
-        <app-note></app-note>
-
+        <app-note (noteSaved)="onNoteSaved($event)"></app-note>
       }
     </div>
   </div>

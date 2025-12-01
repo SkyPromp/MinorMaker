@@ -82,13 +82,33 @@ export class CurrentSurveyService {
     }
   }
 
-  private _currentAnswer :IAnswer | null = null;
+  // private _currentAnswer :IAnswer | null = null;
+  private _currentAnswer :IAnswer | null = {
+    id: -1,
+    questionId: 1,
+    answer: null,
+    note: null,
+    timestamp: null,
+    userId: -1,
+    questionMoment: -1
+  }
 
   get currentAnswer() :IAnswer | null {
     return this._currentAnswer;
   }
   set currentAnswer (value :IAnswer | null) {
     this._currentAnswer = value;
+  }
+
+  updateCurrentAnswer () {
+    let nextAnswer = this.userAnswers.find(a => !a.answer);
+
+    if (nextAnswer) {
+      this.currentAnswer = nextAnswer;
+    }
+    else {
+      this.currentAnswer = null;
+    }
   }
 
   getNextQuestion(): Observable<IQuestion | null> {

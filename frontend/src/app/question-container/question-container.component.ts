@@ -57,7 +57,20 @@ export class QuestionContainerComponent implements OnInit {
       this.answerService.updateAnswer(this.currentSurveyService.currentAnswer);
     }
     else {
-      console.error("Cannot update current answer because it is null")
+      console.error("Cannot update current answer because it is null (update answer)")
+    }
+  }
+
+  onNoteSaved(note :string) {
+    if (this.currentSurveyService.currentAnswer) {
+      this.currentSurveyService.currentAnswer.note = note;
+
+      this.answerService.updateAnswer(this.currentSurveyService.currentAnswer);
+
+      this.currentSurveyService.updateCurrentAnswer();
+    }
+    else {
+      console.error("Cannot update current answer because it is null (update note)")
     }
   }
 
