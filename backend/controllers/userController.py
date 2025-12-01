@@ -30,7 +30,12 @@ class UserController:
         if not data:
             return jsonify({"error": "No JSON data"}), 400
 
-        created = self.userSvc.add_user(User())
+        id = data.get("id")
+        role = data.get("role")
+        firstName = data.get("firstName")
+        lastName = data.get("lastName")
+
+        created = self.userSvc.add_user(User(role=role, firstName=firstName, lastName=lastName))
 
         return jsonify({"data": created, "status": "ok", "action": "created"}), 201
 

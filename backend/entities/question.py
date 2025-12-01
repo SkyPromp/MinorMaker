@@ -1,5 +1,5 @@
-from sqlalchemy.orm import Mapped, mapped_column
 from config.dbConfig import db
+from sqlalchemy.orm import Mapped, mapped_column
 
 class Question(db.Model):
     __tablename__ = 'question'
