@@ -12,4 +12,5 @@ class UserRepository:
 
         return user
 
-
+    def get_users_by_role(self, role):
+        return []

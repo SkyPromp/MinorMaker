@@ -1,3 +1,2 @@
-from .plantController import PlantController
 from .questionController import QuestionController
 
