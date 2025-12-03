@@ -35,9 +35,7 @@ export class QuestionsSelectComponent implements OnInit {
           id: null,
           questionId: data.id,
           userId: this.currentSurveyService.getCurrentUser()!.id,
-          // ToDo: Change back to null when API allows it
           answer: null,
-          // answer: 1,
           questionMoment: null,
           timestamp: null,
           note: null

@@ -1,18 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../services/user.service";
 import {IUser} from "../model/user.interface";
-import {RoleEnum} from "../model/role.enum";
 import {CurrentSurveyService} from "../services/current-survey.service";
 import {Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
-import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-user-select',
   standalone: true,
   imports: [
-    FormsModule,
-    NgIf
+    FormsModule
   ],
   templateUrl: './user-select.component.html',
   styleUrl: './user-select.component.css'
@@ -23,6 +20,8 @@ export class UserSelectComponent implements OnInit {
   searchTerm: string = "";
   sortColumn: keyof IUser = "firstName";
   sortDirection: 'asc' | 'desc' = 'asc';
+
+  progress = 30 / 40 * 100;
 
   constructor(
     private userService: UserService,
@@ -129,6 +128,24 @@ export class UserSelectComponent implements OnInit {
 
   startSurvey() {
     this.router.navigate(['/questions-select']);
+  }
+
+  ditchSurvey() {
+    // ToDo
+  }
+
+  continueSurvey() {
+    // ToDo
+  }
+
+  checkActiveSurvey():boolean {
+    let activeUser = this.currentSurveyService.getCurrentUser();
+
+    if (activeUser) {
+      // ToDo
+    }
+    return true;
+
   }
 
 }

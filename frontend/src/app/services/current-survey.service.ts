@@ -15,8 +15,8 @@ export class CurrentSurveyService {
   private currentUser: IUser | null = null;
   // private currentUser: IUser = {
   //   id: -1,
-  //   firstname: "John",
-  //   lastname: "Doe",
+  //   firstName: "John",
+  //   lastName: "Doe",
   //   role: RoleEnum.CLIENT
   // }
 

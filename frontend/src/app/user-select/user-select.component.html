@@ -56,11 +56,28 @@
       <div>
         <img src="assets/placeholder/profile.jpg" alt="profile picture"/>
         <h2>{{currentSurveyService.getCurrentUser()?.firstName}} {{currentSurveyService.getCurrentUser()?.lastName}}</h2>
+
+        @if (checkActiveSurvey()) {
+          <div class="current-survey-container">
+            <h6>Lopende enquête</h6>
+            <div class="progress-container">
+              <div class="progress-bar" [style.width.%]="progress"></div>
+            </div>
+            <p>30/40 vragen</p>
+            <div class="button-container">
+              <div class="outline-button" (click)="ditchSurvey()">Afsluiten</div>
+              <div class="button" (click)="continueSurvey()">Verdergaan</div>
+            </div>
+          </div>
+        } @else {
+          <p class="cursive">Geen actieve enquête</p>
+        }
+
       </div>
       <div>
         <div class="line"></div>
         <div class="button" (click)="startSurvey()">
-          Start Enquête
+          Start Nieuwe Enquête
         </div>
       </div>
     </div>
