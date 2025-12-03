@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit, signal} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {QuestionV2Service} from "../services/question-v2.service";
 import {IQuestion} from "../model/question.interface";
 import {IAnswer} from "../model/answer.interface";
@@ -80,6 +80,12 @@ export class QuestionsSelectComponent implements OnInit {
 
   }
 
+  isSomethingSelected() {
+    let unselected = this.answers.find((answer) => answer.answer != 4);
+
+    return unselected == undefined;
+  }
+
   toggleAll() {
     if (this.isEverythingSelected()) {
       for (const answer of this.answers) {
@@ -98,6 +104,11 @@ export class QuestionsSelectComponent implements OnInit {
   }
 
   startSurvey() {
+    if (this.isSomethingSelected()) {
+      console.error("No questions selected");
+      return;
+    }
+
     this.answerService.saveAnswers(this.answers);
     this.currentSurveyService.updateCurrentAnswer();
 

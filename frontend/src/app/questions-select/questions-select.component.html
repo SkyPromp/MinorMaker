@@ -47,6 +47,6 @@
   </tbody>
 </table>
 
-<div class="button" (click)="startSurvey()">
+<div class="button" (click)="startSurvey()" [class.disabled]="isSomethingSelected()">
   Start Enquête
 </div>
