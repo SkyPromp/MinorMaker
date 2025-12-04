@@ -11,20 +11,20 @@ class Answer(db.Model):
     note: Mapped[str | None] = mapped_column(db.String(int(1e4)), nullable=True)
     timestamp: Mapped[datetime | None] = mapped_column(db.DateTime, nullable=True)
     question_moment: Mapped[int | None] = mapped_column(db.Integer, nullable=True)
-    userId: Mapped[int] = mapped_column(db.Integer, nullable=False)
+    user_id: Mapped[int] = mapped_column(db.Integer, nullable=False)
     is_deleted: Mapped[bool] = mapped_column(db.Boolean, nullable=False, default=False)
 
-    def __init__(self, questionId, answer, note, timestamp, userId, question_moment=None, id=None):
+    def __init__(self, question_id, answer, note, timestamp, user_id, question_moment=None, id=None):
         if id is not None:
             self.id = id
 
         self.is_deleted = False
-        self.question_id = questionId;
+        self.question_id = question_id;
         self.answer = answer;
         self.note = note;
         self.timestamp = timestamp;
         self.question_moment = question_moment;
-        self.userId = userId;
+        self.user_id = user_id;
 
     def to_json(self):
         """Convert Answer object to dictionary for JSON serialization"""
@@ -35,7 +35,7 @@ class Answer(db.Model):
             "note": self.note,
             "timestamp": self.timestamp,
             "questionMoment": self.question_moment,
-            "userId": self.userId
+            "userId": self.user_id
         }
 
 

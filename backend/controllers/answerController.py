@@ -79,7 +79,7 @@ class AnswerController:
         question_moment = data.get("questionMoment")
         user_id = data.get("userId")
 
-        created = self.answerSvc.add_answer(Answer(question_id, answer, note, timestamp, question_moment, user_id))
+        created = self.answerSvc.add_answer(Answer(question_id=question_id, answer=answer, note=note, timestamp=timestamp, question_moment=question_moment, user_id=user_id))
 
         return jsonify({"data": created, "status": "ok", "action": "created"}), 201
 
