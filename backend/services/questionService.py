@@ -34,3 +34,14 @@ class QuestionService:
 
     def get_question_by_id(self, id):
         return self.questionRepo.get_question_by_id(id).to_json()
+
+    def get_answers_by_question_moment(self, category):
+        questionJson = []
+
+        for question in self.questionRepo.get_questions_by_category(category):
+            questionJson.append(question.to_json())
+
+        return questionJson
+
+    def get_all_categories(self):
+        return self.questionRepo.get_all_categories()

@@ -9,6 +9,7 @@ class QuestionController:
 
         ## register routes  ##
         self.blueprint.add_url_rule('/api/questions', 'get_questions', self.get_questions, methods=['GET'])
+        self.blueprint.add_url_rule('/api/categories', 'get_categories', self.get_categories, methods=['GET'])
         self.blueprint.add_url_rule('/api/questions/<int:id>', 'get_question_by_id', self.get_question_by_id, methods=['GET'])
         self.blueprint.add_url_rule('/api/questions', 'add_question', self.add_question, methods=['POST'])
         self.blueprint.add_url_rule('/api/questions', 'update_question', self.update_question, methods=['PUT'])
@@ -67,6 +68,11 @@ class QuestionController:
 
     def get_question_by_id(self, id):
         data = self.questionSvc.get_question_by_id(id)
+
+        return jsonify({"data": data, "status": "ok"}), 200
+
+    def get_categories(self):
+        data = self.questionSvc.get_all_categories()
 
         return jsonify({"data": data, "status": "ok"}), 200
 
