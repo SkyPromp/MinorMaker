@@ -51,10 +51,11 @@ class AnswerController:
         answer = data.get("answer")
         note = data.get("note")
         timestamp = data.get("timestamp")
-        questionId = data.get("questionId")
+        question_id = data.get("questionId")
+        question_moment = data.get("questionMoment")
         userId = data.get("userId")
 
-        updated = self.answerSvc.update_answer(Answer(questionId=questionId, answer=answer, note=note, timestamp=timestamp, userId=userId, id=id))
+        updated = self.answerSvc.update_answer(Answer(questionId=question_id, answer=answer, note=note, timestamp=timestamp, userId=userId, question_moment=question_moment, id=id))
 
         return jsonify({"data": updated, "status": "ok", "action": "Update"}), 200
 
@@ -70,13 +71,14 @@ class AnswerController:
             return jsonify({"error": "No JSON data"}), 400
 
         id = data.get("id", None)
-        questionId = data.get("questionId")
+        question_id = data.get("questionId")
         answer = data.get("answer")
         note = data.get("note")
         timestamp = data.get("timestamp")
+        question_moment = data.get("questionMoment")
         user_id = data.get("userId")
 
-        created = self.answerSvc.add_answer(Answer(questionId, answer, note, timestamp, user_id))
+        created = self.answerSvc.add_answer(Answer(question_id, answer, note, timestamp, question_moment, user_id))
 
         return jsonify({"data": created, "status": "ok", "action": "created"}), 201
 
