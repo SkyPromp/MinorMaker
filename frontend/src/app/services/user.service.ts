@@ -32,4 +32,25 @@ export class UserService {
     };
     return this.http.post<IResponse<IUser>>(this.BASE_URL, payload);
   }
+
+  updateUser(
+    userId: number,
+    firstname: string,
+    lastname: string,
+    role: number
+  ): Observable<IResponse<IUser>> {
+    const payload = {
+      firstname: firstname,
+      lastname: lastname,
+      role: role,
+    };
+    return this.http.put<IResponse<IUser>>(
+      `${this.BASE_URL}/${userId}`,
+      payload
+    );
+  }
+
+  deleteUser(userId: number): Observable<IResponse<null>> {
+    return this.http.delete<IResponse<null>>(`${this.BASE_URL}/${userId}`);
+  }
 }

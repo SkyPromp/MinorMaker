@@ -18,6 +18,7 @@ export class KlantenLijstComponent implements OnInit {
   isLoading: boolean = true;
   error: string = "";
   showAddForm: boolean = false;
+  editingUserId: number | null = null;
 
   // Form fields
   firstname: string = "";
@@ -75,10 +76,19 @@ export class KlantenLijstComponent implements OnInit {
     this.firstname = "";
     this.lastname = "";
     this.selectedRole = RoleEnum.CLIENT;
+    this.editingUserId = null;
     this.error = "";
   }
 
-  addUser(): void {
+  editUser(user: IUser): void {
+    this.editingUserId = user.id;
+    this.firstname = user.firstname;
+    this.lastname = user.lastname;
+    this.selectedRole = user.role as unknown as number;
+    this.showAddForm = true;
+  }
+
+  saveUser(): void {
     if (!this.firstname.trim() || !this.lastname.trim()) {
       this.error = "Please enter both first name and last name";
       return;
@@ -86,28 +96,97 @@ export class KlantenLijstComponent implements OnInit {
 
     this.isSubmitting = true;
 
-    this.userService
-      .addUser(this.firstname.trim(), this.lastname.trim(), this.selectedRole)
-      .subscribe({
-        next: (res) => {
-          if (res.status === "ok" && res.data) {
-            this.users.push(res.data);
-            this.resetForm();
-            this.showAddForm = false;
+    if (this.editingUserId !== null) {
+      // Update user
+      this.userService
+        .updateUser(
+          this.editingUserId,
+          this.firstname.trim(),
+          this.lastname.trim(),
+          this.selectedRole
+        )
+        .subscribe({
+          next: (res) => {
+            if (res.status === "ok" && res.data) {
+              const index = this.users.findIndex(
+                (u) => u.id === this.editingUserId
+              );
+              if (index > -1) {
+                this.users[index] = res.data;
+              }
+              this.resetForm();
+              this.showAddForm = false;
+              this.isSubmitting = false;
+            } else {
+              this.error = "Failed to update user";
+              this.isSubmitting = false;
+            }
+          },
+          error: (err) => {
+            this.error = `Error updating user: ${
+              err.error?.error || err.message || "Unknown error"
+            }`;
             this.isSubmitting = false;
-          } else {
-            this.error = "Failed to create user";
+            console.error("Error updating user:", err);
+          },
+        });
+    } else {
+      // Add new user
+      this.userService
+        .addUser(this.firstname.trim(), this.lastname.trim(), this.selectedRole)
+        .subscribe({
+          next: (res) => {
+            if (res.status === "ok" && res.data) {
+              this.users.push(res.data);
+              this.resetForm();
+              this.showAddForm = false;
+              this.isSubmitting = false;
+            } else {
+              this.error = "Failed to create user";
+              this.isSubmitting = false;
+            }
+          },
+          error: (err) => {
+            this.error = `Error creating user: ${
+              err.error?.error || err.message || "Unknown error"
+            }`;
             this.isSubmitting = false;
-          }
-        },
-        error: (err) => {
-          this.error = `Error creating user: ${
-            err.error?.error || err.message || "Unknown error"
-          }`;
+            console.error("Error adding user:", err);
+          },
+        });
+    }
+  }
+
+  deleteUser(userId: number): void {
+    if (!confirm("Are you sure you want to delete this user?")) {
+      return;
+    }
+
+    this.isSubmitting = true;
+
+    this.userService.deleteUser(userId).subscribe({
+      next: (res) => {
+        if (res.status === "ok") {
+          this.users = this.users.filter((u) => u.id !== userId);
           this.isSubmitting = false;
-          console.error("Error adding user:", err);
-        },
-      });
+        } else {
+          this.error = "Failed to delete user";
+          this.isSubmitting = false;
+        }
+      },
+      error: (err) => {
+        this.error = `Error deleting user: ${
+          err.error?.error || err.message || "Unknown error"
+        }`;
+        this.isSubmitting = false;
+        console.error("Error deleting user:", err);
+      },
+    });
+  }
+
+  cancelEdit(): void {
+    this.resetForm();
+    this.showAddForm = false;
   }
 
   getRoleName(role: number): string {

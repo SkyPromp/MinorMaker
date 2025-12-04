@@ -17,5 +17,14 @@ class UserService:
         user = User(firstname=firstname, lastname=lastname, role=role)
         return self.userRepo.add_user(user).to_json()
 
+    def update_user(self, user_id, firstname, lastname, role):
+        user = self.userRepo.get_user_by_id(user_id)
+        if not user:
+            return None
+        return self.userRepo.update_user(user_id, firstname, lastname, role).to_json()
+
+    def delete_user(self, user_id):
+        return self.userRepo.delete_user(user_id)
+
 
 

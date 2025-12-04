@@ -52,7 +52,8 @@ export class UserSelectComponent implements OnInit {
     ).subscribe({
       next: (res) => {
         if (res.status === 'ok' && res.data && res.data.length > 0) {
-          this.users = res.data;
+          // Filter to only show CLIENT users
+          this.users = res.data.filter(user => user.role === RoleEnum.CLIENT);
           this.showFallbackData = false;
         } else {
           // If API returns empty or error, use fallback
@@ -113,9 +114,12 @@ export class UserSelectComponent implements OnInit {
 
   get filteredUsers() {
     const term = this.searchTerm.toLowerCase();
-    let users = this.users.filter(user =>
-      user.firstname.toLowerCase().includes(term) || user.lastname.toLowerCase().includes(term)
-    );
+    let users = this.users.filter(user => {
+      // Only show CLIENT users
+      const isClient = user.role === RoleEnum.CLIENT;
+      const matchesSearch = user.firstname.toLowerCase().includes(term) || user.lastname.toLowerCase().includes(term);
+      return isClient && matchesSearch;
+    });
 
     if (this.sortColumn) {
       users = users.sort((a, b) => {

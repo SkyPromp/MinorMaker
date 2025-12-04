@@ -11,9 +11,11 @@
     {{ error }}
   </div>
 
-  <!-- Add User Form -->
+  <!-- Add/Edit User Form -->
   <div *ngIf="showAddForm" class="add-user-form">
-    <h2>Nieuwe klant toevoegen</h2>
+    <h2>
+      {{ editingUserId !== null ? "Klant bewerken" : "Nieuwe klant toevoegen" }}
+    </h2>
 
     <div class="form-group">
       <label for="firstname">Voornaam</label>
@@ -53,12 +55,12 @@
     </div>
 
     <div class="form-actions">
-      <button class="submit-btn" (click)="addUser()" [disabled]="isSubmitting">
+      <button class="submit-btn" (click)="saveUser()" [disabled]="isSubmitting">
         {{ isSubmitting ? "Aan het opslaan..." : "Opslaan" }}
       </button>
       <button
         class="cancel-btn"
-        (click)="toggleAddForm()"
+        (click)="cancelEdit()"
         [disabled]="isSubmitting"
       >
         Annuleer
@@ -78,6 +80,24 @@
       <div class="info">
         <h3>{{ user.firstname }} {{ user.lastname }}</h3>
         <p>{{ getRoleName(user.role) }}</p>
+      </div>
+      <div class="actions">
+        <button
+          class="edit-btn"
+          (click)="editUser(user)"
+          [disabled]="isSubmitting"
+          title="Bewerk klant"
+        >
+          ✏️
+        </button>
+        <button
+          class="delete-btn"
+          (click)="deleteUser(user.id)"
+          [disabled]="isSubmitting"
+          title="Verwijder klant"
+        >
+          🗑️
+        </button>
       </div>
     </div>
   </div>
