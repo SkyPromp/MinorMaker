@@ -11,7 +11,7 @@ class QuestionController:
         self.blueprint.add_url_rule('/api/questions', 'get_questions', self.get_questions, methods=['GET'])
         self.blueprint.add_url_rule('/api/questions/<int:id>', 'get_question_by_id', self.get_question_by_id, methods=['GET'])
         self.blueprint.add_url_rule('/api/questions', 'add_question', self.add_question, methods=['POST'])
-        self.blueprint.add_url_rule('/api/questions', 'update_question', self.update_question, methods=['PUT'])
+        self.blueprint.add_url_rule('/api/questions/<int:id>', 'update_question', self.update_question, methods=['PUT'])
         self.blueprint.add_url_rule('/api/questions/<int:id>', 'delete_question', self.delete_question, methods=['DELETE'])
 
         
@@ -40,16 +40,11 @@ class QuestionController:
 
         return jsonify({"data": created, "status": "ok", "action": "Created"}), 201
 
-    def update_question(self):
+    def update_question(self, id):
         data = request.get_json()
 
         if not data:
             return jsonify({"error": "No JSON data"}), 400
-        
-        id = data.get("id", None)
-
-        if id is None:
-            return jsonify({"error": "No question id found"}), 400
 
         question = data.get("question")
         category = data.get("category")

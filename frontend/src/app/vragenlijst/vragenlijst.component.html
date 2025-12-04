@@ -3,9 +3,11 @@
   <div class="header">
     <div class="header-content">
       <h1 class="header-title">Vragenbeheer</h1>
-      <p class="header-subtitle">Beheer alle vragen in het tevredenheidsonderzoek</p>
+      <p class="header-subtitle">
+        Beheer alle vragen in het tevredenheidsonderzoek
+      </p>
     </div>
-    
+
     <!-- Statistieken -->
     <div class="stats-section">
       <div class="stat-card">
@@ -13,15 +15,17 @@
         <div class="stat-label">Totaal vragen</div>
       </div>
       <div class="stat-card">
-        <div class="stat-number">{{ getQuestionCountByCategory('eten') }}</div>
+        <div class="stat-number">{{ getQuestionCountByCategory("eten") }}</div>
         <div class="stat-label">Eten vragen</div>
       </div>
       <div class="stat-card">
-        <div class="stat-number">{{ getQuestionCountByCategory('zorg') }}</div>
+        <div class="stat-number">{{ getQuestionCountByCategory("zorg") }}</div>
         <div class="stat-label">Zorg vragen</div>
       </div>
       <div class="stat-card">
-        <div class="stat-number">{{ getQuestionCountByCategory('activiteiten') }}</div>
+        <div class="stat-number">
+          {{ getQuestionCountByCategory("activiteiten") }}
+        </div>
         <div class="stat-label">Activiteiten vragen</div>
       </div>
     </div>
@@ -36,24 +40,26 @@
 
     <div class="filters">
       <div class="search-box">
-        <input 
+        <input
           type="text"
           [(ngModel)]="searchTerm"
           (input)="onSearchChange()"
           placeholder="Zoek vragen..."
           class="search-input"
-        >
+        />
         <span class="search-icon">🔍</span>
       </div>
 
-      <select 
-        [(ngModel)]="selectedCategory" 
-        (change)="onCategoryChange()" 
+      <select
+        [(ngModel)]="selectedCategory"
+        (change)="onCategoryChange()"
         class="category-filter"
       >
         <option value="all">Alle categorieën</option>
         <option *ngFor="let category of categories" [value]="category.name">
-          {{ getCategoryName(category.name) }} ({{ getQuestionCountByCategory(category.name) }})
+          {{ getCategoryName(category.name) }} ({{
+            getQuestionCountByCategory(category.name)
+          }})
         </option>
       </select>
     </div>
@@ -63,10 +69,12 @@
   <div *ngIf="showAddForm" class="form-section">
     <div class="form-card">
       <div class="form-header">
-        <h3>{{ editingQuestion ? 'Vraag bewerken' : 'Nieuwe vraag toevoegen' }}</h3>
+        <h3>
+          {{ editingQuestion ? "Vraag bewerken" : "Nieuwe vraag toevoegen" }}
+        </h3>
         <button class="btn-close" (click)="cancelEdit()">×</button>
       </div>
-      
+
       <div class="form-body">
         <div class="form-group">
           <label for="questionText" class="form-label">Vraag:</label>
@@ -81,9 +89,9 @@
 
         <div class="form-group">
           <label for="questionCategory" class="form-label">Categorie:</label>
-          <select 
-            id="questionCategory" 
-            [(ngModel)]="newQuestion.category" 
+          <select
+            id="questionCategory"
+            [(ngModel)]="newQuestion.category"
             class="form-select"
           >
             <option *ngFor="let category of categories" [value]="category.name">
@@ -93,11 +101,25 @@
         </div>
 
         <div class="form-actions">
-          <button class="btn btn-secondary" (click)="cancelEdit()">
+          <button
+            class="btn btn-secondary"
+            (click)="cancelEdit()"
+            [disabled]="isSubmitting"
+          >
             Annuleren
           </button>
-          <button class="btn btn-primary" (click)="saveQuestion()">
-            {{ editingQuestion ? 'Opslaan' : 'Toevoegen' }}
+          <button
+            class="btn btn-primary"
+            (click)="saveQuestion()"
+            [disabled]="isSubmitting"
+          >
+            {{
+              isSubmitting
+                ? "Bezig met opslaan..."
+                : editingQuestion
+                ? "Opslaan"
+                : "Toevoegen"
+            }}
           </button>
         </div>
       </div>
@@ -121,10 +143,10 @@
       </span>
       <div class="page-size-selector">
         <label for="pageSize" class="page-size-label">Items per pagina:</label>
-        <select 
-          id="pageSize" 
-          [(ngModel)]="pageSize" 
-          (change)="onPageSizeChange()" 
+        <select
+          id="pageSize"
+          [(ngModel)]="pageSize"
+          (change)="onPageSizeChange()"
           class="page-size-select"
         >
           <option value="10">10</option>
@@ -139,21 +161,24 @@
       <div *ngFor="let question of paginatedQuestions" class="question-card">
         <div class="question-header">
           <div class="category-display">
-            <span class="category-badge" [attr.data-category]="question.category">
+            <span
+              class="category-badge"
+              [attr.data-category]="question.category"
+            >
               {{ getCategoryName(question.category) }}
             </span>
           </div>
           <div class="question-actions">
-            <button 
-              class="btn-icon btn-edit" 
-              (click)="editQuestion(question)" 
+            <button
+              class="btn-icon btn-edit"
+              (click)="editQuestion(question)"
               title="Bewerken"
             >
               ✏️
             </button>
-            <button 
-              class="btn-icon btn-delete" 
-              (click)="deleteQuestion(question)" 
+            <button
+              class="btn-icon btn-delete"
+              (click)="deleteQuestion(question)"
               title="Verwijderen"
             >
               🗑️
@@ -176,7 +201,7 @@
     <!-- Paginatie Controls -->
     <div class="pagination-container" *ngIf="totalPages > 1">
       <div class="pagination">
-        <button 
+        <button
           class="pagination-btn"
           [class.disabled]="currentPage === 1"
           (click)="goToPage(1)"
@@ -186,7 +211,7 @@
           ««
         </button>
 
-        <button 
+        <button
           class="pagination-btn"
           [class.disabled]="currentPage === 1"
           (click)="previousPage()"
@@ -199,8 +224,8 @@
         <!-- Page Numbers -->
         <div class="page-numbers">
           <span *ngIf="showEllipsisStart" class="pagination-ellipsis">...</span>
-          
-          <button 
+
+          <button
             *ngFor="let page of getVisiblePages()"
             class="pagination-btn page-number"
             [class.active]="page === currentPage"
@@ -212,7 +237,7 @@
           <span *ngIf="showEllipsisEnd" class="pagination-ellipsis">...</span>
         </div>
 
-        <button 
+        <button
           class="pagination-btn"
           [class.disabled]="currentPage === totalPages"
           (click)="nextPage()"
@@ -222,7 +247,7 @@
           »
         </button>
 
-        <button 
+        <button
           class="pagination-btn"
           [class.disabled]="currentPage === totalPages"
           (click)="goToPage(totalPages)"
@@ -234,26 +259,40 @@
       </div>
 
       <!-- Page Info -->
-      <div class="page-info">
-        Pagina {{ currentPage }} van {{ totalPages }}
-      </div>
+      <div class="page-info">Pagina {{ currentPage }} van {{ totalPages }}</div>
     </div>
   </div>
 
   <!-- Empty State -->
-  <div *ngIf="!isLoading && !areCategoriesLoading && filteredQuestions.length === 0" class="empty-state">
-    <div class="empty-state-content" *ngIf="searchTerm || selectedCategory !== 'all'">
+  <div
+    *ngIf="
+      !isLoading && !areCategoriesLoading && filteredQuestions.length === 0
+    "
+    class="empty-state"
+  >
+    <div
+      class="empty-state-content"
+      *ngIf="searchTerm || selectedCategory !== 'all'"
+    >
       <div class="empty-state-icon">🔍</div>
       <h3>Geen vragen gevonden</h3>
-      <p>Geen vragen gevonden met de huidige filters. Probeer een andere zoekterm of categorie.</p>
-      <button 
-        class="btn btn-primary" 
+      <p>
+        Geen vragen gevonden met de huidige filters. Probeer een andere zoekterm
+        of categorie.
+      </p>
+      <button
+        class="btn btn-primary"
         (click)="searchTerm = ''; selectedCategory = 'all'; applyFilters()"
       >
         Toon alle vragen
       </button>
     </div>
-    <div class="empty-state-content" *ngIf="!searchTerm && selectedCategory === 'all' && questions.length === 0">
+    <div
+      class="empty-state-content"
+      *ngIf="
+        !searchTerm && selectedCategory === 'all' && questions.length === 0
+      "
+    >
       <div class="empty-state-icon">📝</div>
       <h3>Nog geen vragen</h3>
       <p>Er zijn nog geen vragen aangemaakt. Voeg uw eerste vraag toe!</p>
