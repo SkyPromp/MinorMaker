@@ -9,15 +9,11 @@ class AnswerController:
 
         ## register routes  ##
         self.blueprint.add_url_rule('/api/answers', 'get_answers', self.get_answers, methods=['GET'])
-
+        self.blueprint.add_url_rule('/api/questionMoments', 'get_question_moments', self.get_question_moments, methods=['GET'])
         self.blueprint.add_url_rule('/api/answers', 'add_answer', self.add_answer, methods=['POST'])
-
         self.blueprint.add_url_rule('/api/answers/<int:id>', 'get_answer_by_id', self.get_answer_by_id, methods=['GET'])
-
         self.blueprint.add_url_rule('/api/answers', 'update_answer', self.update_answer, methods=['PUT'])
-
         self.blueprint.add_url_rule('/api/answers/<int:id>', 'delete_answer', self.delete_answer, methods=['DELETE'])
-
         self.blueprint.add_url_rule('/api/users/<int:user_id>/answers', 'get_answers_by_user_id', self.get_answers_by_user_id, methods=['GET'])
         
         self.register(app)
@@ -60,7 +56,12 @@ class AnswerController:
         return jsonify({"data": updated, "status": "ok", "action": "Update"}), 200
 
     def get_answers(self):
-        data = self.answerSvc.get_answers()
+        question_moment = request.args.get("questionMoment")
+
+        if question_moment is not None:
+            data = self.answerSvc.get_answers_by_question_moment(question_moment)
+        else:
+            data = self.answerSvc.get_answers()
 
         return jsonify({"data": data, "status": "ok"}), 200
 
@@ -84,5 +85,10 @@ class AnswerController:
 
     def get_answers_by_user_id(self, user_id):
         data = self.answerSvc.get_answers_by_user_id(user_id)
+
+        return jsonify({"data": data, "status": "ok"}), 200
+    
+    def get_question_moments(self):
+        data = self.answerSvc.get_all_question_moments()
 
         return jsonify({"data": data, "status": "ok"}), 200

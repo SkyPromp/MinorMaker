@@ -12,6 +12,11 @@ class AnswerRepository:
 
         return answer
 
+    def get_answers_by_question_moment(self, question_moment):
+        return db.session.query(Answer).filter(Answer.question_moment == question_moment).all()
+
+    def get_all_question_moments(self):
+       return list(set(map(lambda a: a.question_moment, db.session.query(Answer).all())))
 
     def get_answer_by_id(self, id):
         return db.session.query(Answer).filter_by(id=id).filter(Answer.is_deleted.is_(False)).first()

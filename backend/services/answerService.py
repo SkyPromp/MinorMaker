@@ -42,3 +42,14 @@ class AnswerService:
             return {"error": f"Answer {answer_id} not found"}, 404
 
         self.answerRepo.delete_answer(answer)
+
+    def get_answers_by_question_moment(self, question_moment):
+        answerJson = []
+
+        for answer in self.answerRepo.get_answers_by_question_moment(question_moment):
+            answerJson.append(answer.to_json())
+
+        return answerJson
+
+    def get_all_question_moments(self):
+        return self.answerRepo.get_all_question_moments()
