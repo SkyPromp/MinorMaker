@@ -35,9 +35,7 @@ export class QuestionsSelectComponent implements OnInit {
           id: null,
           questionId: data.id,
           userId: this.currentSurveyService.getCurrentUser()!.id,
-          // ToDo: Change back to null when API allows it
-          // answer: null,
-          answer: 1,
+          answer: null,
           questionMoment: null,
           timestamp: null,
           note: null
@@ -72,7 +70,33 @@ export class QuestionsSelectComponent implements OnInit {
     else {
       answer.answer = 4;
     }
-    console.log(questionId);
+  }
+
+
+  isEverythingSelected() {
+    let unselected = this.answers.find((answer) => answer.answer != null);
+
+    return unselected == undefined;
+
+  }
+
+  isSomethingSelected() {
+    let unselected = this.answers.find((answer) => answer.answer != 4);
+
+    return unselected == undefined;
+  }
+
+  toggleAll() {
+    if (this.isEverythingSelected()) {
+      for (const answer of this.answers) {
+        answer.answer = 4;
+      }
+    }
+    else {
+      for (const answer of this.answers) {
+        answer.answer = null;
+      }
+    }
   }
 
   navigateBack() {
@@ -80,7 +104,13 @@ export class QuestionsSelectComponent implements OnInit {
   }
 
   startSurvey() {
+    if (this.isSomethingSelected()) {
+      console.error("No questions selected");
+      return;
+    }
+
     this.answerService.saveAnswers(this.answers);
+    this.currentSurveyService.updateCurrentAnswer();
 
     this.router.navigate(['/survey']);
   }

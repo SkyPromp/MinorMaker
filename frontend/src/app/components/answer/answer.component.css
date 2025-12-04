@@ -63,3 +63,19 @@
 .disabled:active {
   transform: none;
 }
+
+.button-outline {
+  border: 1px solid var(--color-active);
+  color: var(--color-active);
+  padding: .8rem;
+  border-radius: 6px;
+  user-select: none;
+  cursor: pointer;
+}
+.button-outline:hover {
+  border: 1px solid #f37a6a;
+  color: #f37a6a;
+}
+.button-outline:active {
+  transform: scale(0.95);
+}

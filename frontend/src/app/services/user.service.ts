@@ -17,7 +17,6 @@ export class UserService {
   }
 
   getAllClients() :Observable<IResponse<IUser[]>> {
-    // ToDo: Make endpoint that only returns clients
-    return this.http.get<IResponse<IUser[]>>(this.BASE_URL);
+    return this.http.get<IResponse<IUser[]>>(this.BASE_URL + "/roles/0");
   }
 }

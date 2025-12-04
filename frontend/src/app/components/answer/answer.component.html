@@ -7,6 +7,7 @@
        (click)="selectAnswer(AnswerType.ANGRY)" [class.selected-angry]="selectedAnswer == AnswerType.ANGRY">
 </div>
 <div class="button-container">
+  <div class="button-outline" (click)="saveNotApplicable()">Niet van toepassing</div>
   <div class="button" (click)="deselectAnswer()">deselecteer</div>
   <div class="button" [class.disabled]="selectedAnswer == null" (click)="saveAnswer()">Volgende</div>
 </div>

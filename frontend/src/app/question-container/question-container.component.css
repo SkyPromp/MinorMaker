@@ -58,3 +58,29 @@
 .button:hover {
   background-color: #f37a6a;
 }
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.error-container > p:first-child {
+  color: red;
+  border: 1px solid red;
+  background-color: rgba(255, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 1rem;
+}
+.error-container > p:last-child {
+  color: gray;
+  text-decoration: underline;
+  font-style: italic;
+  font-size: .8rem;
+  cursor: pointer;
+}
+.error-container > p:last-child:hover {
+  color: black;
+}

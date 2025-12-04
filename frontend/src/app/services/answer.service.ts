@@ -21,6 +21,7 @@ export class AnswerService {
   }
 
   updateAnswer(answer:IAnswer) {
-    this.http.put<IResponse<IAnswer>>(this.BASE_URL + "/" + answer.id, answer).subscribe();
+    // this.http.put<IResponse<IAnswer>>(this.BASE_URL + "/" + answer.id, answer).subscribe();
+    this.http.put<IResponse<IAnswer>>(this.BASE_URL, answer).subscribe();
   }
 }

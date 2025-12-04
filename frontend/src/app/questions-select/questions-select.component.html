@@ -8,15 +8,25 @@
   <div class="user-detail-card">
     <img src="assets/placeholder/profile.jpg" alt="profile picture" />
     <div>
-      <p>{{currentSurveyService.getCurrentUser()?.firstname}}</p>
-      <p>{{currentSurveyService.getCurrentUser()?.lastname}}</p>
+      <p>{{currentSurveyService.getCurrentUser()?.firstName}}</p>
+      <p>{{currentSurveyService.getCurrentUser()?.lastName}}</p>
     </div>
   </div>
 </div>
 
 <table>
   <thead>
-    <th></th>
+    <th>
+
+      <div class="checkbox" (click)="toggleAll()">
+        @if (!isEverythingSelected()) {
+          <span class="material-symbols-rounded">check_box_outline_blank</span>
+        } @else {
+          <span class="material-symbols-rounded">check_box</span>
+        }
+      </div>
+
+    </th>
     <th>Vraag</th>
   </thead>
   <tbody>
@@ -37,6 +47,6 @@
   </tbody>
 </table>
 
-<div class="button" (click)="startSurvey()">
+<div class="button" (click)="startSurvey()" [class.disabled]="isSomethingSelected()">
   Start Enquête
 </div>

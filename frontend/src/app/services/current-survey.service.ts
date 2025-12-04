@@ -15,11 +15,14 @@ export class CurrentSurveyService {
   private currentUser: IUser | null = null;
   // private currentUser: IUser = {
   //   id: -1,
-  //   firstname: "John",
-  //   lastname: "Doe",
+  //   firstName: "John",
+  //   lastName: "Doe",
   //   role: RoleEnum.CLIENT
   // }
 
+  // ToDo:  Get answers from API
+  //        (either new or current questionMoment based on input from user-select - question-select
+  // private userAnswers: IAnswer[] = [];
   private userAnswers: IAnswer[] = [
     {
       id: -1,
@@ -58,6 +61,7 @@ export class CurrentSurveyService {
       questionMoment: -1
     },
   ];
+
   // private currentSurvey :IQuestion[] = [
   //   {
   //     id: -1,
@@ -71,7 +75,7 @@ export class CurrentSurveyService {
   //   }
   // ];
 
-  constructor(private questionV2Service: QuestionV2Service) { }
+  constructor() { }
 
   getCurrentUser(): IUser | null {
     return this.currentUser;
@@ -82,16 +86,16 @@ export class CurrentSurveyService {
     }
   }
 
-  // private _currentAnswer :IAnswer | null = null;
-  private _currentAnswer :IAnswer | null = {
-    id: -1,
-    questionId: 1,
-    answer: null,
-    note: null,
-    timestamp: null,
-    userId: -1,
-    questionMoment: -1
-  }
+  private _currentAnswer :IAnswer | null = null;
+  // private _currentAnswer :IAnswer | null = {
+  //   id: -1,
+  //   questionId: 1,
+  //   answer: null,
+  //   note: null,
+  //   timestamp: null,
+  //   userId: -1,
+  //   questionMoment: -1
+  // }
 
   get currentAnswer() :IAnswer | null {
     return this._currentAnswer;
@@ -101,22 +105,23 @@ export class CurrentSurveyService {
   }
 
   updateCurrentAnswer () {
-    let nextAnswer = this.userAnswers.find(a => !a.answer);
+    let nextAnswer = this.userAnswers.find(a => a.answer == null);
 
     if (nextAnswer) {
       this.currentAnswer = nextAnswer;
     }
     else {
-      this.currentAnswer = null;
+      // this.currentAnswer = null;
+      this._currentAnswer = null;
     }
   }
 
-  getNextQuestion(): Observable<IQuestion | null> {
-    const id = this.userAnswers.find(a => !a.answer)?.questionId;
-
-    return id
-      ? this.questionV2Service.getById(id).pipe(map(res => res.data))
-      : of(null);
-  }
+  // getNextQuestion(): Observable<IQuestion | null> {
+  //   const id = this.userAnswers.find(a => !a.answer)?.questionId;
+  //
+  //   return id
+  //     ? this.questionV2Service.getById(id).pipe(map(res => res.data))
+  //     : of(null);
+  // }
 
 }
