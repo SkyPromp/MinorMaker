@@ -1,16 +1,88 @@
 <div class="klanten-container">
-  <h1 class="title">Klantenlijst</h1>
+  <div class="header-section">
+    <h1 class="title">Klantenlijst</h1>
+    <button class="add-btn" (click)="toggleAddForm()" [disabled]="isSubmitting">
+      {{ showAddForm ? "Annuleer" : "+ Klant toevoegen" }}
+    </button>
+  </div>
 
-  <div class="user-grid">
+  <!-- Error messages -->
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <!-- Add User Form -->
+  <div *ngIf="showAddForm" class="add-user-form">
+    <h2>Nieuwe klant toevoegen</h2>
+
+    <div class="form-group">
+      <label for="firstname">Voornaam</label>
+      <input
+        type="text"
+        id="firstname"
+        [(ngModel)]="firstname"
+        placeholder="Voer voornaam in"
+        [disabled]="isSubmitting"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="lastname">Achternaam</label>
+      <input
+        type="text"
+        id="lastname"
+        [(ngModel)]="lastname"
+        placeholder="Voer achternaam in"
+        [disabled]="isSubmitting"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="role">Rol</label>
+      <select id="role" [(ngModel)]="selectedRole" [disabled]="isSubmitting">
+        <option [value]="RoleEnum.CLIENT">
+          {{ getRoleName(RoleEnum.CLIENT) }}
+        </option>
+        <option [value]="RoleEnum.MEDEWERKER">
+          {{ getRoleName(RoleEnum.MEDEWERKER) }}
+        </option>
+        <option [value]="RoleEnum.EXTERN">
+          {{ getRoleName(RoleEnum.EXTERN) }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button class="submit-btn" (click)="addUser()" [disabled]="isSubmitting">
+        {{ isSubmitting ? "Aan het opslaan..." : "Opslaan" }}
+      </button>
+      <button
+        class="cancel-btn"
+        (click)="toggleAddForm()"
+        [disabled]="isSubmitting"
+      >
+        Annuleer
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="loading">
+    <p>Laden...</p>
+  </div>
+
+  <!-- Users grid -->
+  <div *ngIf="!isLoading" class="user-grid">
     <div class="user-card" *ngFor="let user of users">
       <div class="avatar">{{ user.firstname[0] }}{{ user.lastname[0] }}</div>
       <div class="info">
         <h3>{{ user.firstname }} {{ user.lastname }}</h3>
+        <p>{{ getRoleName(user.role) }}</p>
       </div>
     </div>
   </div>
 
-  <div *ngIf="users.length === 0" class="empty">
+  <div *ngIf="!isLoading && users.length === 0" class="empty">
     <p>Geen klanten gevonden.</p>
   </div>
 </div>

@@ -30,7 +30,14 @@ class UserController:
         if not data:
             return jsonify({"error": "No JSON data"}), 400
 
-        created = self.userSvc.add_user(User())
+        firstname = data.get("firstname")
+        lastname = data.get("lastname")
+        role = data.get("role")
+
+        if not firstname or not lastname or role is None:
+            return jsonify({"error": "Missing required fields: firstname, lastname, role"}), 400
+
+        created = self.userSvc.add_user(firstname, lastname, role)
 
         return jsonify({"data": created, "status": "ok", "action": "created"}), 201
 

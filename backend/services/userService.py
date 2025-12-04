@@ -12,7 +12,9 @@ class UserService:
 
         return userJson
 
-    def add_user(self, user):
+    def add_user(self, firstname, lastname, role):
+        from entities.user import User
+        user = User(firstname=firstname, lastname=lastname, role=role)
         return self.userRepo.add_user(user).to_json()
 
 
