@@ -26,6 +26,13 @@ class QuestionController:
     def get_questions(self):
         data = self.questionSvc.get_questions()
 
+        category = request.args.get("category")
+
+        if category is not None:
+            data = self.questionSvc.get_questions_by_category(category)
+        else:
+            data = self.questionSvc.get_questions()
+
         return jsonify({"data": data, "status": "ok"}), 200
 
     def add_question(self):

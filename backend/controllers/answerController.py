@@ -49,9 +49,9 @@ class AnswerController:
         timestamp = data.get("timestamp")
         question_id = data.get("questionId")
         question_moment = data.get("questionMoment")
-        userId = data.get("userId")
+        user_id = data.get("userId")
 
-        updated = self.answerSvc.update_answer(Answer(questionId=question_id, answer=answer, note=note, timestamp=timestamp, userId=userId, question_moment=question_moment, id=id))
+        updated = self.answerSvc.update_answer(Answer(question_id=question_id, answer=answer, note=note, timestamp=timestamp, user_id=user_id, question_moment=question_moment, id=id))
 
         return jsonify({"data": updated, "status": "ok", "action": "Update"}), 200
 
