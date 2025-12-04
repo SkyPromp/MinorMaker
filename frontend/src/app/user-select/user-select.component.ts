@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { UserService } from "../services/user.service";
 import { IUser } from "../model/user.interface";
 import { RoleEnum } from "../model/role.enum";
@@ -6,32 +6,29 @@ import { CurrentSurveyService } from "../services/current-survey.service";
 import { Router } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { NgIf, NgFor } from "@angular/common";
-import { catchError, of } from 'rxjs';
+import { catchError, of } from "rxjs";
 
 @Component({
-  selector: 'app-user-select',
+  selector: "app-user-select",
   standalone: true,
-  imports: [
-    FormsModule
-  ],
-  templateUrl: './user-select.component.html',
-  styleUrl: './user-select.component.css'
+  imports: [FormsModule],
+  templateUrl: "./user-select.component.html",
+  styleUrl: "./user-select.component.css",
 })
 export class UserSelectComponent implements OnInit {
-
   users: IUser[] = [];
   searchTerm: string = "";
   sortColumn: keyof IUser = "firstname";
-  sortDirection: 'asc' | 'desc' = 'asc';
+  sortDirection: "asc" | "desc" = "asc";
   isLoading: boolean = true;
-  error: string = '';
+  error: string = "";
   showFallbackData: boolean = false;
 
   constructor(
     private userService: UserService,
     protected currentSurveyService: CurrentSurveyService,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.loadUsers();
@@ -39,35 +36,45 @@ export class UserSelectComponent implements OnInit {
 
   loadUsers() {
     this.isLoading = true;
-    this.error = '';
+    this.error = "";
     this.showFallbackData = false;
 
-    this.userService.getAll().pipe(
-      catchError(err => {
-        console.error('Error fetching users from API:', err);
-        this.showFallbackData = true;
-        this.useFallbackData();
-        return of({ data: [], status: 'error', error: err.message });
-      })
-    ).subscribe({
-      next: (res) => {
-        if (res.status === 'ok' && res.data && res.data.length > 0) {
-          // Filter to only show CLIENT users
-          this.users = res.data.filter(user => user.role === RoleEnum.CLIENT);
-          this.showFallbackData = false;
-        } else {
-          // If API returns empty or error, use fallback
-          console.warn('API returned empty or error response, using fallback data');
+    this.userService
+      .getAll()
+      .pipe(
+        catchError((err) => {
+          console.error("Error fetching users from API:", err);
+          this.showFallbackData = true;
           this.useFallbackData();
-        }
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Subscription error:', err);
-        this.useFallbackData();
-        this.isLoading = false;
-      }
-    });
+          return of({ data: [], status: "error", error: err.message });
+        })
+      )
+      .subscribe({
+        next: (res) => {
+          if (res.status === "ok" && res.data && res.data.length > 0) {
+            this.users = res.data.filter((user) => {
+              // Convert role to number if it's a string for comparison
+              const roleNum =
+                typeof user.role === "string"
+                  ? parseInt(user.role, 10)
+                  : user.role;
+              return roleNum === RoleEnum.CLIENT;
+            });
+            this.showFallbackData = false;
+          } else {
+            console.warn(
+              "API returned empty or error response, using fallback data"
+            );
+            this.useFallbackData();
+          }
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error("Subscription error:", err);
+          this.useFallbackData();
+          this.isLoading = false;
+        },
+      });
   }
 
   private useFallbackData() {
@@ -77,25 +84,25 @@ export class UserSelectComponent implements OnInit {
         id: -1,
         firstname: "John",
         lastname: "Doe",
-        role: RoleEnum.CLIENT
+        role: RoleEnum.CLIENT,
       },
       {
         id: -2,
         firstname: "Jane",
         lastname: "Doe",
-        role: RoleEnum.CLIENT
+        role: RoleEnum.CLIENT,
       },
       {
         id: -3,
         firstname: "Maximilian",
         lastname: "Fitzpatrick",
-        role: RoleEnum.CLIENT
+        role: RoleEnum.CLIENT,
       },
       {
         id: -4,
         firstname: "Albert",
         lastname: "Zorro",
-        role: RoleEnum.CLIENT
+        role: RoleEnum.CLIENT,
       },
     ];
   }
@@ -114,20 +121,24 @@ export class UserSelectComponent implements OnInit {
 
   get filteredUsers() {
     const term = this.searchTerm.toLowerCase();
-    let users = this.users.filter(user => {
-      // Only show CLIENT users
-      const isClient = user.role === RoleEnum.CLIENT;
-      const matchesSearch = user.firstname.toLowerCase().includes(term) || user.lastname.toLowerCase().includes(term);
+    let users = this.users.filter((user) => {
+      // Convert role to number if it's a string for comparison
+      const roleNum =
+        typeof user.role === "string" ? parseInt(user.role, 10) : user.role;
+      const isClient = roleNum === RoleEnum.CLIENT;
+      const matchesSearch =
+        user.firstname.toLowerCase().includes(term) ||
+        user.lastname.toLowerCase().includes(term);
       return isClient && matchesSearch;
     });
 
     if (this.sortColumn) {
       users = users.sort((a, b) => {
-        const aValue = (a[this.sortColumn] || '').toString().toLowerCase();
-        const bValue = (b[this.sortColumn] || '').toString().toLowerCase();
+        const aValue = (a[this.sortColumn] || "").toString().toLowerCase();
+        const bValue = (b[this.sortColumn] || "").toString().toLowerCase();
 
-        if (aValue < bValue) return this.sortDirection === 'asc' ? -1 : 1;
-        if (aValue > bValue) return this.sortDirection === 'asc' ? 1 : -1;
+        if (aValue < bValue) return this.sortDirection === "asc" ? -1 : 1;
+        if (aValue > bValue) return this.sortDirection === "asc" ? 1 : -1;
         return 0;
       });
     }
@@ -136,16 +147,16 @@ export class UserSelectComponent implements OnInit {
 
   sortBy(column: keyof IUser) {
     if (this.sortColumn == column) {
-      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+      this.sortDirection = this.sortDirection === "asc" ? "desc" : "asc";
     } else {
       this.sortColumn = column;
-      this.sortDirection = 'asc';
+      this.sortDirection = "asc";
     }
   }
 
   startSurvey() {
     if (this.currentSurveyService.getCurrentUser()) {
-      this.router.navigate(['/questions-select']);
+      this.router.navigate(["/questions-select"]);
     }
   }
 
