@@ -42,8 +42,8 @@ class AnswerRepository:
             existing_answer.note = answer.note
             existing_answer.answer = answer.answer
             existing_answer.timestamp = answer.timestamp
-            existing_answer.userId = answer.userId
-            existing_answer.questionId = answer.questionId
+            existing_answer.userId = answer.user_id
+            existing_answer.questionId = answer.question_id
 
             db.session.commit()
 

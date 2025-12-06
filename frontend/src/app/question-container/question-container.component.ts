@@ -22,6 +22,7 @@ import {QuestionV2Service} from "../services/question-v2.service";
 export class QuestionContainerComponent implements OnInit {
 
   currentQuestion :IQuestion | null = null;
+  loading: boolean = true;
 
   constructor(
     protected currentSurveyService: CurrentSurveyService,
@@ -34,6 +35,7 @@ export class QuestionContainerComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => {
       this.updateCurrentQuestion();
+      this.loading = false;
     }, 500);
   }
 
