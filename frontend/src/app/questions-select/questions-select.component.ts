@@ -27,20 +27,22 @@ export class QuestionsSelectComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.questionService.getAll().subscribe((res : IResponse<IQuestion[]>) => {
+    this.questionService.getAll().subscribe((res: IResponse<IQuestion[]>) => {
       this.questions = res.data;
 
-      for (let data of res.data) {
-        this.answers.push({
-          id: null,
-          questionId: data.id,
-          userId: this.currentSurveyService.getCurrentUser()!.id,
-          answer: null,
-          questionMoment: null,
-          timestamp: null,
-          note: null
-        })
-      }
+      this.answerService.getNextQuestionMomentId().subscribe(nextId => {
+        for (let data of res.data) {
+          this.answers.push({
+            id: null,
+            questionId: data.id,
+            userId: this.currentSurveyService.getCurrentUser()!.id,
+            answer: null,
+            questionMoment: nextId,
+            timestamp: null,
+            note: null
+          });
+        }
+      });
     });
   }
 
