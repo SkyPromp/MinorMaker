@@ -15,6 +15,10 @@ class AnswerController:
         self.blueprint.add_url_rule('/api/answers', 'update_answer', self.update_answer, methods=['PUT'])
         self.blueprint.add_url_rule('/api/answers/<int:id>', 'delete_answer', self.delete_answer, methods=['DELETE'])
         self.blueprint.add_url_rule('/api/users/<int:user_id>/answers', 'get_answers_by_user_id', self.get_answers_by_user_id, methods=['GET'])
+        self.blueprint.add_url_rule('/api/users/<int:user_id>/currentQuestionMoment',
+                                    'get_current_question_moment_by_user',
+                                    self.get_current_question_moment_by_user,
+                                    methods=['GET'])
         
         self.register(app)
 
@@ -90,5 +94,10 @@ class AnswerController:
     
     def get_question_moments(self):
         data = self.answerSvc.get_all_question_moments()
+
+        return jsonify({"data": data, "status": "ok"}), 200
+
+    def get_current_question_moment_by_user(self, user_id):
+        data = self.answerSvc.get_current_question_moment_by_user(user_id)
 
         return jsonify({"data": data, "status": "ok"}), 200

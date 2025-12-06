@@ -79,7 +79,6 @@ export class QuestionsSelectComponent implements OnInit {
     let unselected = this.answers.find((answer) => answer.answer != null);
 
     return unselected == undefined;
-
   }
 
   isSomethingSelected() {
@@ -111,7 +110,12 @@ export class QuestionsSelectComponent implements OnInit {
       return;
     }
 
+    // this.answerService.saveAnswers(this.answers);
+    // this.currentSurveyService.setAnswerPoule();
+    // this.currentSurveyService.updateCurrentAnswer();
+
     this.answerService.saveAnswers(this.answers);
+    this.currentSurveyService.setAnswerPoule();
     this.currentSurveyService.updateCurrentAnswer();
 
     this.router.navigate(['/survey']);

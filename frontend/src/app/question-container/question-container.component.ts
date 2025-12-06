@@ -32,27 +32,9 @@ export class QuestionContainerComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.currentSurveyService.getNextQuestion().subscribe(question => {
-    //   if (question) {
-    //     this.currentQuestion = question;
-    //   }
-    //   else {
-    //     this.currentQuestion = null;
-    //   }
-    // });
-
-
-    this.updateCurrentQuestion();
-
-
-    // this.currentQuestion = null;
-
-    // this.currentQuestion = {
-    //   id: -1,
-    //   question: "Vind je badminton leuk?",
-    //   category: "Sport",
-    //   image: "https://www.sclera.be/resources/pictos/badminton.png"
-    // }
+    setTimeout(() => {
+      this.updateCurrentQuestion();
+    }, 500);
   }
 
   updateCurrentQuestion() {
@@ -63,7 +45,7 @@ export class QuestionContainerComponent implements OnInit {
       )
     }
     else {
-      console.error("There is not answer active at the moment")
+      console.error("There is no answer active at the moment")
     }
   }
 

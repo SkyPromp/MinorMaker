@@ -35,4 +35,12 @@ export class AnswerService {
       })
     );
   }
+
+  getAnswersByQuestionMomentId(questionMomentId: number) {
+    return this.http.get<IResponse<IAnswer[]>>(this.BASE_URL + `?questionMoment=${questionMomentId}`);
+  }
+
+  getCurrentQuestionMomentByUserId(userId: number) {
+    return this.http.get<IResponse<number | null>>(`http://localhost:5000/api/users/${userId}/currentQuestionMoment`);
+  }
 }

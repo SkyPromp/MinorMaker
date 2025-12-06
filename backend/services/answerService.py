@@ -53,3 +53,6 @@ class AnswerService:
 
     def get_all_question_moments(self):
         return self.answerRepo.get_all_question_moments()
+
+    def get_current_question_moment_by_user(self, user_id):
+        return self.answerRepo.get_current_question_moment_by_user_id(user_id)

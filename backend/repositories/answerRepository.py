@@ -50,3 +50,12 @@ class AnswerRepository:
             return existing_answer
         else:
             return None
+
+    def get_current_question_moment_by_user_id(self, user_id):
+        # Find the first answer for this user that has a null answer
+        answer = db.session.query(Answer).filter(
+            Answer.user_id == user_id,
+            Answer.answer.is_(None)
+        ).first()
+
+        return answer.question_moment if answer else None
