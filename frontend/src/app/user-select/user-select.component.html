@@ -57,7 +57,7 @@
         <img src="assets/placeholder/profile.jpg" alt="profile picture"/>
         <h2>{{currentSurveyService.getCurrentUser()?.firstName}} {{currentSurveyService.getCurrentUser()?.lastName}}</h2>
 
-        @if (checkActiveSurvey()) {
+        @if (hasActiveSurvey) {
           <div class="current-survey-container">
             <h6>Lopende enquête</h6>
             <div class="progress-container">

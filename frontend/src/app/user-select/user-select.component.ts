@@ -4,6 +4,7 @@ import {IUser} from "../model/user.interface";
 import {CurrentSurveyService} from "../services/current-survey.service";
 import {Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
+import {AnswerService} from "../services/answer.service";
 
 @Component({
   selector: 'app-user-select',
@@ -21,49 +22,25 @@ export class UserSelectComponent implements OnInit {
   sortColumn: keyof IUser = "firstName";
   sortDirection: 'asc' | 'desc' = 'asc';
 
+  hasActiveSurvey: boolean = false;
   progress = 30 / 40 * 100;
 
   constructor(
     private userService: UserService,
     protected currentSurveyService: CurrentSurveyService,
     private router: Router,
+    private answerService: AnswerService
   ) { }
 
   ngOnInit() {
     this.userService.getAllClients().subscribe(res => {
       this.users = res.data;
     })
-
-    // this.users = [
-    //   {
-    //     id: -1,
-    //     firstname: "John",
-    //     lastname: "Doe",
-    //     role: RoleEnum.CLIENT
-    //   },
-    //   {
-    //     id: -2,
-    //     firstname: "Jane",
-    //     lastname: "Doe",
-    //     role: RoleEnum.CLIENT
-    //   },
-    //   {
-    //     id: -3,
-    //     firstname: "Maximilian",
-    //     lastname: "Fitzpatrick",
-    //     role: RoleEnum.CLIENT
-    //   },
-    //   {
-    //     id: -4,
-    //     firstname: "Albert",
-    //     lastname: "Zorro",
-    //     role: RoleEnum.CLIENT
-    //   },
-    // ];
   }
 
   selectUser(user :IUser) {
     this.currentSurveyService.setCurrentUser(user);
+    this.checkActiveSurvey();
   }
 
   isActive(user :IUser) : boolean {
@@ -75,25 +52,6 @@ export class UserSelectComponent implements OnInit {
 
     return selectedUser.id == user.id;
   }
-
-  // get filteredUsers() {
-  //   const term = this.searchTerm.toLowerCase();
-  //   let users = this.users.filter(user =>
-  //     user.firstname.toLowerCase().includes(term) || user.lastname.toLowerCase().includes(term)
-  //   );
-  //
-  //   if (this.sortColumn) {
-  //     users = users.sort((a, b) => {
-  //       const aValue = (a[this.sortColumn]);
-  //       const bValue = (b[this.sortColumn]);
-  //
-  //       if (aValue < bValue) return this.sortDirection === 'asc' ? -1 : 1;
-  //       if (aValue > bValue) return this.sortDirection === 'asc' ? 1 : -1;
-  //       return 0;
-  //     });
-  //   }
-  //   return users;
-  // }
 
   get filteredUsers() {
     const term = this.searchTerm.toLowerCase();
@@ -138,14 +96,16 @@ export class UserSelectComponent implements OnInit {
     // ToDo
   }
 
-  checkActiveSurvey():boolean {
+  checkActiveSurvey(): void {
     let activeUser = this.currentSurveyService.getCurrentUser();
 
     if (activeUser) {
-      // ToDo
+      this.answerService.getCurrentQuestionMomentByUserId(activeUser.id).subscribe(res => {
+        this.hasActiveSurvey = res.data != null;
+      })
+    } else {
+      this.hasActiveSurvey = false;
     }
-    return true;
-
   }
 
 }
