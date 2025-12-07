@@ -32,11 +32,18 @@ export class QuestionContainerComponent implements OnInit {
   ) {
   }
 
+  // ngOnInit() {
+  //   setTimeout(() => {
+  //     this.updateCurrentQuestion();
+  //     this.loading = false;
+  //   }, 500);
+  // }
   ngOnInit() {
-    setTimeout(() => {
+    // First, populate userAnswers, then update the current question
+    this.currentSurveyService.setAnswerPoule().subscribe(() => {
       this.updateCurrentQuestion();
       this.loading = false;
-    }, 500);
+    });
   }
 
   updateCurrentQuestion() {
@@ -79,6 +86,7 @@ export class QuestionContainerComponent implements OnInit {
 
 
   navigateToHome() {
+    this.currentSurveyService.setCurrentUser(null);
     this.router.navigate(['/home']);
   }
 

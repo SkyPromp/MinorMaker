@@ -3,6 +3,7 @@ import {IUser} from "../model/user.interface";
 import {RoleEnum} from "../model/role.enum";
 import {IAnswer} from "../model/answer.interface";
 import {AnswerService} from "./answer.service";
+import {map, Observable, switchMap, tap, throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -10,89 +11,24 @@ import {AnswerService} from "./answer.service";
 export class CurrentSurveyService {
 
   private currentUser: IUser | null = null;
-  // private currentUser: IUser = {
-  //   id: -1,
-  //   firstName: "John",
-  //   lastName: "Doe",
-  //   role: RoleEnum.CLIENT
-  // }
-
-  // ToDo:  Get answers from API
-  //        (either new or current questionMoment based on input from user-select - question-select
   private userAnswers: IAnswer[] = [];
-  // private userAnswers: IAnswer[] = [
-  //   {
-  //     id: -1,
-  //     questionId: 1,
-  //     answer: 4,
-  //     note: null,
-  //     timestamp: null,
-  //     userId: -1,
-  //     questionMoment: -1
-  //   },
-  //   {
-  //     id: -2,
-  //     questionId: 2,
-  //     answer: null,
-  //     note: null,
-  //     timestamp: null,
-  //     userId: -1,
-  //     questionMoment: -1
-  //   },
-  //   {
-  //     id: -3,
-  //     questionId: 3,
-  //     answer: null,
-  //     note: null,
-  //     timestamp: null,
-  //     userId: -1,
-  //     questionMoment: -1
-  //   },
-  //   {
-  //     id: -4,
-  //     questionId: 4,
-  //     answer: null,
-  //     note: null,
-  //     timestamp: null,
-  //     userId: -1,
-  //     questionMoment: -1
-  //   },
-  // ];
-
-  // private currentSurvey :IQuestion[] = [
-  //   {
-  //     id: -1,
-  //     question: "Do you like cats?",
-  //     category: "Pets"
-  //   },
-  //   {
-  //     id: -2,
-  //     question: "Do you like dogs?",
-  //     category: "Pets"
-  //   }
-  // ];
 
   constructor(private answerService: AnswerService) { }
 
   getCurrentUser(): IUser | null {
     return this.currentUser;
   }
-  setCurrentUser(user: IUser): void {
+  setCurrentUser(user: IUser | null): void {
+    if (user == null) {
+      return;
+    }
+
     if (user.role == RoleEnum.CLIENT) {
       this.currentUser = user;
     }
   }
 
   private _currentAnswer :IAnswer | null = null;
-  // private _currentAnswer :IAnswer | null = {
-  //   id: -1,
-  //   questionId: 1,
-  //   answer: null,
-  //   note: null,
-  //   timestamp: null,
-  //   userId: -1,
-  //   questionMoment: -1
-  // }
 
   get currentAnswer() :IAnswer | null {
     return this._currentAnswer;
@@ -114,32 +50,27 @@ export class CurrentSurveyService {
     }
   }
 
-  // getNextQuestion(): Observable<IQuestion | null> {
-  //   const id = this.userAnswers.find(a => !a.answer)?.questionId;
-  //
-  //   return id
-  //     ? this.questionV2Service.getById(id).pipe(map(res => res.data))
-  //     : of(null);
-  // }
-
-  setAnswerPoule() {
+  setAnswerPoule(): Observable<IAnswer[]> {
     if (this.currentUser?.id == null) {
       console.error("No current user");
-      return;
+      return throwError(() => new Error("No current user"));
     }
 
-    this.answerService.getCurrentQuestionMomentByUserId(this.currentUser.id).subscribe(res => {
-      if (res.data == null) {
-        console.error("No active question moment for this user");
-        return;
-      }
-
-      this.answerService.getAnswersByQuestionMomentId(res.data).subscribe(innerRes => {
-        this.userAnswers = innerRes.data;
+    return this.answerService.getCurrentQuestionMomentByUserId(this.currentUser.id).pipe(
+      switchMap(res => {
+        if (res.data == null) {
+          console.error("No active question moment for this user");
+          return throwError(() => new Error("No active question moment"));
+        }
+        return this.answerService.getAnswersByQuestionMomentId(res.data);
+      }),
+      map(res => res.data),
+      tap(answers => {
+        this.userAnswers = answers;
         console.log("User answers set");
         this.updateCurrentAnswer();
       })
-    })
+    );
   }
 
 }

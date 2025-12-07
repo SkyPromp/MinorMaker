@@ -19,7 +19,8 @@ class AnswerController:
                                     'get_current_question_moment_by_user',
                                     self.get_current_question_moment_by_user,
                                     methods=['GET'])
-        
+        self.blueprint.add_url_rule('/api/answers/batch', 'add_answers_batch', self.add_answers_batch, methods=['POST'])
+
         self.register(app)
 
     def register(self, app):
@@ -101,3 +102,36 @@ class AnswerController:
         data = self.answerSvc.get_current_question_moment_by_user(user_id)
 
         return jsonify({"data": data, "status": "ok"}), 200
+
+    def add_answers_batch(self):
+        data = request.get_json()
+
+        if not data:
+            return jsonify({"error": "No JSON data"}), 400
+
+        if not isinstance(data, list):
+            return jsonify({"error": "Expected a list of answers"}), 400
+
+        created_answers = []
+
+        for answer_data in data:
+            question_id = answer_data.get("questionId")
+            answer = answer_data.get("answer")
+            note = answer_data.get("note")
+            timestamp = answer_data.get("timestamp")
+            question_moment = answer_data.get("questionMoment")
+            user_id = answer_data.get("userId")
+
+            created = self.answerSvc.add_answer(
+                Answer(
+                    question_id=question_id,
+                    answer=answer,
+                    note=note,
+                    timestamp=timestamp,
+                    question_moment=question_moment,
+                    user_id=user_id
+                )
+            )
+            created_answers.append(created)
+
+        return jsonify({"data": created_answers, "status": "ok", "action": "created"}), 201

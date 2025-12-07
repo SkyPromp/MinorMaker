@@ -16,9 +16,12 @@ export class AnswerService {
     // ToDo: Maybe support posting of list in API ?
     // this.http.post<IResponse<IAnswer[]>>(this.BASE_URL, answers).subscribe();
 
-    for (const answer of answers) {
-      this.http.post<IResponse<IAnswer>>(this.BASE_URL, answer).subscribe();
-    }
+    // for (const answer of answers) {
+    //   this.http.post<IResponse<IAnswer>>(this.BASE_URL, answer).subscribe();
+    // }
+
+    console.log("saving answers");
+    return this.http.post<IResponse<IAnswer[]>>(this.BASE_URL + "/batch", answers);
   }
 
   updateAnswer(answer:IAnswer) {

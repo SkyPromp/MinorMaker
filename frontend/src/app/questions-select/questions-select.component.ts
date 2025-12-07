@@ -104,21 +104,36 @@ export class QuestionsSelectComponent implements OnInit {
     this.router.navigate(['user-select']);
   }
 
+  // startSurvey() {
+  //   if (this.isSomethingSelected()) {
+  //     console.error("No questions selected");
+  //     return;
+  //   }
+  //
+  //   this.answerService.saveAnswers(this.answers);
+  //   this.currentSurveyService.setAnswerPoule();
+  //   this.currentSurveyService.updateCurrentAnswer();
+  //
+  //   this.router.navigate(['/survey']);
+  // }
+
   startSurvey() {
     if (this.isSomethingSelected()) {
       console.error("No questions selected");
       return;
     }
 
-    // this.answerService.saveAnswers(this.answers);
-    // this.currentSurveyService.setAnswerPoule();
-    // this.currentSurveyService.updateCurrentAnswer();
-
-    this.answerService.saveAnswers(this.answers);
-    this.currentSurveyService.setAnswerPoule();
-    this.currentSurveyService.updateCurrentAnswer();
-
-    this.router.navigate(['/survey']);
+    this.answerService.saveAnswers(this.answers).subscribe({
+      next: (response) => {
+        this.currentSurveyService.setAnswerPoule();
+        this.currentSurveyService.updateCurrentAnswer();
+        this.router.navigate(['/survey']);
+      },
+      error: (error) => {
+        console.error("Error saving answers", error);
+        // Optionally show an error message to the user
+      }
+    });
   }
 
 }
