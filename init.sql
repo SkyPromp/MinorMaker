@@ -5,46 +5,47 @@ CREATE DATABASE IF NOT EXISTS ergos;
 USE ergos;
 
 -- Table 'user'
-CREATE TABLE IF NOT EXISTS user (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    firstname VARCHAR(100),
-    lastname VARCHAR(100),
-    role VARCHAR(50)
-);
+-- CREATE TABLE IF NOT EXISTS user (
+--     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--     firstname VARCHAR(100),
+--     lastname VARCHAR(100),
+--     role VARCHAR(50)
+-- );
+--
+-- -- Table 'question'
+-- CREATE TABLE IF NOT EXISTS question (
+--     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--     question VARCHAR(255) NOT NULL,
+--     category VARCHAR(50) NOT NULL,
+--     image VARCHAR(255),
+--     is_deleted BOOLEAN NOT NULL DEFAULT FALSE
+-- );
+--
+-- -- Table 'pictogram'
+-- CREATE TABLE IF NOT EXISTS pictogram (
+--     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--     label VARCHAR(255) NOT NULL,
+--     category VARCHAR(50) NOT NULL,
+--     url VARCHAR(2000) NOT NULL,
+--     questionId INT
+-- );
+--
+-- -- Table 'answer'
+-- CREATE TABLE IF NOT EXISTS answer (
+--     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--     questionId INT NOT NULL,
+--     answer INT NOT NULL,
+--     note VARCHAR(10000),
+--     timestamp DATETIME,
+--     userId INT NOT NULL
+-- );
+--
+-- -- Table 'plants'
+-- CREATE TABLE IF NOT EXISTS plants (
+--     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--     moisture FLOAT NOT NULL,
+--     digital FLOAT NOT NULL
+-- );
 
--- Table 'question'
-CREATE TABLE IF NOT EXISTS question (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    question VARCHAR(255) NOT NULL,
-    category VARCHAR(50) NOT NULL,
-    is_deleted BOOLEAN NOT NULL DEFAULT FALSE
-);
-
--- Table 'pictogram'
-CREATE TABLE IF NOT EXISTS pictogram (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    label VARCHAR(255) NOT NULL,
-    category VARCHAR(50) NOT NULL,
-    url VARCHAR(2000) NOT NULL,
-    questionId INT
-);
-
--- Table 'answer'
-CREATE TABLE IF NOT EXISTS answer (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    questionId INT NOT NULL,
-    answer INT NOT NULL,
-    note VARCHAR(10000),
-    timestamp DATETIME,
-    userId INT NOT NULL
-);
-
--- Table 'plants'
-CREATE TABLE IF NOT EXISTS plants (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    moisture FLOAT NOT NULL,
-    digital FLOAT NOT NULL
-);
-
-CREATE USER 'ergos_admin'@'%' IDENTIFIED BY 'ergos123';
-GRANT ALL ON ergos.* TO 'ergos_admin'@'%';
+-- CREATE USER 'ergos_admin'@'%' IDENTIFIED BY 'ergos123';
+-- GRANT ALL ON ergos.* TO 'ergos_admin'@'%';
