@@ -2,8 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Router, RouterModule } from "@angular/router";
-import { QuestionService, IQuestion } from "../services/question.service";
 import { CategoriesService, ICategory } from "../services/categories.service";
+import { QuestionV2Service } from "../services/question-v2.service";
+import { IQuestion } from "../model/question.interface";
 
 @Component({
   selector: "app-vragenlijst",
@@ -19,7 +20,7 @@ export class VragenlijstComponent implements OnInit {
   paginatedQuestions: IQuestion[] = [];
   isLoading = true;
   areCategoriesLoading = true;
-  selectedCategory: string = "all";
+  selectedCategory: string;
   searchTerm: string = "";
 
   // Paginatie variabelen
@@ -37,14 +38,16 @@ export class VragenlijstComponent implements OnInit {
   };
 
   constructor(
-    private questionService: QuestionService,
+    private questionService: QuestionV2Service,
     private categoriesService: CategoriesService,
     private router: Router
-  ) {}
+  ) {
+    this.selectedCategory = "all";
+  }
 
   ngOnInit(): void {
-    this.loadCategories();
     this.loadQuestions();
+    this.loadCategories();
   }
 
   loadCategories(): void {
@@ -66,22 +69,8 @@ export class VragenlijstComponent implements OnInit {
 
   loadQuestions(): void {
     this.isLoading = true;
-    this.questionService.getQuestions().subscribe({
-      next: (response) => {
-        this.questions = response.data || response; // Handle both response formats
-        this.applyFilters();
-        this.updatePagination();
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error("Error loading questions:", error);
-        // Fallback to mock data
-        this.questions = this.questionService["questions"] || [];
-        this.applyFilters();
-        this.updatePagination();
-        this.isLoading = false;
-      },
-    });
+    this.questionService.getAll().subscribe(questions => { this.questions = questions.data; this.onCategoryChange(); } );
+    this.isLoading = false;
   }
 
   applyFilters(): void {
@@ -239,79 +228,6 @@ export class VragenlijstComponent implements OnInit {
     this.editingQuestion = question;
     this.newQuestion = { ...question };
     this.showAddForm = true;
-  }
-
-  // Sla een nieuwe vraag op
-  saveQuestion(): void {
-    if (!this.newQuestion.question?.trim()) {
-      alert("Vul een vraag in");
-      return;
-    }
-
-    if (!this.newQuestion.category) {
-      alert("Selecteer een categorie");
-      return;
-    }
-
-    this.isSubmitting = true;
-
-    if (this.editingQuestion) {
-      // Bewerk bestaande vraag
-      this.questionService
-        .updateQuestion(
-          this.editingQuestion.id,
-          this.newQuestion.question,
-          this.newQuestion.category
-        )
-        .subscribe({
-          next: (response) => {
-            this.loadQuestions();
-            this.cancelEdit();
-            this.isSubmitting = false;
-          },
-          error: (error) => {
-            console.error("Error updating question:", error);
-            alert("Error bij het bijwerken van de vraag");
-            this.isSubmitting = false;
-          },
-        });
-    } else {
-      // Voeg nieuwe vraag toe
-      this.questionService
-        .addQuestion(this.newQuestion.question, this.newQuestion.category)
-        .subscribe({
-          next: (response) => {
-            this.loadQuestions();
-            this.cancelEdit();
-            this.isSubmitting = false;
-          },
-          error: (error) => {
-            console.error("Error adding question:", error);
-            alert("Error bij het toevoegen van de vraag");
-            this.isSubmitting = false;
-          },
-        });
-    }
-  }
-
-  // Verwijder een vraag
-  deleteQuestion(question: IQuestion): void {
-    if (
-      confirm(
-        `Weet u zeker dat u de vraag "${question.question}" wilt verwijderen?`
-      )
-    ) {
-      this.questionService.deleteQuestion(question.id).subscribe({
-        next: (response) => {
-          this.questions = this.questions.filter((q) => q.id !== question.id);
-          this.applyFilters();
-        },
-        error: (error) => {
-          console.error("Error deleting question:", error);
-          alert("Error bij het verwijderen van de vraag");
-        },
-      });
-    }
   }
 
   // Annuleer bewerken/toevoegen

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {delay, Observable, of} from "rxjs";
+import {Observable, of} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class CategoriesService {
       }
     ];
 
-    return of(categories).pipe(delay(3000));
+    return of(categories).pipe();
   }
 }
 
