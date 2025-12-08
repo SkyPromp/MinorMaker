@@ -93,7 +93,16 @@ export class UserSelectComponent implements OnInit {
   }
 
   continueSurvey() {
-    // ToDo
+    this.currentSurveyService.setAnswerPoule().subscribe({
+      next: (answers) => {
+        console.log("Survey resumes with", answers.length, answers.length);
+        this.router.navigate(['/survey']);
+      },
+      error: (err) => {
+        console.error("Error loading survey", err);
+        // ToDo: Show error message to user
+      }
+    })
   }
 
   checkActiveSurvey(): void {
