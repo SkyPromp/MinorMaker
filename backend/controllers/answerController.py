@@ -20,6 +20,10 @@ class AnswerController:
                                     self.get_current_question_moment_by_user,
                                     methods=['GET'])
         self.blueprint.add_url_rule('/api/answers/batch', 'add_answers_batch', self.add_answers_batch, methods=['POST'])
+        self.blueprint.add_url_rule('/api/questionMoments/<int:question_moment>/stats',
+                                    'get_question_moment_stats',
+                                    self.get_question_moment_stats,
+                                    methods=['GET'])
 
         self.register(app)
 
@@ -135,3 +139,11 @@ class AnswerController:
             created_answers.append(created)
 
         return jsonify({"data": created_answers, "status": "ok", "action": "created"}), 201
+
+    def get_question_moment_stats(self, question_moment):
+        data = self.answerSvc.get_question_moment_stats(question_moment)
+
+        if data is None:
+            return jsonify({"error": f"Question moment {question_moment} not found"}), 404
+
+        return jsonify({"data": data, "status": "ok"}), 200

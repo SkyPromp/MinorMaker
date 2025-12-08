@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {IAnswer} from "../model/answer.interface";
 import {IResponse} from "../model/response.interface";
 import {map} from "rxjs";
+import {IQmStats} from "../model/qm-stats.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,16 @@ export class AnswerService {
   }
 
   updateAnswer(answer:IAnswer) {
-    // this.http.put<IResponse<IAnswer>>(this.BASE_URL + "/" + answer.id, answer).subscribe();
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    answer.timestamp = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
     this.http.put<IResponse<IAnswer>>(this.BASE_URL, answer).subscribe();
   }
 
@@ -45,5 +55,10 @@ export class AnswerService {
 
   getCurrentQuestionMomentByUserId(userId: number) {
     return this.http.get<IResponse<number | null>>(`http://localhost:5000/api/users/${userId}/currentQuestionMoment`);
+  }
+
+  getQuestionMomentStats(qmId: number) {
+    console.log("Fetching question moment stats from " + `http://localhost:5000/api/questionMoments/${qmId}/stats`);
+    return this.http.get<IResponse<IQmStats>>(`http://localhost:5000/api/questionMoments/${qmId}/stats`);
   }
 }

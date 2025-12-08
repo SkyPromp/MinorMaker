@@ -61,7 +61,7 @@
             <div class="progress-container">
               <div class="progress-bar" [style.width.%]="progress"></div>
             </div>
-            <p>30/40 vragen</p>
+            <p>{{amountOfAnswered}}/{{amountOfAnswers}} vragen</p>
             <div class="button-container">
               <div class="outline-button" (click)="ditchSurvey()">Afsluiten</div>
               <div class="button" (click)="continueSurvey()">Verdergaan</div>

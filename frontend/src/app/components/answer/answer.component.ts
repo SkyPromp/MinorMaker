@@ -56,5 +56,5 @@ import {IAnswer, IAnswerPost, QuestionService} from "../../services/question.ser
 }
 
 export enum AnswerType {
-  NOT_APPLICABLE, HAPPY, NEUTRAL, ANGRY
+  NOT_APPLICABLE = 4, HAPPY = 1, NEUTRAL = 2, ANGRY = 3
 }
