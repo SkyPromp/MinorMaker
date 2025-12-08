@@ -23,4 +23,8 @@ export class QuestionV2Service {
   delete(id :number) :Observable<IResponse<string>> {
     return this.http.delete<IResponse<string>>(this.BASE_URL + `/${id}`);
   }
+
+  create(question: IQuestion) :Observable<IResponse<IQuestion>>{
+    return this.http.post<IResponse<IQuestion>>(this.BASE_URL, question);
+  }
 }

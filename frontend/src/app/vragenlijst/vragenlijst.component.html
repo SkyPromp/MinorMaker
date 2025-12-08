@@ -108,19 +108,19 @@
           >
             Annuleren
           </button>
-          <!-- <button -->
-          <!--   class="btn btn-primary" -->
-          <!--   (click)="saveQuestion()" -->
-          <!--   [disabled]="isSubmitting" -->
-          <!-- > -->
-          <!--   {{ -->
-          <!--     isSubmitting -->
-          <!--       ? "Bezig met opslaan..." -->
-          <!--       : editingQuestion -->
-          <!--       ? "Opslaan" -->
-          <!--       : "Toevoegen" -->
-          <!--   }} -->
-          <!-- </button> -->
+          <button
+            class="btn btn-primary"
+            (click)="saveQuestion()"
+            [disabled]="isSubmitting"
+          >
+            {{
+              isSubmitting
+                ? "Bezig met opslaan..."
+                : editingQuestion
+                ? "Opslaan"
+                : "Toevoegen"
+            }}
+          </button>
         </div>
       </div>
     </div>

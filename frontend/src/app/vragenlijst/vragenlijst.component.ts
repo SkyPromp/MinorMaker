@@ -54,6 +54,22 @@ export class VragenlijstComponent implements OnInit {
     if(confirm("Weet u zeker dat u deze vraag wilt verwijderen?")) this.questionService.delete(questionId).subscribe(res => { this.questions = this.questions.filter(q => q.id != questionId); this.onCategoryChange(); });
   }
 
+  public saveQuestion(){
+    if (!this.newQuestion.question?.trim()) {
+      alert("Vul een vraag in");
+      return;
+    }
+
+    if (!this.newQuestion.category) {
+      alert("Selecteer een categorie");
+      return;
+    }
+
+    this.isSubmitting = true;
+
+    this.questionService.create({"id": 0,"question": this.newQuestion.question, "category": this.newQuestion.category, "image": "" }).subscribe(question => { this.questions.push(question.data); this.onCategoryChange(); });
+  }
+
   loadCategories(): void {
     this.areCategoriesLoading = true;
     this.categoriesService.getCategories().subscribe({
