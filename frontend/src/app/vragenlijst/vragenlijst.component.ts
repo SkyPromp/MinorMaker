@@ -50,6 +50,10 @@ export class VragenlijstComponent implements OnInit {
     this.loadCategories();
   }
 
+  public deleteQuestion(questionId: number){
+    if(confirm("Weet u zeker dat u deze vraag wilt verwijderen?")) this.questionService.delete(questionId).subscribe(res => { this.questions = this.questions.filter(q => q.id != questionId); this.onCategoryChange(); });
+  }
+
   loadCategories(): void {
     this.areCategoriesLoading = true;
     this.categoriesService.getCategories().subscribe({

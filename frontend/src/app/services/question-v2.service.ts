@@ -20,4 +20,7 @@ export class QuestionV2Service {
     return this.http.get<IResponse<IQuestion>>(this.BASE_URL + `/${id}`);
   }
 
+  delete(id :number) :Observable<IResponse<string>> {
+    return this.http.delete<IResponse<string>>(this.BASE_URL + `/${id}`);
+  }
 }
