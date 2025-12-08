@@ -23,7 +23,7 @@ export class UserSelectComponent implements OnInit {
   sortDirection: 'asc' | 'desc' = 'asc';
 
   hasActiveSurvey: boolean = false;
-  progress :number = 30 / 40 * 100;
+  progress :number = 0;
   amountOfAnswers: number = 0;
   amountOfAnswered: number = 0;
 
