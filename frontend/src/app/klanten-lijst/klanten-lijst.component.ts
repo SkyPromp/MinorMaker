@@ -82,8 +82,8 @@ export class KlantenLijstComponent implements OnInit {
 
   editUser(user: IUser): void {
     this.editingUserId = user.id;
-    this.firstname = user.firstname;
-    this.lastname = user.lastname;
+    this.firstname = user.firstName;
+    this.lastname = user.lastName;
     this.selectedRole = user.role as unknown as number;
     this.showAddForm = true;
   }

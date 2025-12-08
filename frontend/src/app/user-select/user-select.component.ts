@@ -1,12 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { UserService } from "../services/user.service";
 import { IUser } from "../model/user.interface";
-import { RoleEnum } from "../model/role.enum";
 import { CurrentSurveyService } from "../services/current-survey.service";
 import { Router } from "@angular/router";
 import { FormsModule } from "@angular/forms";
-import { NgIf, NgFor } from "@angular/common";
-import { catchError, of } from "rxjs";
+import {AnswerService} from "../services/answer.service";
 
 @Component({
   selector: "app-user-select",
@@ -18,97 +16,28 @@ import { catchError, of } from "rxjs";
 export class UserSelectComponent implements OnInit {
   users: IUser[] = [];
   searchTerm: string = "";
-  sortColumn: keyof IUser = "firstname";
-  sortDirection: "asc" | "desc" = "asc";
-  isLoading: boolean = true;
-  error: string = "";
-  showFallbackData: boolean = false;
+  sortColumn: keyof IUser = "firstName";
+  sortDirection: 'asc' | 'desc' = 'asc';
+
+  hasActiveSurvey: boolean = false;
+  progress = 30 / 40 * 100;
 
   constructor(
     private userService: UserService,
     protected currentSurveyService: CurrentSurveyService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private answerService: AnswerService
+  ) { }
 
   ngOnInit() {
-    this.loadUsers();
-  }
-
-  loadUsers() {
-    this.isLoading = true;
-    this.error = "";
-    this.showFallbackData = false;
-
-    this.userService
-      .getAll()
-      .pipe(
-        catchError((err) => {
-          console.error("Error fetching users from API:", err);
-          this.showFallbackData = true;
-          this.useFallbackData();
-          return of({ data: [], status: "error", error: err.message });
-        })
-      )
-      .subscribe({
-        next: (res) => {
-          if (res.status === "ok" && res.data && res.data.length > 0) {
-            this.users = res.data.filter((user) => {
-              // Convert role to number if it's a string for comparison
-              const roleNum =
-                typeof user.role === "string"
-                  ? parseInt(user.role, 10)
-                  : user.role;
-              return roleNum === RoleEnum.CLIENT;
-            });
-            this.showFallbackData = false;
-          } else {
-            console.warn(
-              "API returned empty or error response, using fallback data"
-            );
-            this.useFallbackData();
-          }
-          this.isLoading = false;
-        },
-        error: (err) => {
-          console.error("Subscription error:", err);
-          this.useFallbackData();
-          this.isLoading = false;
-        },
-      });
-  }
-
-  private useFallbackData() {
-    this.showFallbackData = true;
-    this.users = [
-      {
-        id: -1,
-        firstname: "John",
-        lastname: "Doe",
-        role: RoleEnum.CLIENT,
-      },
-      {
-        id: -2,
-        firstname: "Jane",
-        lastname: "Doe",
-        role: RoleEnum.CLIENT,
-      },
-      {
-        id: -3,
-        firstname: "Maximilian",
-        lastname: "Fitzpatrick",
-        role: RoleEnum.CLIENT,
-      },
-      {
-        id: -4,
-        firstname: "Albert",
-        lastname: "Zorro",
-        role: RoleEnum.CLIENT,
-      },
-    ];
+    this.userService.getAllClients().subscribe(res => {
+      this.users = res.data;
+    })
   }
 
   selectUser(user: IUser) {
     this.currentSurveyService.setCurrentUser(user);
+    this.checkActiveSurvey();
   }
 
   isActive(user: IUser): boolean {
@@ -121,27 +50,23 @@ export class UserSelectComponent implements OnInit {
 
   get filteredUsers() {
     const term = this.searchTerm.toLowerCase();
-    let users = this.users.filter((user) => {
-      // Convert role to number if it's a string for comparison
-      const roleNum =
-        typeof user.role === "string" ? parseInt(user.role, 10) : user.role;
-      const isClient = roleNum === RoleEnum.CLIENT;
-      const matchesSearch =
-        user.firstname.toLowerCase().includes(term) ||
-        user.lastname.toLowerCase().includes(term);
-      return isClient && matchesSearch;
-    });
+
+    let users = this.users.filter(user =>
+      (user.firstName?.toLowerCase() || "").includes(term) ||
+      (user.lastName?.toLowerCase() || "").includes(term)
+    );
 
     if (this.sortColumn) {
       users = users.sort((a, b) => {
-        const aValue = (a[this.sortColumn] || "").toString().toLowerCase();
-        const bValue = (b[this.sortColumn] || "").toString().toLowerCase();
+        const aValue = ((a[this.sortColumn] as any)?.toString().toLowerCase() ?? "");
+        const bValue = ((b[this.sortColumn] as any)?.toString().toLowerCase() ?? "");
 
         if (aValue < bValue) return this.sortDirection === "asc" ? -1 : 1;
         if (aValue > bValue) return this.sortDirection === "asc" ? 1 : -1;
         return 0;
       });
     }
+
     return users;
   }
 
@@ -160,7 +85,32 @@ export class UserSelectComponent implements OnInit {
     }
   }
 
-  retryLoadUsers() {
-    this.loadUsers();
+  ditchSurvey() {
+    // ToDo
+  }
+
+  continueSurvey() {
+    this.currentSurveyService.setAnswerPoule().subscribe({
+      next: (answers) => {
+        console.log("Survey resumes with", answers.length, answers.length);
+        this.router.navigate(['/survey']);
+      },
+      error: (err) => {
+        console.error("Error loading survey", err);
+        // ToDo: Show error message to user
+      }
+    })
+  }
+
+  checkActiveSurvey(): void {
+    let activeUser = this.currentSurveyService.getCurrentUser();
+
+    if (activeUser) {
+      this.answerService.getCurrentQuestionMomentByUserId(activeUser.id).subscribe(res => {
+        this.hasActiveSurvey = res.data != null;
+      })
+    } else {
+      this.hasActiveSurvey = false;
+    }
   }
 }

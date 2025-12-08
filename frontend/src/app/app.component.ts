@@ -19,7 +19,12 @@ export class AppComponent {
   }
 
   isActiveRoute(route : string) :boolean {
-    return this.router.isActive(route, true);
+    return this.router.isActive(route, {
+      paths: 'exact',
+      queryParams: 'exact',
+      fragment: 'ignored',
+      matrixParams: 'ignored'
+    });
   }
 
 }

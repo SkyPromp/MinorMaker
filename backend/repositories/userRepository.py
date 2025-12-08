@@ -18,8 +18,8 @@ class UserRepository:
     def update_user(self, user_id, firstname, lastname, role):
         user = self.get_user_by_id(user_id)
         if user:
-            user.firstname = firstname
-            user.lastname = lastname
+            user.firstName = firstname
+            user.lastName = lastname
             user.role = role
             db.session.commit()
         return user
@@ -32,4 +32,5 @@ class UserRepository:
             return True
         return False
 
-
+    def get_users_by_role(self, role):
+        return db.session.query(User).filter_by(role=role).filter(User.is_deleted.is_(False)).all()

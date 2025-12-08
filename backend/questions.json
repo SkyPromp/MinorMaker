@@ -1,0 +1,74 @@
+[
+	{"category": "zelfbepaling", "questions": [
+            {"question": "Waarover kan je in het dagcentrum zelf keuzes maken? (werk, vrije tijd, eten, ...)", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Kan je in het dagcentrum zelf keuzes maken over werk?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Kan je in het dagcentrum zelf keuzes maken over vrije tijd?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Kan je in het dagcentrum zelf keuzes maken over eten?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Kan je in het dagcentrum zelf keuzes maken over …?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Krijg je voldoende hulp bij het maken van keuzes?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Zijn er dingen die de begeleiding voor je regelt maar die je zelf zou kunnen?", "image": "https://www.sclera.be/nl/picto/detail/19632"}
+	]},
+	{"category": "lichamelijk welbevinden", "questions": [
+            {"question": "Kan je voldoende bewegen/sporten in het dagcentrum?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Heb je voldoende tijd om te rusten?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Heb je buiten wat er nodig is voor jou?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Wat vind je van de temperatuur in de ruimtes?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Is de temperatuur in de ruimtes goed voor je?", "image": "https://www.sclera.be/nl/picto/detail/19632"}
+	]},
+	{"category": "rechten", "questions": [
+            {"question": "Kan je altijd mee beslissen over de dingen die over jou gaan? (afspraken, keuzes, CE)", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Ben je tevreden over je begeleiders/persoonlijke begeleider?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Helpen je begeleiders je genoeg?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Krijg je genoeg uitleg?", "image": "https://www.sclera.be/nl/picto/detail/19632"}
+	]},
+	{"category": "emotioneel welbevinden", "questions": [
+            {"question": "Voel je je vaak boos/gelukkig/eenzaam/blij/verdrietig/onzeker?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Vind je dat de begeleiders je begrijpen?", "image": "https://www.sclera.be/nl/picto/detail/19632"}
+	]},
+	{"category": "persoonlijke ontwikkeling", "questions": [
+            {"question": "Leer je wel eens nieuwe dingen? Op je werk? In je vrije tijd?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Vind je dat je meer kunt dan vroeger?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Heb je hobby’s?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Zijn er mensen die je helpen bij je hobby’s?", "image": "https://www.sclera.be/nl/picto/detail/19632"}
+	]},
+	{"category": "activiteiten", "questions": [
+	    {"question": "Wat vind je van deze activiteit?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Vind je deze activiteit leuk?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Welke activiteit zou je ook graag meer doen in je vast programma?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Zou je deze activiteit graag meer doen in je vast programma?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Welke uitstap vind je leuk/niet leuk buitenshuis?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Vind je deze uitstap leuk?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Welke speciale activiteit/evenement in huis vind je leuk/niet leuk?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Kan je voldoende activiteiten doen buiten het dagcentrum?", "image": "https://www.sclera.be/nl/picto/detail/19632"}
+	]},
+	{"category": "daginvulling", "questions": [
+            {"question": "Wat vind je van de pauzemomenten?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Vind je de pauzemomenten goed?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Welke taakjes doe jij graag/niet graag?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Doe je dit taakje graag?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Met wie doe jij graag taakjes?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Doe je dit taakje graag met…", "image": "https://www.sclera.be/nl/picto/detail/19632"}
+	]},
+	{"category": "logistiek", "questions": [
+            {"question": "Wat vind je van je vervoer?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Vind je het vervoer goed?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Wat vind je van de indeling van de verschillende groepen?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Vind je de indeling van de verschillende groepen oké?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Wat vind je van onze tuin?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Hou je van onze tuin?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Kan jij hier genoeg buiten zitten/zijn?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Wat vinden jullie van het eten hier?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Is het eten hier lekker?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Wat zouden jullie ook eens graag eten?", "image": "https://www.sclera.be/nl/picto/detail/19632"}
+	]},
+	{"category": "sociale relaties", "questions": [
+            {"question": "Welke cliënten vind jij leuk?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Vind je deze cliënt leuk?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Welke begeleiding vind jij leuk?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Vind je deze begeleider leuk?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Welke vrijwilligers vind jij leuk?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Vind je deze vrijwilliger leuk?", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Vind je het fijn dat we soms samenwerken met andere mensen? Bv. Gaan helpen in een school, snoepzakjes inpakken voor verenigingen, ...", "image": "https://www.sclera.be/nl/picto/detail/19632"},
+            {"question": "Help je graag andere cliënten?", "image": "https://www.sclera.be/nl/picto/detail/19632"}
+	]}
+]

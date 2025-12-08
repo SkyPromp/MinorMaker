@@ -16,8 +16,8 @@ export class UserService {
     return this.http.get<IResponse<IUser[]>>(this.BASE_URL);
   }
 
-  getAllClients(): Observable<IResponse<IUser[]>> {
-    return this.http.get<IResponse<IUser[]>>(`${this.BASE_URL}/clients`);
+  getAllClients() :Observable<IResponse<IUser[]>> {
+    return this.http.get<IResponse<IUser[]>>(this.BASE_URL + "/roles/0");
   }
 
   addUser(

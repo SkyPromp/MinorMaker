@@ -8,91 +8,76 @@
     class="search-input"
   />
 </div>
-
-<!-- Loading State -->
-@if (isLoading) {
-  <div class="loading-container">
-    <div class="spinner"></div>
-    <p>Gebruikers laden...</p>
-  </div>
-}
-
-<!-- Error State -->
-@if (error && !isLoading) {
-  <div class="error-container">
-    <p class="error-message">{{error}}</p>
-    <button class="retry-button" (click)="retryLoadUsers()">Opnieuw proberen</button>
-  </div>
-}
-
-<!-- Demo Mode Warning -->
-@if (showFallbackData && !isLoading) {
-  <div class="demo-warning">
-    <span class="warning-icon">⚠️</span>
-    <p>Demo modus: Toon voorbeeldgegevens. Controleer de backend verbinding.</p>
-  </div>
-}
-
-<!-- Main Content -->
-@if (!isLoading) {
-  <div class="container">
-    <table>
-      <thead>
-      <th></th>
-      <th (click)="sortBy('firstname')">
-        <div class="sort-header">
-          Voornaam
-          @if (sortColumn == "firstname") {
-            <span class="material-symbols-rounded sort-arrow"
-                  [class.desc]="sortDirection === 'desc'">
-              arrow_upward
-            </span>
-          }
-        </div>
-      </th>
-      <th (click)="sortBy('lastname')">
-        <div class="sort-header">
-          Achternaam
-          @if (sortColumn == "lastname") {
-            <span class="material-symbols-rounded sort-arrow"
-                  [class.desc]="sortDirection === 'desc'">
-              arrow_upward
-            </span>
-          }
-        </div>
-      </th>
-      </thead>
-      <tbody>
-        @for (user of filteredUsers; track user.id) {
-          <tr (click)="selectUser(user)" [class.active]="isActive(user)">
-            <td>
-              <img src="assets/placeholder/profile.jpg" alt="profile picture" />
-            </td>
-            <td>{{user.firstname}}</td>
-            <td>{{user.lastname}}</td>
-          </tr>
+<div class="container">
+  <table>
+    <thead>
+    <th></th>
+    <th (click)="sortBy('firstName')">
+      <div class="sort-header">
+        Voornaam
+        @if (sortColumn == "firstName") {
+          <span class="material-symbols-rounded sort-arrow"
+                [class.desc]="sortDirection === 'desc'">
+            arrow_upward
+          </span>
         }
-        @if (filteredUsers.length === 0 && searchTerm) {
-          <tr class="no-results">
-            <td colspan="3">Geen gebruikers gevonden voor "{{searchTerm}}"</td>
-          </tr>
+      </div>
+    </th>
+    <th (click)="sortBy('lastName')">
+      <div class="sort-header">
+        Achternaam
+        @if (sortColumn == "lastName") {
+          <span class="material-symbols-rounded sort-arrow"
+                [class.desc]="sortDirection === 'desc'">
+            arrow_upward
+          </span>
         }
-      </tbody>
-    </table>
+      </div>
+    </th>
+    </thead>
+    <tbody>
+      @for (user of filteredUsers; track user.id) {
+        <tr (click)="selectUser(user)" [class.active]="isActive(user)">
+          <td>
+            <img src="assets/placeholder/profile.jpg" alt="profile picture" />
+          </td>
+          <td>{{user.firstName}}</td>
+          <td>{{user.lastName}}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
 
-    @if (currentSurveyService.getCurrentUser() != null) {
-      <div class="user-detail-card">
-        <div>
-          <img src="assets/placeholder/profile.jpg" alt="profile picture"/>
-          <h2>{{currentSurveyService.getCurrentUser()?.firstname}} {{currentSurveyService.getCurrentUser()?.lastname}}</h2>
-        </div>
-        <div>
-          <div class="line"></div>
-          <div class="button" (click)="startSurvey()">
-            Start Enquête
+
+  @if (currentSurveyService.getCurrentUser() != null) {
+    <div  class="user-detail-card">
+      <div>
+        <img src="assets/placeholder/profile.jpg" alt="profile picture"/>
+        <h2>{{currentSurveyService.getCurrentUser()?.firstName}} {{currentSurveyService.getCurrentUser()?.lastName}}</h2>
+
+        @if (hasActiveSurvey) {
+          <div class="current-survey-container">
+            <h6>Lopende enquête</h6>
+            <div class="progress-container">
+              <div class="progress-bar" [style.width.%]="progress"></div>
+            </div>
+            <p>30/40 vragen</p>
+            <div class="button-container">
+              <div class="outline-button" (click)="ditchSurvey()">Afsluiten</div>
+              <div class="button" (click)="continueSurvey()">Verdergaan</div>
+            </div>
           </div>
+        } @else {
+          <p class="cursive">Geen actieve enquête</p>
+        }
+
+      </div>
+      <div>
+        <div class="line"></div>
+        <div class="button" [class.disabled]="hasActiveSurvey" (click)="!hasActiveSurvey && startSurvey()">
+          Start Nieuwe Enquête
         </div>
       </div>
+    </div>
     }
   </div>
-}

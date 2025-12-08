@@ -64,6 +64,7 @@ thead > th {
   border: 1px solid darkgray;
   background-color: lightgray;
   text-align: start;
+  align-content: center;
   user-select: none;
 }
 thead > th:first-child {
@@ -75,7 +76,6 @@ tbody > tr {
 }
 tbody > tr:hover {
   background-color: var(--color-hover);
-  cursor: pointer;
 }
 .active {
   background-color: var(--color-active);
@@ -109,4 +109,15 @@ tbody > tr > td {
 }
 .button:hover {
   background-color: #f37a6a;
+}
+
+.disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+.disabled:hover {
+  background-color: gray;
+}
+.disabled:active {
+  transform: none;
 }

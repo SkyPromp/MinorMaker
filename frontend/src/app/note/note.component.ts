@@ -1,7 +1,9 @@
-import {Component, Input, input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, input, OnInit, Output} from '@angular/core';
 import {IAnswer, IQuestion, QuestionService} from "../services/question.service";
 import {Router} from "@angular/router";
 import {FooterComponent} from "../components/footer/footer.component";
+import {CurrentSurveyService} from "../services/current-survey.service";
+import {AnswerType} from "../components/answer/answer.component";
 
 @Component({
   selector: 'app-note',
@@ -14,42 +16,25 @@ import {FooterComponent} from "../components/footer/footer.component";
 })
 export class NoteComponent implements OnInit {
 
-  questionId: number = 1;
-
-  question: IQuestion | undefined;
-
-  @Input()
-  answer: IAnswer | undefined;
+  @Output() noteSaved = new EventEmitter<string>();
 
   note: string = "";
 
-  constructor(private questionService: QuestionService, private router: Router) {
-
-  }
+  constructor(
+    private router: Router,
+    private currentSurveyService :CurrentSurveyService
+  ) { }
 
   ngOnInit() {
-    this.questionService.getQuestion(this.questionId).subscribe(question => {
-      this.question = question;
-    });
+
   }
 
   saveNote() {
-    this.answer!.note = this.note;
-
-    this.questionService.updateAnswer(this.answer!)
-      .subscribe({
-        next: () => {
-          this.router.navigate(['/home']);
-        },
-        error: (err) => {
-          console.error(err);
-          // this.router.navigate(['/home']);
-        }
-      });
+    this.noteSaved.emit(this.note);
   }
 
   skip() {
-    this.router.navigate(['/home']);
+    this.noteSaved.emit("");
   }
 
 }

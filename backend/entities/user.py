@@ -1,27 +1,31 @@
 from config.dbConfig import db
+from sqlalchemy.orm import Mapped, mapped_column
 
 class User(db.Model):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    firstname = db.Column(db.String(100))
-    lastname = db.Column(db.String(100))
-    role = db.Column(db.String(50))
+    firstName: Mapped[str] = mapped_column(db.String(255), nullable=False)
+    lastName: Mapped[str] = mapped_column(db.String(255), nullable=False)
+    role: Mapped[int] = mapped_column(db.Integer, nullable=False)
+    is_deleted: Mapped[bool] = mapped_column(db.Boolean, nullable=False, default=False)
 
-    def __init__(self, firstname=None, lastname=None, role=None, _id=None):
-        if _id is not None:
-            self.id = _id
-        self.firstname = firstname
-        self.lastname = lastname
+    def __init__(self, firstName: str, lastName: str, role: int, id=None):
+        if id is not None:
+            self.id = id
+
+        self.is_deleted = False
         self.role = role
+        self.firstName = firstName
+        self.lastName = lastName
 
     def to_json(self):
         """Convert User object to dictionary for JSON serialization"""
         return {
             "id": self.id,
-            "firstname": self.firstname,
-            "lastname": self.lastname,
             "role": self.role,
+            "firstName": self.firstName,
+            "lastName": self.lastName,
         }
 
 

@@ -27,22 +27,22 @@ export class QuestionsSelectComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.questionService.getAll().subscribe((res : IResponse<IQuestion[]>) => {
+    this.questionService.getAll().subscribe((res: IResponse<IQuestion[]>) => {
       this.questions = res.data;
 
-      for (let data of res.data) {
-        this.answers.push({
-          id: null,
-          questionId: data.id,
-          userId: this.currentSurveyService.getCurrentUser()!.id,
-          // ToDo: Change back to null when API allows it
-          // answer: null,
-          answer: 1,
-          questionMoment: null,
-          timestamp: null,
-          note: null
-        })
-      }
+      this.answerService.getNextQuestionMomentId().subscribe(nextId => {
+        for (let data of res.data) {
+          this.answers.push({
+            id: null,
+            questionId: data.id,
+            userId: this.currentSurveyService.getCurrentUser()!.id,
+            answer: null,
+            questionMoment: nextId,
+            timestamp: null,
+            note: null
+          });
+        }
+      });
     });
   }
 
@@ -72,17 +72,68 @@ export class QuestionsSelectComponent implements OnInit {
     else {
       answer.answer = 4;
     }
-    console.log(questionId);
+  }
+
+
+  isEverythingSelected() {
+    let unselected = this.answers.find((answer) => answer.answer != null);
+
+    return unselected == undefined;
+  }
+
+  isSomethingSelected() {
+    let unselected = this.answers.find((answer) => answer.answer != 4);
+
+    return unselected == undefined;
+  }
+
+  toggleAll() {
+    if (this.isEverythingSelected()) {
+      for (const answer of this.answers) {
+        answer.answer = 4;
+      }
+    }
+    else {
+      for (const answer of this.answers) {
+        answer.answer = null;
+      }
+    }
   }
 
   navigateBack() {
     this.router.navigate(['user-select']);
   }
 
-  startSurvey() {
-    this.answerService.saveAnswers(this.answers);
+  // startSurvey() {
+  //   if (this.isSomethingSelected()) {
+  //     console.error("No questions selected");
+  //     return;
+  //   }
+  //
+  //   this.answerService.saveAnswers(this.answers);
+  //   this.currentSurveyService.setAnswerPoule();
+  //   this.currentSurveyService.updateCurrentAnswer();
+  //
+  //   this.router.navigate(['/survey']);
+  // }
 
-    this.router.navigate(['/survey']);
+  startSurvey() {
+    if (this.isSomethingSelected()) {
+      console.error("No questions selected");
+      return;
+    }
+
+    this.answerService.saveAnswers(this.answers).subscribe({
+      next: (response) => {
+        this.currentSurveyService.setAnswerPoule();
+        this.currentSurveyService.updateCurrentAnswer();
+        this.router.navigate(['/survey']);
+      },
+      error: (error) => {
+        console.error("Error saving answers", error);
+        // Optionally show an error message to the user
+      }
+    });
   }
 
 }

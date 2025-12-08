@@ -38,3 +38,8 @@ class QuestionRepository:
         db.session.delete(question)
         db.session.commit()
 
+    def get_questions_by_category(self, category):
+        return db.session.query(Question).filter(Question.category == category).all()
+
+    def get_all_categories(self):
+       return list(set(map(lambda a: a.category, db.session.query(Question).all())))

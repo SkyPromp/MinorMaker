@@ -1,27 +1,46 @@
-@if (currentQuestion != null) {
-  <div class="survey">
-    <div class="question-container" [class.no-image]="currentQuestion.image == null">
-      @if (currentQuestion.image != null) {
-        <img src="{{currentQuestion.image}}" alt="pictogram" />
-      }
-      <p>{{currentQuestion.question}}</p>
-    </div>
-
-    <div class="answer-note-container">
-      @if (currentSurveyService.currentAnswer?.answer == null) {
-        <app-answer (answerSaved)="onAnswerSaved($event)"></app-answer>
-      } @else {
-        <app-note></app-note>
-
-      }
-    </div>
+@if (loading) {
+  <div class="loading-container">
+    <div class="spinner"></div>
+    <p>Laden...</p>
   </div>
 } @else {
-  <div class="survey-done">
-    <p>De vragenlijst is afgerond</p>
-    <div class="button" (click)="navigateToHome()">Afsluiten</div>
-  </div>
-}
 
+  @if (currentSurveyService.currentAnswer != null) {
+
+    @if (currentQuestion != null) {
+
+      <div class="survey">
+        <div class="question-container" [class.no-image]="currentQuestion.image == null">
+          @if (currentQuestion.image != null) {
+            <img src="{{currentQuestion.image}}" alt="pictogram" />
+          }
+          <p>{{currentQuestion.question}}</p>
+        </div>
+
+        <div class="answer-note-container">
+          @if (currentSurveyService.currentAnswer.answer == null) {
+            <app-answer (answerSaved)="onAnswerSaved($event)"></app-answer>
+          } @else {
+            <app-note (noteSaved)="onNoteSaved($event)"></app-note>
+          }
+        </div>
+      </div>
+
+    }
+    @else {
+      <div class="error-container">
+        <p>Er is iets foutgegaan</p>
+        <p (click)="navigateToHome()">Terug naar start</p>
+      </div>
+    }
+
+  } @else {
+    <div class="survey-done">
+      <p>De vragenlijst is afgerond</p>
+      <div class="button" (click)="navigateToHome()">Afsluiten</div>
+    </div>
+  }
+
+}
 
 <!--<app-footer></app-footer>-->
