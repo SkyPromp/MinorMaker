@@ -89,7 +89,46 @@ export class UserSelectComponent implements OnInit {
   }
 
   ditchSurvey() {
-    // ToDo
+    let activeUser = this.currentSurveyService.getCurrentUser();
+
+    if (!activeUser) {
+      console.error("No active user");
+      return;
+    }
+
+    this.answerService.getCurrentQuestionMomentByUserId(activeUser.id).subscribe({
+      next: (res) => {
+        if (res.data == null) {
+          console.error("No active question moment");
+          return;
+        }
+
+        this.answerService.getAnswersByQuestionMomentId(res.data).subscribe({
+          next: (answersRes) => {
+            // Filter to get only unanswered questions (answer == null)
+            const unansweredAnswers = answersRes.data.filter(a => a.answer == null);
+
+            // Update all unanswered answers to NOT_APPLICABLE (4) with empty note
+            unansweredAnswers.forEach(answer => {
+              answer.answer = 4; // NOT_APPLICABLE
+              answer.note = "";
+              this.answerService.updateAnswer(answer);
+            });
+
+            console.log(`Ditched survey: ${unansweredAnswers.length} answers set to NOT_APPLICABLE`);
+
+            // Clear the active survey state
+            this.hasActiveSurvey = false;
+          },
+          error: (err) => {
+            console.error("Error fetching answers:", err);
+          }
+        });
+      },
+      error: (err) => {
+        console.error("Error fetching question moment:", err);
+      }
+    });
   }
 
   continueSurvey() {
