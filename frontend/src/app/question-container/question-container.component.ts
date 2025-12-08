@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {FooterComponent} from "../components/footer/footer.component";
 import {CurrentSurveyService} from "../services/current-survey.service";
 import {IQuestion} from "../model/question.interface";
 import {AnswerComponent, AnswerType} from "../components/answer/answer.component";
@@ -12,7 +11,6 @@ import {QuestionV2Service} from "../services/question-v2.service";
   selector: 'app-question-container',
   standalone: true,
   imports: [
-    FooterComponent,
     AnswerComponent,
     NoteComponent
   ],
@@ -64,6 +62,12 @@ export class QuestionContainerComponent implements OnInit {
       this.currentSurveyService.currentAnswer.answer = answer;
 
       this.answerService.updateAnswer(this.currentSurveyService.currentAnswer);
+
+      if (answer == AnswerType.NOT_APPLICABLE) {
+        this.currentSurveyService.currentAnswer.note = "";
+        this.currentSurveyService.updateCurrentAnswer();
+        this.updateCurrentQuestion();
+      }
     }
     else {
       console.error("Cannot update current answer because it is null (update answer)")
