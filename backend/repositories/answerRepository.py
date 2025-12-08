@@ -59,3 +59,25 @@ class AnswerRepository:
         ).first()
 
         return answer.question_moment if answer else None
+
+    def get_question_moment_stats(self, question_moment):
+        # Get all answers for the question moment
+        answers = db.session.query(Answer).filter(
+            Answer.question_moment == question_moment,
+            Answer.is_deleted.is_(False)
+        ).all()
+
+        if not answers:
+            return None
+
+        # Calculate statistics
+        total_answers = len(answers)
+        answered_count = sum(1 for answer in answers if answer.answer is not None)
+
+        return {
+            "questionMoment": question_moment,
+            "totalAnswers": total_answers,
+            "answeredCount": answered_count,
+            "unansweredCount": total_answers - answered_count,
+            "answerRate": answered_count / total_answers if total_answers > 0 else 0
+        }

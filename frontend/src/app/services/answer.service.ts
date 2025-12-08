@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {IAnswer} from "../model/answer.interface";
 import {IResponse} from "../model/response.interface";
 import {map} from "rxjs";
+import {IQmStats} from "../model/qm-stats.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -54,5 +55,10 @@ export class AnswerService {
 
   getCurrentQuestionMomentByUserId(userId: number) {
     return this.http.get<IResponse<number | null>>(`http://localhost:5000/api/users/${userId}/currentQuestionMoment`);
+  }
+
+  getQuestionMomentStats(qmId: number) {
+    console.log("Fetching question moment stats from " + `http://localhost:5000/api/questionMoments/${qmId}/stats`);
+    return this.http.get<IResponse<IQmStats>>(`http://localhost:5000/api/questionMoments/${qmId}/stats`);
   }
 }

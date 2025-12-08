@@ -56,3 +56,6 @@ class AnswerService:
 
     def get_current_question_moment_by_user(self, user_id):
         return self.answerRepo.get_current_question_moment_by_user_id(user_id)
+
+    def get_question_moment_stats(self, question_moment):
+        return self.answerRepo.get_question_moment_stats(question_moment)

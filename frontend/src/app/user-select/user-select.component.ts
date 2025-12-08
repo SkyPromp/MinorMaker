@@ -23,7 +23,9 @@ export class UserSelectComponent implements OnInit {
   sortDirection: 'asc' | 'desc' = 'asc';
 
   hasActiveSurvey: boolean = false;
-  progress = 30 / 40 * 100;
+  progress :number = 30 / 40 * 100;
+  amountOfAnswers: number = 0;
+  amountOfAnswered: number = 0;
 
   constructor(
     private userService: UserService,
@@ -41,6 +43,22 @@ export class UserSelectComponent implements OnInit {
   selectUser(user :IUser) {
     this.currentSurveyService.setCurrentUser(user);
     this.checkActiveSurvey();
+
+    console.log("user selected");
+
+    this.answerService.getCurrentQuestionMomentByUserId(user.id).subscribe(res => {
+      if (res.data == null) {
+        console.error("No active question moment");
+        return;
+      }
+
+      this.answerService.getQuestionMomentStats(res.data).subscribe(innerRes => {
+        this.amountOfAnswers = innerRes.data.totalAnswers;
+        this.amountOfAnswered = innerRes.data.answeredCount;
+        this.progress = innerRes.data.answerRate * 100;
+      })
+    })
+
   }
 
   isActive(user :IUser) : boolean {
