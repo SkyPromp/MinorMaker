@@ -17,5 +17,5 @@ Een vragenlijst om op een laptop of tablet te gebruiken.
 ### Backend
 - Flask
 ### Database
-- SQLite
+- MariaDB
 ## Setup

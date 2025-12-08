@@ -1,4 +1,3 @@
-from sqlalchemy.sql.base import roles
 from config.dbConfig import db
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -21,7 +20,7 @@ class User(db.Model):
         self.lastName = lastName
 
     def to_json(self):
-        """Convert Answer object to dictionary for JSON serialization"""
+        """Convert User object to dictionary for JSON serialization"""
         return {
             "id": self.id,
             "role": self.role,

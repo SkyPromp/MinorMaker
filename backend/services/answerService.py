@@ -14,7 +14,12 @@ class AnswerService:
         return answerJson
 
     def get_answer_by_id(self, id):
-        return self.answerRepo.get_answer_by_id(id).to_json()
+        answer = self.answerRepo.get_answer_by_id(id)
+
+        if answer is not None:
+            return answer.to_json()
+        
+        return None
 
     def add_answer(self, answer):
         return self.answerRepo.add_answer(answer).to_json()

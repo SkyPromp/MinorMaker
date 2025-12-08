@@ -18,11 +18,11 @@ class AnswerRepository:
     def get_all_question_moments(self):
        return list(set(map(lambda a: a.question_moment, db.session.query(Answer).all())))
 
-    def get_answer_by_id(self, id):
+    def get_answer_by_id(self, id) -> Answer | None:
         return db.session.query(Answer).filter_by(id=id).filter(Answer.is_deleted.is_(False)).first()
 
     def get_answers_by_user_id(self, user_id):
-        return db.session.query(Answer).filter(Answer.userId == user_id).all()
+        return db.session.query(Answer).filter(Answer.user_id == user_id).all()
 
     def delete_answer(self, answer: Answer):
         existing_answer = self.get_answer_by_id(answer.id)
@@ -52,7 +52,6 @@ class AnswerRepository:
             return None
 
     def get_current_question_moment_by_user_id(self, user_id):
-        # Find the first answer for this user that has a null answer
         answer = db.session.query(Answer).filter(
             Answer.user_id == user_id,
             Answer.answer.is_(None)

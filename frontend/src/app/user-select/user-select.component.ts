@@ -1,22 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {UserService} from "../services/user.service";
-import {IUser} from "../model/user.interface";
-import {CurrentSurveyService} from "../services/current-survey.service";
-import {Router} from "@angular/router";
-import {FormsModule} from "@angular/forms";
+import { Component, OnInit } from "@angular/core";
+import { UserService } from "../services/user.service";
+import { IUser } from "../model/user.interface";
+import { CurrentSurveyService } from "../services/current-survey.service";
+import { Router } from "@angular/router";
+import { FormsModule } from "@angular/forms";
 import {AnswerService} from "../services/answer.service";
 
 @Component({
-  selector: 'app-user-select',
+  selector: "app-user-select",
   standalone: true,
-  imports: [
-    FormsModule
-  ],
-  templateUrl: './user-select.component.html',
-  styleUrl: './user-select.component.css'
+  imports: [FormsModule],
+  templateUrl: "./user-select.component.html",
+  styleUrl: "./user-select.component.css",
 })
 export class UserSelectComponent implements OnInit {
-
   users: IUser[] = [];
   searchTerm: string = "";
   sortColumn: keyof IUser = "firstName";
@@ -40,7 +37,7 @@ export class UserSelectComponent implements OnInit {
     })
   }
 
-  selectUser(user :IUser) {
+  selectUser(user: IUser) {
     this.currentSurveyService.setCurrentUser(user);
     this.checkActiveSurvey();
 
@@ -61,13 +58,11 @@ export class UserSelectComponent implements OnInit {
 
   }
 
-  isActive(user :IUser) : boolean {
+  isActive(user: IUser): boolean {
     let selectedUser = this.currentSurveyService.getCurrentUser();
-
     if (!selectedUser) {
       return false;
     }
-
     return selectedUser.id == user.id;
   }
 
@@ -84,8 +79,8 @@ export class UserSelectComponent implements OnInit {
         const aValue = ((a[this.sortColumn] as any)?.toString().toLowerCase() ?? "");
         const bValue = ((b[this.sortColumn] as any)?.toString().toLowerCase() ?? "");
 
-        if (aValue < bValue) return this.sortDirection === 'asc' ? -1 : 1;
-        if (aValue > bValue) return this.sortDirection === 'asc' ? 1 : -1;
+        if (aValue < bValue) return this.sortDirection === "asc" ? -1 : 1;
+        if (aValue > bValue) return this.sortDirection === "asc" ? 1 : -1;
         return 0;
       });
     }
@@ -95,15 +90,17 @@ export class UserSelectComponent implements OnInit {
 
   sortBy(column: keyof IUser) {
     if (this.sortColumn == column) {
-      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+      this.sortDirection = this.sortDirection === "asc" ? "desc" : "asc";
     } else {
       this.sortColumn = column;
-      this.sortDirection = 'asc';
+      this.sortDirection = "asc";
     }
   }
 
   startSurvey() {
-    this.router.navigate(['/questions-select']);
+    if (this.currentSurveyService.getCurrentUser()) {
+      this.router.navigate(["/questions-select"]);
+    }
   }
 
   ditchSurvey() {
@@ -173,5 +170,4 @@ export class UserSelectComponent implements OnInit {
       this.hasActiveSurvey = false;
     }
   }
-
 }

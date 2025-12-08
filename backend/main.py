@@ -5,7 +5,6 @@ from flask import Flask
 from flask_cors import CORS
 from config.dbConfig import db
 from seed_questions_max import seedQuestions
-# from controllers import PlantController, QuestionController
 
 app = Flask(__name__)
 cors = CORS(app)

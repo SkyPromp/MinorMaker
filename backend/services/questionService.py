@@ -33,7 +33,12 @@ class QuestionService:
         self.questionRepo.delete_question(question)
 
     def get_question_by_id(self, id):
-        return self.questionRepo.get_question_by_id(id).to_json()
+        question = self.questionRepo.get_question_by_id(id)
+
+        if question is not None:
+            return question.to_json()
+        
+        return None
 
     def get_questions_by_category(self, category):
         questionJson = []
