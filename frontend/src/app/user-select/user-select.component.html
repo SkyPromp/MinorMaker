@@ -76,7 +76,7 @@
       </div>
       <div>
         <div class="line"></div>
-        <div class="button" (click)="startSurvey()">
+        <div class="button" [class.disabled]="hasActiveSurvey" (click)="!hasActiveSurvey && startSurvey()">
           Start Nieuwe Enquête
         </div>
       </div>
