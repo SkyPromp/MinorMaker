@@ -1,6 +1,7 @@
 from controllers.answerController import AnswerController
 from controllers.questionController import QuestionController
 from controllers.userController import UserController
+from controllers.fileController import FileController
 from flask import Flask
 from flask_cors import CORS
 from config.dbConfig import db
@@ -21,6 +22,7 @@ with app.app_context():
 questionController = QuestionController(app)
 answerController = AnswerController(app)
 userController = UserController(app)
+fileController = FileController(app)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)

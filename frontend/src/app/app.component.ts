@@ -27,4 +27,8 @@ export class AppComponent {
     });
   }
 
+  downloadFile() {
+    window.open('http://localhost:5000/api/button', '_blank');
+  }
+
 }
