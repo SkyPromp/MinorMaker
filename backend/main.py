@@ -6,9 +6,23 @@ from flask import Flask
 from flask_cors import CORS
 from config.dbConfig import db
 from seed_questions_max import seedQuestions
+import cloudinary
+import cloudinary.uploader
+from cloudinary.utils import cloudinary_url
 
 app = Flask(__name__)
 cors = CORS(app)
+
+cloudinary.config(
+    cloud_name = "dk4fejkhy",
+    api_key = "361287242763777",
+    api_secret = "kxlHBqy4FOVw3mVX6U2-JGbafKU",
+    secure=True
+)
+
+# upload_result = cloudinary.uploader.upload("./boot.jpg", public_id="boot")
+
+print(upload_result["secure_url"])
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://ergos_admin:ergos123@db/ergos'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
