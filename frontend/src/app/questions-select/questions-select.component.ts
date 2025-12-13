@@ -104,19 +104,6 @@ export class QuestionsSelectComponent implements OnInit {
     this.router.navigate(['user-select']);
   }
 
-  // startSurvey() {
-  //   if (this.isSomethingSelected()) {
-  //     console.error("No questions selected");
-  //     return;
-  //   }
-  //
-  //   this.answerService.saveAnswers(this.answers);
-  //   this.currentSurveyService.setAnswerPoule();
-  //   this.currentSurveyService.updateCurrentAnswer();
-  //
-  //   this.router.navigate(['/survey']);
-  // }
-
   startSurvey() {
     if (this.isSomethingSelected()) {
       console.error("No questions selected");
