@@ -24,20 +24,31 @@ export class UserSelectComponent implements OnInit {
   amountOfAnswers: number = 0;
   amountOfAnswered: number = 0;
 
+  imageLoaded = new Set<number>();
+  detailImageLoaded = false;
+
   constructor(
     private userService: UserService,
     protected currentSurveyService: CurrentSurveyService,
     private router: Router,
     private answerService: AnswerService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
+    this.currentSurveyService.setCurrentUser(null);
+
     this.userService.getAllClients().subscribe(res => {
       this.users = res.data;
     })
   }
 
   selectUser(user: IUser) {
+    const currentUser = this.currentSurveyService.getCurrentUser();
+    if (!currentUser || currentUser.id !== user.id) {
+      this.detailImageLoaded = false;
+    }
+
     this.currentSurveyService.setCurrentUser(user);
     this.checkActiveSurvey();
 
@@ -53,9 +64,17 @@ export class UserSelectComponent implements OnInit {
         this.amountOfAnswers = innerRes.data.totalAnswers;
         this.amountOfAnswered = innerRes.data.answeredCount;
         this.progress = innerRes.data.answerRate * 100;
-      })
-    })
+      });
+    });
+  }
 
+  onImageLoad(userId: number) {
+    this.imageLoaded.add(userId);
+  }
+
+  onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/placeholder/profile.jpg';
   }
 
   isActive(user: IUser): boolean {

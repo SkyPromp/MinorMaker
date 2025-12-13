@@ -36,15 +36,26 @@
     </th>
     </thead>
     <tbody>
-      @for (user of filteredUsers; track user.id) {
-        <tr (click)="selectUser(user)" [class.active]="isActive(user)">
-          <td>
-            <img src="assets/placeholder/profile.jpg" alt="profile picture" />
-          </td>
-          <td>{{user.firstName}}</td>
-          <td>{{user.lastName}}</td>
-        </tr>
-      }
+  @for (user of filteredUsers; track user.id) {
+    <tr (click)="selectUser(user)" [class.active]="isActive(user)">
+      <td>
+        @if (user.imageUrl != null) {
+          <img [src]="user.imageUrl"
+               alt="profile picture"
+               [style.display]="imageLoaded.has(user.id) ? 'block' : 'none'"
+               (load)="onImageLoad(user.id)"
+               (error)="onImageError($event)">
+          @if (!imageLoaded.has(user.id)) {
+            <img src="assets/placeholder/profile.jpg" alt="loading">
+          }
+        } @else {
+          <img src="assets/placeholder/profile.jpg" alt="profile picture" />
+        }
+      </td>
+      <td>{{user.firstName}}</td>
+      <td>{{user.lastName}}</td>
+    </tr>
+  }
     </tbody>
   </table>
 
@@ -52,7 +63,18 @@
   @if (currentSurveyService.getCurrentUser() != null) {
     <div  class="user-detail-card">
       <div>
-        <img src="assets/placeholder/profile.jpg" alt="profile picture"/>
+        @if (currentSurveyService.getCurrentUser()!.imageUrl != null) {
+          <img [src]="currentSurveyService.getCurrentUser()!.imageUrl"
+               alt="profile picture"
+               [style.display]="detailImageLoaded ? 'block' : 'none'"
+               (load)="detailImageLoaded = true"
+               (error)="onImageError($event)">
+          @if (!detailImageLoaded) {
+            <img src="assets/placeholder/profile.jpg" alt="loading">
+          }
+        } @else {
+          <img src="assets/placeholder/profile.jpg" alt="profile picture placeholder"/>
+        }
         <h2>{{currentSurveyService.getCurrentUser()?.firstName}} {{currentSurveyService.getCurrentUser()?.lastName}}</h2>
 
         @if (hasActiveSurvey) {

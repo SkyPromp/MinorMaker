@@ -23,12 +23,14 @@ export class UserService {
   addUser(
     firstname: string,
     lastname: string,
-    role: number
+    role: number,
+    imageUrl: string | null,
   ): Observable<IResponse<IUser>> {
     const payload = {
       firstname: firstname,
       lastname: lastname,
       role: role,
+      imageUrl: imageUrl,
     };
     return this.http.post<IResponse<IUser>>(this.BASE_URL, payload);
   }
@@ -37,12 +39,14 @@ export class UserService {
     userId: number,
     firstname: string,
     lastname: string,
-    role: number
+    role: number,
+    imageUrl: string | null,
   ): Observable<IResponse<IUser>> {
     const payload = {
       firstname: firstname,
       lastname: lastname,
       role: role,
+      imageUrl: imageUrl,
     };
     return this.http.put<IResponse<IUser>>(
       `${this.BASE_URL}/${userId}`,

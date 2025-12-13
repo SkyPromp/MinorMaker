@@ -20,6 +20,7 @@ export class CurrentSurveyService {
   }
   setCurrentUser(user: IUser | null): void {
     if (user == null) {
+      this.currentUser = user;
       return;
     }
 
@@ -45,7 +46,6 @@ export class CurrentSurveyService {
       this.currentAnswer = nextAnswer;
     }
     else {
-      // this.currentAnswer = null;
       this._currentAnswer = null;
     }
   }

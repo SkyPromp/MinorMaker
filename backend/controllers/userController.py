@@ -38,11 +38,12 @@ class UserController:
         firstname = data.get("firstname")
         lastname = data.get("lastname")
         role = data.get("role")
+        imageUrl = data.get("imageUrl")  # Optional field
 
         if not firstname or not lastname or role is None:
             return jsonify({"error": "Missing required fields: firstname, lastname, role"}), 400
 
-        created = self.userSvc.add_user(firstname=firstname, lastname=lastname, role=role)
+        created = self.userSvc.add_user(firstname=firstname, lastname=lastname, role=role, imageUrl=imageUrl)
 
         return jsonify({"data": created, "status": "ok", "action": "created"}), 201
 
@@ -55,11 +56,12 @@ class UserController:
         firstname = data.get("firstname")
         lastname = data.get("lastname")
         role = data.get("role")
+        imageUrl = data.get("imageUrl")  # Optional field
 
         if not firstname or not lastname or role is None:
             return jsonify({"error": "Missing required fields: firstname, lastname, role"}), 400
 
-        updated = self.userSvc.update_user(user_id, firstname, lastname, role)
+        updated = self.userSvc.update_user(user_id, firstname, lastname, role, imageUrl)
 
         if not updated:
             return jsonify({"error": "User not found"}), 404

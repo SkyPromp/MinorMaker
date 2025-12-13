@@ -8,9 +8,10 @@ class User(db.Model):
     firstName: Mapped[str] = mapped_column(db.String(255), nullable=False)
     lastName: Mapped[str] = mapped_column(db.String(255), nullable=False)
     role: Mapped[int] = mapped_column(db.Integer, nullable=False)
+    imageUrl: Mapped[str] = mapped_column(db.String(500), nullable=True)
     is_deleted: Mapped[bool] = mapped_column(db.Boolean, nullable=False, default=False)
 
-    def __init__(self, firstName: str, lastName: str, role: int, id=None):
+    def __init__(self, firstName: str, lastName: str, role: int, imageUrl: str = None, id=None):
         if id is not None:
             self.id = id
 
@@ -18,6 +19,7 @@ class User(db.Model):
         self.role = role
         self.firstName = firstName
         self.lastName = lastName
+        self.imageUrl = imageUrl
 
     def to_json(self):
         """Convert User object to dictionary for JSON serialization"""
@@ -26,6 +28,5 @@ class User(db.Model):
             "role": self.role,
             "firstName": self.firstName,
             "lastName": self.lastName,
+            "imageUrl": self.imageUrl,
         }
-
-

@@ -12,18 +12,18 @@ class UserService:
 
         return userJson
 
-    def add_user(self, firstname, lastname, role):
+    def add_user(self, firstname, lastname, role, imageUrl=None):
         from entities.user import User
-        user = User(firstName=firstname, lastName=lastname, role=role)
+        user = User(firstName=firstname, lastName=lastname, role=role, imageUrl=imageUrl)
         return self.userRepo.add_user(user).to_json()
 
-    def update_user(self, user_id, firstname, lastname, role):
+    def update_user(self, user_id, firstname, lastname, role, imageUrl=None):
         user = self.userRepo.get_user_by_id(user_id)
 
         if not user:
             return None
 
-        user = self.userRepo.update_user(user_id, firstname, lastname, role)
+        user = self.userRepo.update_user(user_id, firstname, lastname, role, imageUrl)
 
         if not user:
             return None
@@ -40,4 +40,3 @@ class UserService:
             userJson.append(user.to_json())
 
         return userJson
-

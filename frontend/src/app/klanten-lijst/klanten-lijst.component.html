@@ -54,14 +54,60 @@
       </select>
     </div>
 
+    <!-- Image Upload Section -->
+    <div class="form-group">
+      <label>Profielfoto</label>
+
+      <!-- Current uploaded image or preview -->
+      <div *ngIf="profileImageUrl || imagePreview" class="image-preview-container">
+        <img [src]="profileImageUrl || imagePreview" alt="Profile image" class="uploaded-image" />
+        <button
+          type="button"
+          class="remove-image-btn"
+          (click)="removeImage()"
+          [disabled]="isSubmitting || isUploadingImage"
+        >
+          ✕ Verwijder
+        </button>
+      </div>
+
+      <!-- File input -->
+      <div class="file-input-container">
+        <input
+          type="file"
+          id="imageUpload"
+          accept="image/*"
+          (change)="onFileSelected($event)"
+          [disabled]="isSubmitting || isUploadingImage"
+          #fileInput
+        />
+        <label for="imageUpload" class="file-input-label">
+          📁 Selecteer afbeelding
+        </label>
+      </div>
+
+      <!-- Status messages -->
+<!--      <div *ngIf="isUploadingImage" class="upload-status">-->
+<!--        <p>📤 Afbeelding uploaden...</p>-->
+<!--      </div>-->
+
+<!--      <div *ngIf="selectedFile && !isUploadingImage" class="info-message">-->
+<!--        <small>ℹ️ Afbeelding wordt geüpload bij opslaan</small>-->
+<!--      </div>-->
+
+      <div *ngIf="profileImageUrl && !selectedFile" class="image-url-display">
+        <small>✓ Huidige profielfoto</small>
+      </div>
+    </div>
+
     <div class="form-actions">
-      <button class="submit-btn" (click)="saveUser()" [disabled]="isSubmitting">
-        {{ isSubmitting ? "Aan het opslaan..." : "Opslaan" }}
+      <button class="submit-btn" (click)="saveUser()" [disabled]="isSubmitting || isUploadingImage">
+        {{ isUploadingImage ? "Uploaden..." : (isSubmitting ? "Aan het opslaan..." : "Opslaan") }}
       </button>
       <button
         class="cancel-btn"
         (click)="cancelEdit()"
-        [disabled]="isSubmitting"
+        [disabled]="isSubmitting || isUploadingImage"
       >
         Annuleer
       </button>
@@ -76,7 +122,10 @@
   <!-- Users grid -->
   <div *ngIf="!isLoading" class="user-grid">
     <div class="user-card" *ngFor="let user of users">
-      <div class="avatar">{{ user.firstName[0] }}{{ user.lastName[0] }}</div>
+      <div class="avatar">
+        <img *ngIf="user.imageUrl" [src]="user.imageUrl" alt="Profile" />
+        <span *ngIf="!user.imageUrl">{{ user.firstName[0] }}{{ user.lastName[0] }}</span>
+      </div>
       <div class="info">
         <h3>{{ user.firstName }} {{ user.lastName }}</h3>
         <p>{{ getRoleName(user.role) }}</p>

@@ -15,12 +15,13 @@ class UserRepository:
     def get_user_by_id(self, user_id):
         return db.session.query(User).filter(User.id == user_id).first()
 
-    def update_user(self, user_id, firstname, lastname, role):
+    def update_user(self, user_id, firstname, lastname, role, imageUrl=None):
         user = self.get_user_by_id(user_id)
         if user:
             user.firstName = firstname
             user.lastName = lastname
             user.role = role
+            user.imageUrl = imageUrl
             db.session.commit()
         return user
 

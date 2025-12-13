@@ -22,7 +22,7 @@ cloudinary.config(
 
 # upload_result = cloudinary.uploader.upload("./boot.jpg", public_id="boot")
 
-print(upload_result["secure_url"])
+# print(upload_result["secure_url"])
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://ergos_admin:ergos123@db/ergos'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

@@ -5,4 +5,5 @@ export interface IUser {
   firstName: string;
   lastName: string;
   role: RoleEnum;
+  imageUrl: string | null;
 }
