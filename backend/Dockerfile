@@ -2,7 +2,7 @@ FROM python:3.12
 
 WORKDIR .
 
-RUN pip3 install flask flask_sqlalchemy pymysql flask_cors cloudinary
+RUN pip3 install flask flask_sqlalchemy pymysql flask_cors cloudinary python-dotenv
 
 COPY . .
 

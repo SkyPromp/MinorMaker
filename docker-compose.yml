@@ -1,11 +1,11 @@
 services:
   ergos-api:
     build: "./backend"
-#      context: .
-#      dockerfile: backend/Dockerfile
     ports:
       - 5000:5000
     restart: always
+    env_file:
+      - ./backend/.env
         
   db:
     image: mariadb
